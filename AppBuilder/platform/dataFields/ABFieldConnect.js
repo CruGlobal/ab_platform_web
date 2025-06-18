@@ -379,7 +379,8 @@ module.exports = class ABFieldConnect extends ABFieldConnectCore {
                if (
                   f.key != "string" &&
                   f.key != "LongText" &&
-                  f.key != "AutoIndex"
+                  f.key != "AutoIndex" &&
+                  f.key != "number"
                )
                   return;
 
