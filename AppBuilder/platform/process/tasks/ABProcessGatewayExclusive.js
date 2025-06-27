@@ -58,9 +58,9 @@ module.exports = class ABProcessGatewayExclusive extends (
       // a condition:
       let numCondWithOne = 0;
       myOutgoingConnections.forEach((c) => {
-         this.conditions[c.id] = this.conditions[c.id] || {};
+         this.conditions[c.id] = this.conditions[c.id] ?? {};
          this.conditions[c.id].filterValue = this.conditions[c.id]
-            .filterValue || { glue: "and", rules: [] };
+            .filterValue ?? { glue: "and", rules: [] };
          if ((this.conditions[c.id]?.filterValue.rules?.length ?? 0) == 0) {
             numCondWithOne++;
          }
