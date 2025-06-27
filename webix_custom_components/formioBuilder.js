@@ -117,7 +117,21 @@ export default class ABCustomFormBuilderBuilder extends ABLazyCustomComponent {
    parseDataFields(fields) {
       const components = {};
       fields?.forEach(({ field, key, label }) => {
-         if (!field) return;
+         if (!field) {
+            components[key] = {
+               title: label,
+               key,
+               schema: {
+                  label: label.split("->")[1],
+                  disabled: true,
+                  key,
+                  _key: key,
+                  type: "textarea",
+                  input: true,
+               },
+            };
+            return;
+         }
 
          const schema = {
             abFieldID: field.id,
