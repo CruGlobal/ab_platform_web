@@ -107,7 +107,11 @@ class PortalWorkTaskUserForm extends ClassUI {
 
    show() {
       const $popup = $$(this.ids.component);
-      $popup?.show();
+      try {
+         $popup?.show();
+      } catch {
+         // Catch the error i.render is not function.
+      }
    }
 
    hide() {
