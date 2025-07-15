@@ -435,9 +435,10 @@ module.exports = class ABFieldConnect extends ABFieldConnectCore {
                // if we are looking at a field in a form we look at linkViaOneValues
                // if we are looking at a grid we are editing we look at theEditor?.config?.value
                if (
-                  (this?.settings?.linkViaType == "one" ||
-                     this._largeOptions) &&
-                  (this?.linkViaOneValues || theEditor?.config?.value)
+                  // this?.settings?.linkViaType == "one" &&
+                  this?.linkViaOneValues ||
+                  theEditor?.config?.value ||
+                  this._largeOptions
                ) {
                   let values = "";
                   // determine if we are looking in a grid or at a form field
@@ -488,14 +489,17 @@ module.exports = class ABFieldConnect extends ABFieldConnectCore {
                         });
                      }
                   });
-                  selected = function () {
-                     return linkedModel.findAll({
-                        where: whereRels,
-                        sort: sortRels,
-                        populate: false,
-                        limit: OPTION_ITEM_LIMIT,
-                     });
-                  };
+
+                  if (whereRels.rules.length > 0) {
+                     selected = function () {
+                        return linkedModel.findAll({
+                           where: whereRels,
+                           sort: sortRels,
+                           populate: false,
+                           limit: OPTION_ITEM_LIMIT,
+                        });
+                     };
+                  }
                }
                try {
                   const results = await Promise.all([options(), selected()]);
