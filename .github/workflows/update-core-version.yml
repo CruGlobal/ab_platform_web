@@ -62,7 +62,7 @@ jobs:
       version: ${{ needs.call-bump-version.outputs.new_version }}
       app_id: ${{ vars.GS_DEV_APP_ID }}
     secrets:
-      app_token: ${{ secrets.GS_DEV_APP_PK }}
+      app_secret: ${{ secrets.GS_DEV_APP_PK }}
 
   call-open-pr-fail:
     name: Tests Failed
