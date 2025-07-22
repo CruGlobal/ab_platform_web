@@ -9,7 +9,7 @@ permissions:
 jobs:
   call-update-sub:
     name: Update
-    uses: CruGlobal/.github/.github/workflows/update-sub-repo.yml
+    uses: CruGlobal/.github/.github/workflows/update-sub-repo.yml@main
     secrets: 
       TOKEN:  ${{ secrets.GITHUB_TOKEN }}
     with:
