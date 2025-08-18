@@ -64,7 +64,7 @@ export function allObjectProperties() {
 ///
 /// For development
 ///
-import propertyNSAPI from "./plugins/developer/ABPropertiesObjectNetsuiteAPI.js";
+import propertyNSAPI from "../../../plugins/ab-object-netsuite-api/properties/ABPropertiesObjectNetsuiteAPI.js";
 import objectNSAPI from "./plugins/developer/ABObjectNetsuiteAPI.js";
 
 export function registerLocalPlugins(API) {
