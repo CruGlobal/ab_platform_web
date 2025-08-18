@@ -17,7 +17,7 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                buttonLookup: "",
                tableName: "",
             },
-            AB
+            AB,
          );
 
          this.allTables = [];
@@ -95,7 +95,7 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                  view: "label",
                                  align: "center",
                                  label: L(
-                                    "You have no other Netsuite Objects imported"
+                                    "You have no other Netsuite Objects imported",
                                  ),
                               },
                               {
@@ -103,7 +103,7 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                  view: "label",
                                  align: "center",
                                  label: L(
-                                    "Continue creating this object now, then create the connections on the other objects you import."
+                                    "Continue creating this object now, then create the connections on the other objects you import.",
                                  ),
                               },
                               {
@@ -184,7 +184,7 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
       setTable(table) {
          this.table = table;
          $$(this.ids.tableName).setValue(
-            `<span style="font-size: 1.5em; font-weight:bold">${this.table}</span>`
+            `<span style="font-size: 1.5em; font-weight:bold">${this.table}</span>`,
          );
       }
 
@@ -192,7 +192,7 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
          this.connectionList = allConnections;
          // refresh more often than on init();
          this.listNetsuiteObjects = this.AB.objects(
-            (o) => o.plugin_key == keyPlugin
+            (o) => o.plugin_key == keyPlugin,
          );
          if (this.listNetsuiteObjects.length == 0) {
             $$(this.ids.displayNoConnections)?.show();
@@ -201,10 +201,10 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
          }
       }
 
-      _fieldItem(key, type) {
+      _fieldItem(/*key, type */) {
          const self = this;
-         const fieldTypes = this.AB.Class.ABFieldManager.allFields();
-         const fieldKeys = ["string", "LongText", "number", "date", "boolean"];
+         // const fieldTypes = this.AB.Class.ABFieldManager.allFields();
+         // const fieldKeys = ["string", "LongText", "number", "date", "boolean"];
 
          const L = this.L();
 
@@ -252,8 +252,9 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                               on: {
                                  onChange: async function (
                                     newVal,
-                                    oldVal,
-                                    config
+                                    /* oldVal,
+                                    config,
+                                    */
                                  ) {
                                     let connObj = self.AB.objectByID(newVal);
                                     if (connObj) {
@@ -261,12 +262,12 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                           url: `/netsuite/table/${connObj.tableName}`,
                                           params: {
                                              credentials: JSON.stringify(
-                                                self.credentials
+                                                self.credentials,
                                              ),
                                           },
                                        });
                                        let fields = result.filter(
-                                          (r) => r.type == "object"
+                                          (r) => r.type == "object",
                                        );
                                        let options = fields.map((f) => {
                                           return {
@@ -312,7 +313,7 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                        });
                                        whichOptions.define(
                                           "options",
-                                          newOptions
+                                          newOptions,
                                        );
                                        whichOptions.refresh();
                                     }
@@ -328,8 +329,8 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                               on: {
                                  onChange: async function (
                                     newVal,
-                                    oldVal,
-                                    config
+                                    /*oldVal,
+                                    config, */
                                  ) {
                                     let $toObj =
                                        this.getParentView().getChildViews()[0];
@@ -344,13 +345,13 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                     let messageA = self.message(
                                        L("This object"),
                                        links[0],
-                                       Obj.label
+                                       Obj.label,
                                     );
 
                                     let messageB = self.message(
                                        Obj.label,
                                        links[1],
-                                       L("This object")
+                                       L("This object"),
                                     );
 
                                     if (newVal == "_choose") {
@@ -389,7 +390,7 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                              .getChildViews()[1];
                                           $thatFieldOptions.define(
                                              "options",
-                                             thisObjectFields
+                                             thisObjectFields,
                                           );
                                           $thatFieldOptions.refresh();
                                           $rowsFieldsets
@@ -405,7 +406,7 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                              .getChildViews()[1];
                                           $thatFieldOptions.define(
                                              "options",
-                                             thatObjectFields
+                                             thatObjectFields,
                                           );
                                           $thatFieldOptions.refresh();
                                           $rowsFieldsets
@@ -447,7 +448,7 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                     {
                                        view: "label",
                                        label: L(
-                                          "which object holds the connection value?"
+                                          "which object holds the connection value?",
                                        ),
                                     },
                                     {
@@ -470,8 +471,8 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                        on: {
                                           onChange: async function (
                                              newVal,
-                                             oldVal,
-                                             config
+                                             /* oldVal,
+                                             config, */
                                           ) {
                                              if (newVal == "_choose") return;
 
@@ -481,12 +482,12 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                              if (newVal == "_this_") {
                                                 $fieldPicker.define(
                                                    "options",
-                                                   thisObjectFields
+                                                   thisObjectFields,
                                                 );
                                              } else {
                                                 $fieldPicker.define(
                                                    "options",
-                                                   thatObjectFields
+                                                   thatObjectFields,
                                                 );
                                              }
                                              $fieldPicker.refresh();
@@ -513,7 +514,7 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                     {
                                        view: "label",
                                        label: L(
-                                          "which field defines the connection?"
+                                          "which field defines the connection?",
                                        ),
                                     },
                                     {
@@ -535,7 +536,7 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                     {
                                        view: "label",
                                        label: L(
-                                          "which table is the join table?"
+                                          "which table is the join table?",
                                        ),
                                     },
                                     {
@@ -547,7 +548,7 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                                 item.value
                                                    .toLowerCase()
                                                    .indexOf(
-                                                      value.toLowerCase()
+                                                      value.toLowerCase(),
                                                    ) > -1
                                              );
                                           },
@@ -559,8 +560,8 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                        on: {
                                           onChange: async function (
                                              newVal,
-                                             oldVal,
-                                             config
+                                             /* oldVal,
+                                             config, */
                                           ) {
                                              let result =
                                                 await self.AB.Network.get({
@@ -568,7 +569,7 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                                    params: {
                                                       credentials:
                                                          JSON.stringify(
-                                                            self.credentials
+                                                            self.credentials,
                                                          ),
                                                    },
                                                 });
@@ -586,7 +587,7 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                                 this.getParentView().getChildViews()[2];
                                              $thisObjRef.define(
                                                 "options",
-                                                options
+                                                options,
                                              );
                                              $thisObjRef.refresh();
                                              $thisObjRef.show();
@@ -595,7 +596,7 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                                 this.getParentView().getChildViews()[3];
                                              $thatObjRef.define(
                                                 "options",
-                                                options
+                                                options,
                                              );
                                              $thatObjRef.refresh();
                                              $thatObjRef.show();
@@ -604,15 +605,15 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                                 this.getParentView().getChildViews()[4];
                                              $objectPK.define(
                                                 "options",
-                                                options
+                                                options,
                                              );
 
                                              let pkField = result.find(
-                                                (r) => r.title == "Internal ID"
+                                                (r) => r.title == "Internal ID",
                                              );
                                              if (pkField) {
                                                 $objectPK.setValue(
-                                                   pkField.column
+                                                   pkField.column,
                                                 );
                                              }
                                              $objectPK.refresh();
@@ -622,7 +623,7 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                                 this.getParentView().getChildViews()[5];
                                              $entityField.define(
                                                 "options",
-                                                options
+                                                options,
                                              );
 
                                              let fieldEntity = result.find(
@@ -631,14 +632,14 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
 
                                                    return (
                                                       r.column.indexOf(
-                                                         "entity"
+                                                         "entity",
                                                       ) > -1
                                                    );
-                                                }
+                                                },
                                              );
                                              if (fieldEntity) {
                                                 $entityField.setValue(
-                                                   fieldEntity.column
+                                                   fieldEntity.column,
                                                 );
                                              }
                                              $entityField.refresh();
@@ -654,7 +655,7 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                                 this.getParentView().getChildViews()[6];
                                              $activeField.define(
                                                 "options",
-                                                fOptions
+                                                fOptions,
                                              );
                                              $activeField.refresh();
                                              $activeField.show();
@@ -689,7 +690,7 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                     {
                                        view: "select",
                                        label: L(
-                                          "Which field holds the Entity:"
+                                          "Which field holds the Entity:",
                                        ),
                                        labelPosition: "top",
                                        options: [],
@@ -706,8 +707,8 @@ export default function FNUIConnections(AB, keyPlugin, ABUIPlugin) {
                                        on: {
                                           onChange: async function (
                                              newVal,
-                                             oldVal,
-                                             config
+                                             /* oldVal,
+                                             config, */
                                           ) {
                                              if (newVal != "_none_") {
                                                 // show the active/inactive value
