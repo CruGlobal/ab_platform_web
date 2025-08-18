@@ -196,14 +196,14 @@ export default function FNPropertiesObjectNetsuiteAPI({
          });
 
          // Create a new Object
-         const object = AB.objectNew(
+         const object = this.AB.objectNew(
             Object.assign(
                {
                   isNetsuite: true,
                   plugin_key: ABPropertiesObjectNetsuiteAPI.getPluginKey(),
                },
-               values
-            )
+               values,
+            ),
          );
 
          try {
@@ -220,7 +220,7 @@ export default function FNPropertiesObjectNetsuiteAPI({
                   def.settings = {};
                   def.settings.default = f.default;
                }
-               const field = AB.fieldNew(def, object);
+               const field = this.AB.fieldNew(def, object);
                await field.save(true);
 
                // values.fieldIDs.push(field.id);
