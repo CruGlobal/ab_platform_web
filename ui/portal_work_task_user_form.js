@@ -53,7 +53,8 @@ class PortalWorkTaskUserForm extends ClassUI {
       processId,
       taskId,
       instanceId,
-      formComponents = { components: [] }
+      formComponents = { components: [] },
+      formData
    ) {
       const ids = this.ids;
       const _this = this;
@@ -65,6 +66,7 @@ class PortalWorkTaskUserForm extends ClassUI {
          taskId,
          instanceId,
          formComponents: formComponents,
+         formData,
          onButton: function () {
             _this.submitData(this.processId, this.taskId, this.instanceId);
          },
@@ -75,14 +77,16 @@ class PortalWorkTaskUserForm extends ClassUI {
       processId,
       taskId,
       instanceId,
-      formComponents = { components: [] }
+      formComponents = { components: [] },
+      formData
    ) {
       const ids = this.ids;
       const formIoDef = this.uiFormIO(
          processId,
          taskId,
          instanceId,
-         formComponents
+         formComponents,
+         formData
       );
 
       this.AB.Webix.ui(formIoDef, $$(ids.formIO));
@@ -99,7 +103,8 @@ class PortalWorkTaskUserForm extends ClassUI {
             data.processId,
             data.taskId,
             data.instanceId,
-            data.formio
+            data.formio,
+            data.formData
          );
          this.show();
       });
@@ -107,7 +112,11 @@ class PortalWorkTaskUserForm extends ClassUI {
 
    show() {
       const $popup = $$(this.ids.component);
-      $popup?.show();
+      try {
+         $popup?.show();
+      } catch {
+         // Catch the error i.render is not function.
+      }
    }
 
    hide() {
