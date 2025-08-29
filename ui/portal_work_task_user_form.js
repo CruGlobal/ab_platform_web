@@ -17,10 +17,11 @@ class PortalWorkTaskUserForm extends ClassUI {
          width: 600,
          position: "center",
          modal: true,
+         move: true,
          resize: true,
          head: {
             view: "toolbar",
-            css: "webix_dark",
+            css: "webix_dark team-form-header",
             cols: [
                {},
                {
