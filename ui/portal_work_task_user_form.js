@@ -21,15 +21,17 @@ class PortalWorkTaskUserForm extends ClassUI {
          resize: true,
          head: {
             view: "toolbar",
-            css: "webix_dark team-form-header",
+            css: "webix_dark",
             cols: [
-               {},
                {
-                  view: "label",
-                  label: this.label(""),
-                  autowidth: true,
+                  css: { cursor: "move" },
                },
-               {},
+               // {
+               //    view: "label",
+               //    label: this.label(""),
+               //    autowidth: true,
+               // },
+               // {},
                {
                   view: "button",
                   width: 35,
