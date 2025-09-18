@@ -440,19 +440,20 @@ module.exports = class ABFieldConnect extends ABFieldConnectCore {
                   theEditor?.config?.value ||
                   this._largeOptions
                ) {
-                  let values = "";
+                  let values = [];
                   // determine if we are looking in a grid or at a form field
                   if (
                      (theEditor?.config?.view == "multicombo" ||
                         theEditor?.config?.view == "combo") &&
                      this?.linkViaOneValues
                   ) {
-                     values = this?.linkViaOneValues;
-                  } else if (theEditor?.config?.value) {
+                     values.push(this?.linkViaOneValues);
+                  }
+                  if (theEditor?.config?.value) {
                      if (Array.isArray(theEditor.config.value)) {
-                        values = theEditor?.config?.value.join();
+                        values = values.concat(theEditor?.config?.value);
                      } else {
-                        values = theEditor?.config?.value;
+                        values.push(theEditor?.config?.value);
                      }
                   }
                   let whereRels = {};
@@ -461,34 +462,32 @@ module.exports = class ABFieldConnect extends ABFieldConnectCore {
                   whereRels.glue = "or";
                   whereRels.rules = [];
 
-                  // make sure values are unique:
-                  let valHash = {};
-                  values.split(",").forEach((v) => {
-                     valHash[v] = v;
-                  });
-                  Object.keys(valHash).forEach((v) => {
-                     whereRels.rules.push({
-                        key: linkedObj.PK(),
-                        rule: "equals",
-                        value: v,
+                  values
+                     // make sure values are unique:
+                     .filter((v, pos) => values.indexOf(v) == pos)
+                     .forEach((v) => {
+                        whereRels.rules.push({
+                           key: linkedObj.PK(),
+                           rule: "equals",
+                           value: v,
+                        });
+
+                        if (this.indexField) {
+                           whereRels.rules.push({
+                              key: this.indexField.id,
+                              rule: "equals",
+                              value: v,
+                           });
+                        }
+
+                        if (this.indexField2) {
+                           whereRels.rules.push({
+                              key: this.indexField2.id,
+                              rule: "equals",
+                              value: v,
+                           });
+                        }
                      });
-
-                     if (this.indexField) {
-                        whereRels.rules.push({
-                           key: this.indexField.id,
-                           rule: "equals",
-                           value: v,
-                        });
-                     }
-
-                     if (this.indexField2) {
-                        whereRels.rules.push({
-                           key: this.indexField2.id,
-                           rule: "equals",
-                           value: v,
-                        });
-                     }
-                  });
 
                   if (whereRels.rules.length > 0) {
                      selected = function () {
