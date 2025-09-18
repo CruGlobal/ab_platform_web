@@ -230,10 +230,7 @@ module.exports = class ABFieldConnect extends ABFieldConnectCore {
    }
 
    formComponentMobile() {
-      if (this.settings.linkType == "many") {
-         return super.formComponent("mobile-selectmultiple");
-      }
-      return super.formComponent("mobile-selectsingle");
+      return super.formComponent("mobile-connect");
    }
 
    detailComponent() {
@@ -254,7 +251,7 @@ module.exports = class ABFieldConnect extends ABFieldConnectCore {
     *
     * @return {Promise}
     */
-   async getOptions(whereClause, term, sort, editor) {
+   async getOptions(whereClause, term, sort, editor, populate = false) {
       const theEditor = editor;
 
       if (theEditor) {
@@ -418,7 +415,7 @@ module.exports = class ABFieldConnect extends ABFieldConnectCore {
                   return linkedModel.findAll({
                      where: where,
                      sort: sort,
-                     populate: false,
+                     populate,
                      limit: OPTION_ITEM_LIMIT,
                   });
                };
@@ -431,13 +428,16 @@ module.exports = class ABFieldConnect extends ABFieldConnectCore {
                   });
                };
 
+               const selectedValue = theEditor?.config?.value;
+
                // we also need to get selected values of xxx->one connections
                // if we are looking at a field in a form we look at linkViaOneValues
                // if we are looking at a grid we are editing we look at theEditor?.config?.value
                if (
                   // this?.settings?.linkViaType == "one" &&
                   this?.linkViaOneValues ||
-                  theEditor?.config?.value ||
+                  ((!Array.isArray(selectedValue) && selectedValue) ||
+                     (Array.isArray(selectedValue) && selectedValue.length)) ||
                   this._largeOptions
                ) {
                   let values = [];

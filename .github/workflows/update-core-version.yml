@@ -2,15 +2,18 @@ name: "Update Core Version"
 run-name: Update core to ${{ github.event.client_payload.version }}
 on:
   repository_dispatch:
-    type: [core_new_version]
+    types: [core_new_version]
+permissions:
+  # Needed for Update Sub Repo Job
+  contents: write
 jobs:
   call-update-sub:
     name: Update
-    uses: digi-serve/.github/.github/workflows/update-sub-repo.yml@master
+    uses: CruGlobal/.github/.github/workflows/update-sub-repo.yml@main
     secrets: 
-      TOKEN:  ${{ secrets.PAT }}
+      TOKEN:  ${{ secrets.GITHUB_TOKEN }}
     with:
-      repository: digi-serve/appbuilder_class_core
+      repository: CruGlobal/appbuilder_class_core
       short_name: core
       folder: AppBuilder/core
       version: ${{ github.event.client_payload.version }}
@@ -24,7 +27,7 @@ jobs:
 
   call-generate-build-meta:
     name: Meta
-    uses: digi-serve/.github/.github/workflows/generate-build-meta.yml@master
+    uses: CruGlobal/.github/.github/workflows/generate-build-meta.yml@main
     with: 
       version: ${{ github.event.client_payload.version }}
       identifier: c
@@ -33,7 +36,7 @@ jobs:
     name: Version
     if: ${{ github.event.client_payload.type == 'minor' || github.event.client_payload.type == 'patch' }}
     needs: [ call-update-sub, call-run-cy-test, call-generate-build-meta ]
-    uses: digi-serve/.github/.github/workflows/bump-version.yml@master
+    uses: CruGlobal/.github/.github/workflows/bump-version.yml@main
     with:
       ref: ${{ needs.call-update-sub.outputs.branch }}
       # Consider core updates as patch
@@ -43,28 +46,29 @@ jobs:
   call-merge-release:
     name: Merge
     needs: [ call-update-sub, call-bump-version ]
-    uses: digi-serve/.github/.github/workflows/branch-merge-release.yml@master
+    uses: CruGlobal/.github/.github/workflows/branch-merge-release.yml@main
     with: 
       branch: ${{ needs.call-update-sub.outputs.branch }}
       tag: v${{ needs.call-bump-version.outputs.new_version }}
       body: "- core updated to v${{ github.event.client_payload.version }}"
 
-  call-dispatch-runtime-update:
-    name: Dipsatch AB Runtime Update
+  call-dispatch-web-update:
     needs: [ call-merge-release, call-bump-version ]
-    uses: ./.github/workflows/dispatch-web-update.yml
+    uses: CruGlobal/.github/.github/workflows/dispatch-update.yml@main
     with:
+      dispatch_repos: '["ab_service_web"]'
+      dispatch_type: "web_new_version"
       type: patch
       version: ${{ needs.call-bump-version.outputs.new_version }}
-      repo: ab_platform_web
+      app_id: ${{ vars.GS_DEV_APP_ID }}
     secrets:
-      TOKEN: ${{ secrets.PAT }}
+      app_secret: ${{ secrets.GS_DEV_APP_PK }}
 
   call-open-pr-fail:
     name: Tests Failed
     needs: [ call-update-sub, call-run-cy-test ]
     if: ${{ failure() && github.event.client_payload.type != 'major' }}
-    uses: digi-serve/.github/.github/workflows/open-pr.yml@master
+    uses: CruGlobal/.github/.github/workflows/open-pr.yml@main
     with: 
       branch: ${{ needs.call-update-sub.outputs.branch }}
       title: Update core to ${{ github.event.client_payload.version }} (from GitHub Actions Workflow)
@@ -75,7 +79,7 @@ jobs:
     name: Major Change
     needs: [ call-update-sub ]
     if: ${{ github.event.client_payload.type == 'major' }}
-    uses: digi-serve/.github/.github/workflows/open-pr.yml@master
+    uses: CruGlobal/.github/.github/workflows/open-pr.yml@main
     with: 
       branch: ${{ needs.call-update-sub.outputs.branch }}
       title: Update core to ${{ github.event.client_payload.version }} (from GitHub Actions Workflow)

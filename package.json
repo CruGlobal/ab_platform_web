@@ -1,6 +1,6 @@
 {
   "name": "ab_platform_web",
-  "version": "1.14.0",
+  "version": "1.15.10+c20716",
   "description": "AppBuilder runtime environment for the Web client.",
   "main": "index.js",
   "scripts": {
@@ -55,9 +55,10 @@
     "image-size": "^1.1.1",
     "jszip-utils": "^0.1.0",
     "nanoid": "^3.3.4",
+    "papaparse": "^5.5.2",
     "pdfjs-dist": "^4.2.67",
     "sails.io.js": "^1.2.1",
-    "semver": "^7.7.1",
+    "semver": "^7.7.2",
     "socket.io-client": "^2.5.0",
     "tinymce": "^5.10.6",
     "uuid": "^8.3.2"

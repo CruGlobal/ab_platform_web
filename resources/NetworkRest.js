@@ -222,7 +222,12 @@ class NetworkRest extends EventEmitter {
          if (this.AB.Account.authToken) {
             params.headers.Authorization = this.AB.Account.authToken;
          }
-         params.headers["Content-type"] = "application/json";
+         // Fix: don't set content-type if passed in data is a FormData object.
+         if (
+            Object.prototype.toString.call(params.data) !== "[object FormData]"
+         ) {
+            params.headers["Content-type"] = "application/json";
+         }
 
          var tenantID = this.AB.Tenant.id();
          if (tenantID) {
@@ -329,10 +334,14 @@ class NetworkRest extends EventEmitter {
                            null
                         );
                      }
-                     return reject(packet.data);
+                     let error = new Error(packet.message ?? packet.data);
+                     error.response = packet;
+                     error.text = packet.message;
+                     error.url = `${params.method} ${params.url}`;
+                     return reject(error);
                   } else {
                      // unknown/unexpected error:
-                     var error = new Error(
+                     let error = new Error(
                         `${err.status} ${err.statusText || err.message}: ${
                            params.method
                         } ${params.url}`
