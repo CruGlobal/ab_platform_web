@@ -130,6 +130,12 @@ class Bootstrap extends EventEmitter {
          performance.setContext("user", {
             id: userInfo.id,
          });
+         // redirect if has refererUrlPWA
+         const refererUrlPWA = sessionStorage.getItem("refererUrlPWA");
+         if (refererUrlPWA) {
+            sessionStorage.removeItem("refererUrlPWA");
+            window.location.assign(refererUrlPWA);
+         }
       } else {
          let { options: tenantConfig } = Config.tenantConfig();
          tenantConfig =
