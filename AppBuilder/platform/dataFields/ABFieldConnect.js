@@ -398,10 +398,10 @@ module.exports = class ABFieldConnect extends ABFieldConnectCore {
                // if we are looking at a field in a form we look at linkViaOneValues
                // if we are looking at a grid we are editing we look at theEditor?.config?.value
                if (
-                  this?.settings?.linkViaType == "one" &&
-                  (this?.linkViaOneValues ||
-                     (!Array.isArray(selectedValue) && selectedValue) ||
-                     (Array.isArray(selectedValue) && selectedValue.length))
+                  // this?.settings?.linkViaType == "one" &&
+                  this?.linkViaOneValues ||
+                  (!Array.isArray(selectedValue) && selectedValue) ||
+                  (Array.isArray(selectedValue) && selectedValue.length)
                ) {
                   let values = "";
                   // determine if we are looking in a grid or at a form field
@@ -529,7 +529,8 @@ module.exports = class ABFieldConnect extends ABFieldConnectCore {
             return [];
          } else {
             let returnVals = [];
-            let vals = value.split(",");
+            let vals = value;
+            if (typeof value == "string") vals = value.split(",");
             vals.forEach((val) => {
                returnVals.push(this.getItemFromVal(val));
             });
