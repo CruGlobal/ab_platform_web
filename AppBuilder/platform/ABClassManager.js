@@ -10,6 +10,14 @@ const classRegistry = {
    ViewTypes: new Map(),
 };
 
+/**
+ * @method getPluginAPI()
+ * This is the data structure we provide to each of our plugins so they
+ * can register their custom classes.
+ * We provide base objects from which they can extend, as well as functions to
+ * call to register their custom classes.
+ * @returns {Object}
+ */
 export function getPluginAPI() {
    return {
       ABUIPlugin,
@@ -61,20 +69,42 @@ export function allObjectProperties() {
 //   return new ViewClass(config);
 // }
 
+export function pluginRegister(pluginClass) {
+   let type = pluginClass.getPluginType();
+   switch (type) {
+      case "object":
+         // eslint-disable-next-line no-case-declarations
+         let { registerObjectTypes } = getPluginAPI();
+         registerObjectTypes(pluginClass.getPluginKey(), pluginClass);
+         break;
+      case "properties-object":
+         // eslint-disable-next-line no-case-declarations
+         let { registerObjectPropertiesTypes } = getPluginAPI();
+         registerObjectPropertiesTypes(pluginClass.getPluginKey(), pluginClass);
+         break;
+      // case "field":
+      //    break;
+      // case "view":
+      //    break;
+      default:
+         throw new Error(
+            `ABClassManager.pluginRegister():: Unknown plugin type: ${type}`
+         );
+   }
+}
+
 ///
 /// For development
 ///
-import propertyNSAPI from "../../../plugins/ab-object-netsuite-api/properties/ABPropertiesObjectNetsuiteAPI.js";
-import objectNSAPI from "./plugins/developer/ABObjectNetsuiteAPI.js";
+// import propertyNSAPI from "../../../plugins/ab_plugin_object_netsuite_api/properties/ABPropertiesObjectNetsuiteAPI.js";
+// import objectNSAPI from "./plugins/developer/ABObjectNetsuiteAPI.js";
 
 export function registerLocalPlugins(API) {
-   let { registerObjectTypes, registerObjectPropertiesTypes } = API;
-
-   let cPropertyNSAPI = propertyNSAPI(API);
-   registerObjectPropertiesTypes(cPropertyNSAPI.getPluginKey(), cPropertyNSAPI);
-
-   let cObjectNSAPI = objectNSAPI(API);
-   registerObjectTypes(cObjectNSAPI.getPluginKey(), cObjectNSAPI);
+   // let { registerObjectTypes, registerObjectPropertiesTypes } = API;
+   // let cPropertyNSAPI = propertyNSAPI(API);
+   // registerObjectPropertiesTypes(cPropertyNSAPI.getPluginKey(), cPropertyNSAPI);
+   // let cObjectNSAPI = objectNSAPI(API);
+   // registerObjectTypes(cObjectNSAPI.getPluginKey(), cObjectNSAPI);
 }
 
 // module.exports = {

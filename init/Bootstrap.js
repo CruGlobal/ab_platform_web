@@ -185,6 +185,57 @@ class Bootstrap extends EventEmitter {
          networkTestWorker,
          networkIsSlow
       );
+
+      const loadPlugin = async (purl) => {
+         // try ESM dynamic import first; fall back to UMD global
+         const tryImport = async (url) => {
+            try {
+               const mod = await import(/* webpackIgnore: true */ url);
+               // Try multiple ways to get the function
+               let fn = mod?.default || mod?.registerService;
+               if (!fn && typeof mod === "object") {
+                  // If still not found, try to find any function export
+                  const values = Object.values(mod);
+                  fn = values.find((v) => typeof v === "function");
+               }
+               return fn || null;
+            } catch (e) {
+               return null;
+            }
+         };
+
+         const tryUMD = async (url) => {
+            // inject a script tag, then look for a global export
+            await this.AB.scriptLoad(url);
+            // Conventional UMD name used by our plugin builds
+            const globalExport = window.Plugin;
+            return (
+               (globalExport &&
+                  (globalExport.default ||
+                     globalExport.registerService ||
+                     globalExport)) ||
+               null
+            );
+         };
+
+         let registerFn = await tryImport(purl);
+         if (!registerFn) {
+            registerFn = await tryUMD(purl);
+         }
+         if (typeof registerFn === "function") {
+            // Register with the ABFactory core (expects a function taking PluginAPI)
+            this.AB.pluginRegister(registerFn);
+         } else {
+            console.warn("Plugin did not export a function:", purl);
+         }
+      };
+      const loadPlugins = async (plugins) => {
+         const urls = plugins || [];
+         await Promise.all(urls.map((p) => loadPlugin(p)));
+      };
+      // load our installed plugins here:
+      await loadPlugins(window.__AB_plugins_v1);
+
       await this.AB.init();
       await webixLoading;
       // NOTE: special case: User has no Roles defined.
