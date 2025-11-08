@@ -327,10 +327,6 @@ module.exports = class ABViewForm extends ABViewFormCore {
       const obj = dv.datasource;
       if (obj == null) return;
 
-      // get ABModel
-      const model = dv.model;
-      if (model == null) return;
-
       // show progress icon
       $formView.showProgress?.({ type: "icon" });
 
@@ -414,23 +410,16 @@ module.exports = class ABViewForm extends ABViewFormCore {
          $formView.hideProgress?.();
          return;
       }
-
       let newFormVals;
+      try {
+         newFormVals = await this.submitValues(formVals);
+      } catch (err) {
+         formError(err.data);
+         return;
+      }
       // {obj}
       // The fully populated values returned back from service call
       // We use this in our post processing Rules
-
-      try {
-         // is this an update or create?
-         if (formVals.id) {
-            newFormVals = await model.update(formVals.id, formVals);
-         } else {
-            newFormVals = await model.create(formVals);
-         }
-      } catch (err) {
-         formError(err.data);
-         throw err;
-      }
 
       /*
       // OLD CODE:
@@ -541,6 +530,19 @@ module.exports = class ABViewForm extends ABViewFormCore {
 
       if (this.settings.submitRules) {
          // TODO: scan submitRules for warnings.
+      }
+   }
+
+   async submitValues(formVals) {
+      // get ABModel
+      const model = this.datacollection.model;
+      if (model == null) return;
+
+      // is this an update or create?
+      if (formVals.id) {
+         return await model.update(formVals.id, formVals);
+      } else {
+         return await model.create(formVals);
       }
    }
 
