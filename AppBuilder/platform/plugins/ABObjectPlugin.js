@@ -7,7 +7,12 @@ export default class ABObjectPlugin extends ABObject {
    // }
 
    static getPluginKey() {
+      console.error("ABObjectPlugin.getPluginKey() not overwritten!");
       return "ab-object-plugin";
+   }
+
+   static getPluginType() {
+      return "object";
    }
 
    // Format our getDbInfo() response for the ABDesigner info options.
@@ -74,5 +79,12 @@ export default class ABObjectPlugin extends ABObject {
       };
 
       return TableInfo;
+   }
+
+   toObj() {
+      const result = super.toObj();
+      result.plugin_key = this.constructor.getPluginKey();
+      // plugin_key : is what tells our ABFactory.objectNew() to create this object from the plugin class.
+      return result;
    }
 }

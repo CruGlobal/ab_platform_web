@@ -45,6 +45,7 @@ class ABValidator {
    constructor(AB) {
       this.AB = AB;
       this.errors = [];
+      this.platform = "web";
    }
 
    addError(name, message) {

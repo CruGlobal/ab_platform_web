@@ -2,20 +2,45 @@ import ABUIPlugin from "./plugins/ABUIPlugin.js";
 import ABPropertiesObjectPlugin from "./plugins/ABPropertiesObjectPlugin";
 import ABObjectPlugin from "./plugins/ABObjectPlugin.js";
 import ABModelPlugin from "./plugins/ABModelPlugin.js";
+import ABViewPlugin from "./plugins/ABViewPlugin.js";
+import ABViewComponentPlugin from "./plugins/ABViewComponentPlugin.js";
+import ABViewPropertiesPlugin from "./plugins/ABViewPropertiesPlugin.js";
+import ABViewEditorPlugin from "./plugins/ABViewEditorPlugin.js";
 
 const classRegistry = {
    ObjectTypes: new Map(),
    ObjectPropertiesTypes: new Map(),
    FieldTypes: new Map(),
    ViewTypes: new Map(),
+   ViewPropertiesTypes: new Map(),
+   ViewEditorTypes: new Map(),
 };
+
+function registerViewPropertiesTypes(name, ctor) {
+   classRegistry.ViewPropertiesTypes.set(name, ctor);
+}
+
+function registerViewEditorTypes(name, ctor) {
+   classRegistry.ViewEditorTypes.set(name, ctor);
+}
+
+function registerObjectPropertiesTypes(name, ctor) {
+   classRegistry.ObjectPropertiesTypes.set(name, ctor);
+}
+
+function registerObjectTypes(name, ctor) {
+   classRegistry.ObjectTypes.set(name, ctor);
+}
+
+function registerViewTypes(name, ctor) {
+   classRegistry.ViewTypes.set(name, ctor);
+}
 
 /**
  * @method getPluginAPI()
  * This is the data structure we provide to each of our plugins so they
  * can register their custom classes.
- * We provide base objects from which they can extend, as well as functions to
- * call to register their custom classes.
+ * We provide base objects from which they can extend.
  * @returns {Object}
  */
 export function getPluginAPI() {
@@ -24,15 +49,12 @@ export function getPluginAPI() {
       ABPropertiesObjectPlugin,
       ABObjectPlugin,
       ABModelPlugin,
+      ABViewPlugin,
+      ABViewComponentPlugin,
+      ABViewPropertiesPlugin,
+      ABViewEditorPlugin,
       //  ABFieldPlugin,
       //  ABViewPlugin,
-      registerObjectPropertiesTypes: (name, ctor) =>
-         classRegistry.ObjectPropertiesTypes.set(name, ctor),
-      registerObjectTypes: (name, ctor) =>
-         classRegistry.ObjectTypes.set(name, ctor),
-      // registerObjectPropertyType: (name, ctor) => classRegistry.ObjectPropertiesTypes.set(name, ctor),
-      //  registerFieldType: (name, ctor) => classRegistry.FieldTypes.set(name, ctor),
-      //  registerViewType: (name, ctor) => classRegistry.ViewTypes.set(name, ctor),
    };
 }
 
@@ -63,29 +85,50 @@ export function allObjectProperties() {
 //    return new ObjectClass(config);
 //  }
 
-// export function createView(type, config) {
-//   const ViewClass = classRegistry.ViewTypes.get(type);
-//   if (!ViewClass) throw new Error(`Unknown object type: ${type}`);
-//   return new ViewClass(config);
-// }
+export function viewCreate(type, config, application, parent) {
+   const ViewClass = classRegistry.ViewTypes.get(type);
+   if (!ViewClass) throw new Error(`Unknown View type: ${type}`);
+   return new ViewClass(config, application, parent);
+}
+
+export function viewAll(fn = () => true) {
+   return Array.from(classRegistry.ViewTypes.values()).filter(fn);
+}
+
+export function viewPropertiesAll(fn = () => true) {
+   return Array.from(classRegistry.ViewPropertiesTypes.values()).filter(fn);
+}
+
+export function viewEditorCreate(key, view, base, ids) {
+   const EditorClass = classRegistry.ViewEditorTypes.get(key);
+   if (!EditorClass) throw new Error(`Unknown View Editor type: ${key}`);
+   return new EditorClass(view, base, ids);
+}
+
+export function viewEditorAll(fn = () => true) {
+   return Array.from(classRegistry.ViewEditorTypes.values()).filter(fn);
+}
 
 export function pluginRegister(pluginClass) {
    let type = pluginClass.getPluginType();
    switch (type) {
       case "object":
-         // eslint-disable-next-line no-case-declarations
-         let { registerObjectTypes } = getPluginAPI();
          registerObjectTypes(pluginClass.getPluginKey(), pluginClass);
          break;
       case "properties-object":
-         // eslint-disable-next-line no-case-declarations
-         let { registerObjectPropertiesTypes } = getPluginAPI();
          registerObjectPropertiesTypes(pluginClass.getPluginKey(), pluginClass);
          break;
       // case "field":
       //    break;
-      // case "view":
-      //    break;
+      case "view":
+         registerViewTypes(pluginClass.getPluginKey(), pluginClass);
+         break;
+      case "properties-view":
+         registerViewPropertiesTypes(pluginClass.getPluginKey(), pluginClass);
+         break;
+      case "editor-view":
+         registerViewEditorTypes(pluginClass.getPluginKey(), pluginClass);
+         break;
       default:
          throw new Error(
             `ABClassManager.pluginRegister():: Unknown plugin type: ${type}`

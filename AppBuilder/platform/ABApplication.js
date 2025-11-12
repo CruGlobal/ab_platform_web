@@ -332,6 +332,24 @@ module.exports = class ABClassApplication extends ABApplicationCore {
       return super.save();
    }
 
+   viewAll(fn = () => true) {
+      let vmViews = super.viewAll(fn);
+      let pluginViews = this.AB.ClassManager.viewAll(fn);
+      let allViews = [...vmViews, ...pluginViews];
+      let L = this.AB.Label();
+
+      // Sort by label from common() if available, otherwise by key
+      return allViews.sort((a, b) => {
+         const aCommon = a.common ? a.common() : {};
+         const bCommon = b.common ? b.common() : {};
+         const aLabel =
+            aCommon.label || L(aCommon.labelKey || aCommon.key) || "";
+         const bLabel =
+            bCommon.label || L(bCommon.labelKey || bCommon.key) || "";
+         return aLabel.localeCompare(bLabel);
+      });
+   }
+
    warningsEval() {
       super.warningsEval();
 
