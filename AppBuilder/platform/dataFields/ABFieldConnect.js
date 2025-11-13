@@ -436,8 +436,8 @@ module.exports = class ABFieldConnect extends ABFieldConnectCore {
                if (
                   // this?.settings?.linkViaType == "one" &&
                   this?.linkViaOneValues ||
-                  ((!Array.isArray(selectedValue) && selectedValue) ||
-                     (Array.isArray(selectedValue) && selectedValue.length)) ||
+                  (!Array.isArray(selectedValue) && selectedValue) ||
+                  (Array.isArray(selectedValue) && selectedValue.length) ||
                   this._largeOptions
                ) {
                   let values = [];
@@ -746,7 +746,16 @@ module.exports = class ABFieldConnect extends ABFieldConnectCore {
 
       theEditor.blockEvent();
       theEditor.getList().clearAll();
-      theEditor.getList().define("data", data);
+      try {
+         theEditor.getList().define("data", data);
+      } catch (error) {
+         console.error(
+            "---> ABFieldConnect: populateOptions() error defining data of theEditor",
+            error
+         );
+         console.error("     - theEditor: ", theEditor);
+         console.error("     - .getList(): ", theEditor.getList());
+      }
       if (addCy) {
          this.populateOptionsDataCy(theEditor, field, form);
       }
