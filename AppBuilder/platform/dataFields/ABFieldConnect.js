@@ -249,6 +249,85 @@ module.exports = class ABFieldConnect extends ABFieldConnectCore {
    }
 
    /**
+    * @method debounce
+    * Debounces function calls for a specific widget. If widget is present,
+    * multiple calls are queued and the function executes once after the timespan.
+    * All queued calls receive the same result. If widget is not present,
+    * the function executes immediately.
+    *
+    * @param {Object} widget - The widget/editor to debounce for (if null, executes immediately)
+    * @param {number} timespan - The debounce delay in milliseconds
+    * @param {Function} fnToCall - The async function to execute
+    * @return {Promise} Resolves with the result from fnToCall()
+    */
+   async debounce(widget, timespan, fnToCall) {
+      // If no widget, execute immediately
+      if (!widget) {
+         return await fnToCall();
+      }
+
+      // Initialize debounce queue for this widget if needed
+      if (!widget._debounceQueue) {
+         widget._debounceQueue = {
+            promises: [],
+            timeoutId: null,
+         };
+      }
+
+      // Create a promise for this call
+      let resolvePromise;
+      let rejectPromise;
+      const promise = new Promise((resolve, reject) => {
+         resolvePromise = resolve;
+         rejectPromise = reject;
+      });
+
+      // Add this promise to the queue
+      widget._debounceQueue.promises.push({
+         promise,
+         resolve: resolvePromise,
+         reject: rejectPromise,
+      });
+
+      // Clear any existing timeout
+      if (widget._debounceQueue.timeoutId) {
+         clearTimeout(widget._debounceQueue.timeoutId);
+         widget._debounceQueue.timeoutId = null;
+      }
+
+      // Set up a new timeout that will execute once after timespan
+      widget._debounceQueue.timeoutId = setTimeout(async () => {
+         try {
+            // Execute the function once
+            const result = await fnToCall();
+
+            // Resolve ALL queued promises with the same result
+            const promises = widget._debounceQueue.promises;
+            widget._debounceQueue.promises = [];
+            widget._debounceQueue.timeoutId = null;
+
+            promises.forEach(({ resolve }) => {
+               resolve(result);
+            });
+         } catch (err) {
+            // Reject ALL queued promises with the same error
+            const promises = widget._debounceQueue.promises;
+            widget._debounceQueue.promises = [];
+            widget._debounceQueue.timeoutId = null;
+
+            promises.forEach(({ reject }) => {
+               reject(err);
+            });
+
+            throw err;
+         }
+      }, timespan);
+
+      // Return the promise for this specific call
+      return promise;
+   }
+
+   /**
     * @method getOptions
     * show options list in selectivity
     *
@@ -257,292 +336,284 @@ module.exports = class ABFieldConnect extends ABFieldConnectCore {
    async getOptions(whereClause, term, sort, editor) {
       const theEditor = editor;
 
-      if (theEditor) {
-         // PREVENT: repeatly refresh data too often
-         if (theEditor._getOptionsThrottle) {
-            clearTimeout(theEditor._getOptionsThrottle);
-            // NOTE: remove variables that reference the Promise and Resolve to let GC cleans up.
-            // https://dev.to/xnimorz/js-promises-3-garbage-collection-and-memory-leaks-2oi7?fbclid=IwAR1wqgNz2KqchaM7eRkclR6YWHT01eva4y5IWpnaY0in6BrxmTAtpNCnEXM
-            delete theEditor._timeToPullData;
-            delete theEditor._getOptionsResolve;
-         }
-         theEditor._timeToPullData = await new Promise((resolve) => {
-            theEditor._getOptionsResolve = resolve;
-            theEditor._getOptionsThrottle = setTimeout(() => {
-               resolve(true);
-            }, 350);
-         });
-         if (!theEditor._timeToPullData) return;
-      }
+      // Wrap the core logic in a function for debouncing
+      const fetchOptions = async () => {
+         return new Promise((resolve, reject) => {
+            let haveResolved = false;
+            // {bool}
+            // have we already passed back a result?
 
-      return new Promise((resolve, reject) => {
-         let haveResolved = false;
-         // {bool}
-         // have we already passed back a result?
-
-         const respond = (options) => {
-            // filter the raw lookup with the provided search term
-            options = options.filter((item) => {
-               if (item.text.toLowerCase().includes(term.toLowerCase())) {
-                  return true;
-               }
-            });
-
-            if (!haveResolved) {
-               haveResolved = true;
-               resolve(options);
-            } else {
-               // if we have already resolved() then .emit() that we have
-               // updated "option.data".
-               this.emit("option.data", options);
-            }
-         };
-
-         // Prepare Where clause
-
-         const where = this.AB.cloneDeep(whereClause || {});
-         sort = sort || [];
-
-         if (!where.glue) where.glue = "and";
-
-         if (!where.rules) where.rules = [];
-
-         // check if linked object value is not define, should return a empty array
-         if (!this.settings.linkObject) return [];
-
-         // if options was cached
-         // if (this._options != null) return resolve(this._options);
-
-         const linkedObj = this.datasourceLink;
-
-         // System could not found the linked object - It may be deleted ?
-         if (linkedObj == null) throw new Error("No linked object");
-
-         const linkedCol = this.fieldLink;
-
-         // System could not found the linked field - It may be deleted ?
-         if (linkedCol == null) throw new Error("No linked column");
-
-         // Get linked object model
-         const linkedModel = linkedObj.model();
-
-         // M:1 - get data that's only empty relation value
-         if (
-            this.settings.linkType == "many" &&
-            this.settings.linkViaType == "one" &&
-            editor?.config?.showAllOptions != true
-         ) {
-            where.rules.push({
-               key: linkedCol.id,
-               rule: "is_null",
-            });
-            // where[linkedCol.columnName] = null;
-         }
-         // 1:1
-         else if (
-            this.settings.linkType == "one" &&
-            this.settings.linkViaType == "one" &&
-            editor?.config?.showAllOptions != true
-         ) {
-            // 1:1 - get data is not match link id that we have
-            if (this.settings.isSource == true) {
-               // NOTE: make sure "haveNoRelation" shows up as an operator
-               // the value ":0" doesn't matter, we just need 'haveNoRelation' as an operator.
-               // newRule[linkedCol.id] = { 'haveNoRelation': 0 };
-               where.rules.push({
-                  key: linkedCol.id,
-                  rule: "have_no_relation",
+            const respond = (options) => {
+               // filter the raw lookup with the provided search term
+               options = options.filter((item) => {
+                  if (item.text.toLowerCase().includes(term.toLowerCase())) {
+                     return true;
+                  }
                });
-            }
-            // 1:1 - get data that's only empty relation value by query null value from link table
-            else {
+
+               if (!haveResolved) {
+                  haveResolved = true;
+                  resolve(options);
+               } else {
+                  // if we have already resolved() then .emit() that we have
+                  // updated "option.data".
+                  this.emit("option.data", options);
+               }
+            };
+
+            // Prepare Where clause
+
+            const where = this.AB.cloneDeep(whereClause || {});
+            sort = sort || [];
+
+            if (!where.glue) where.glue = "and";
+
+            if (!where.rules) where.rules = [];
+
+            // check if linked object value is not define, should return a empty array
+            if (!this.settings.linkObject) return resolve([]);
+
+            // if options was cached
+            // if (this._options != null) return resolve(this._options);
+
+            const linkedObj = this.datasourceLink;
+
+            // System could not found the linked object - It may be deleted ?
+            if (linkedObj == null) return reject(new Error("No linked object"));
+
+            const linkedCol = this.fieldLink;
+
+            // System could not found the linked field - It may be deleted ?
+            if (linkedCol == null) return reject(new Error("No linked column"));
+
+            // Get linked object model
+            const linkedModel = linkedObj.model();
+
+            // M:1 - get data that's only empty relation value
+            if (
+               this.settings.linkType == "many" &&
+               this.settings.linkViaType == "one" &&
+               editor?.config?.showAllOptions != true
+            ) {
                where.rules.push({
                   key: linkedCol.id,
                   rule: "is_null",
                });
-               // newRule[linkedCol.id] = 'null';
-               // where[linkedCol.id] = null;
+               // where[linkedCol.columnName] = null;
             }
-         }
-
-         const storageID = this.getStorageID(where);
-         const OPTION_ITEM_LIMIT = 50;
-
-         // Searching for a term
-         term = term || "";
-         if (term != null && term != "") {
-            const termCond = {
-               glue: "or",
-               rules: [],
-            };
-            linkedObj.fields().forEach((f) => {
-               if (
-                  f.key != "string" &&
-                  f.key != "LongText" &&
-                  f.key != "AutoIndex" &&
-                  f.key != "number"
-               )
-                  return;
-
-               termCond.rules.push({
-                  key: f.id,
-                  rule: "contains",
-                  value: term,
-               });
-            });
-
-            where.rules.push(termCond);
-         }
-
-         Promise.resolve()
-            .then(async () => {
-               // Mar 23, 2023 disabling local storage of options because users
-               // were reporting not seeing the correct options list with either
-               // new, updated or deleted records that should or should not appear
-               return false;
-               // Get Local Storage unless xxx->one connected field
-               // if (this?.settings?.linkViaType != "one") {
-               //    // We store the .findAll() results locally and return that for a
-               //    // quick response:
-               //    return await this.AB.Storage.get(storageID);
-               // }
-            })
-            .then(async (storedOptions) => {
-               if (storedOptions) {
-                  // immediately respond with our stored options.
-                  this._options = storedOptions;
-                  return respond(this._options);
+            // 1:1
+            else if (
+               this.settings.linkType == "one" &&
+               this.settings.linkViaType == "one" &&
+               editor?.config?.showAllOptions != true
+            ) {
+               // 1:1 - get data is not match link id that we have
+               if (this.settings.isSource == true) {
+                  // NOTE: make sure "haveNoRelation" shows up as an operator
+                  // the value ":0" doesn't matter, we just need 'haveNoRelation' as an operator.
+                  // newRule[linkedCol.id] = { 'haveNoRelation': 0 };
+                  where.rules.push({
+                     key: linkedCol.id,
+                     rule: "have_no_relation",
+                  });
                }
-               // Pull linked object data
-               let options = function () {
-                  return linkedModel.findAll({
-                     where: where,
-                     sort: sort,
-                     populate: false,
-                     limit: OPTION_ITEM_LIMIT,
+               // 1:1 - get data that's only empty relation value by query null value from link table
+               else {
+                  where.rules.push({
+                     key: linkedCol.id,
+                     rule: "is_null",
                   });
-               };
+                  // newRule[linkedCol.id] = 'null';
+                  // where[linkedCol.id] = null;
+               }
+            }
 
-               // placeholder for selected options
-               let selected = function () {
-                  return new Promise((resolve, reject) => {
-                     // empty data array to pass to all()
-                     resolve({ data: [] });
-                  });
-               };
+            const storageID = this.getStorageID(where);
+            const OPTION_ITEM_LIMIT = 50;
 
-               // we also need to get selected values of xxx->one connections
-               // if we are looking at a field in a form we look at linkViaOneValues
-               // if we are looking at a grid we are editing we look at theEditor?.config?.value
-               if (
-                  // this?.settings?.linkViaType == "one" &&
-                  this?.linkViaOneValues ||
-                  theEditor?.config?.value ||
-                  this._largeOptions
-               ) {
-                  let values = [];
-                  // determine if we are looking in a grid or at a form field
+            // Searching for a term
+            term = term || "";
+            if (term != null && term != "") {
+               const termCond = {
+                  glue: "or",
+                  rules: [],
+               };
+               linkedObj.fields().forEach((f) => {
                   if (
-                     (theEditor?.config?.view == "multicombo" ||
-                        theEditor?.config?.view == "combo") &&
-                     this?.linkViaOneValues
+                     f.key != "string" &&
+                     f.key != "LongText" &&
+                     f.key != "AutoIndex" &&
+                     f.key != "number"
+                  )
+                     return;
+
+                  termCond.rules.push({
+                     key: f.id,
+                     rule: "contains",
+                     value: term,
+                  });
+               });
+
+               where.rules.push(termCond);
+            }
+
+            Promise.resolve()
+               .then(async () => {
+                  // Mar 23, 2023 disabling local storage of options because users
+                  // were reporting not seeing the correct options list with either
+                  // new, updated or deleted records that should or should not appear
+                  return false;
+                  // Get Local Storage unless xxx->one connected field
+                  // if (this?.settings?.linkViaType != "one") {
+                  //    // We store the .findAll() results locally and return that for a
+                  //    // quick response:
+                  //    return await this.AB.Storage.get(storageID);
+                  // }
+               })
+               .then(async (storedOptions) => {
+                  if (storedOptions) {
+                     // immediately respond with our stored options.
+                     this._options = storedOptions;
+                     return respond(this._options);
+                  }
+                  // Pull linked object data
+                  let options = function () {
+                     return linkedModel.findAll({
+                        where: where,
+                        sort: sort,
+                        populate: false,
+                        limit: OPTION_ITEM_LIMIT,
+                     });
+                  };
+
+                  // placeholder for selected options
+                  let selected = function () {
+                     return new Promise((resolve, reject) => {
+                        // empty data array to pass to all()
+                        resolve({ data: [] });
+                     });
+                  };
+
+                  // we also need to get selected values of xxx->one connections
+                  // if we are looking at a field in a form we look at linkViaOneValues
+                  // if we are looking at a grid we are editing we look at theEditor?.config?.value
+                  if (
+                     // this?.settings?.linkViaType == "one" &&
+                     this?.linkViaOneValues ||
+                     theEditor?.config?.value ||
+                     this._largeOptions
                   ) {
-                     values.push(this?.linkViaOneValues);
-                  }
-                  if (theEditor?.config?.value) {
-                     if (Array.isArray(theEditor.config.value)) {
-                        values = values.concat(theEditor?.config?.value);
-                     } else {
-                        values.push(theEditor?.config?.value);
+                     let values = [];
+                     // determine if we are looking in a grid or at a form field
+                     if (
+                        (theEditor?.config?.view == "multicombo" ||
+                           theEditor?.config?.view == "combo") &&
+                        this?.linkViaOneValues
+                     ) {
+                        values.push(this?.linkViaOneValues);
                      }
-                  }
-                  let whereRels = {};
-                  let sortRels = [];
+                     if (theEditor?.config?.value) {
+                        if (Array.isArray(theEditor.config.value)) {
+                           values = values.concat(theEditor?.config?.value);
+                        } else {
+                           values.push(theEditor?.config?.value);
+                        }
+                     }
+                     let whereRels = {};
+                     let sortRels = [];
 
-                  whereRels.glue = "or";
-                  whereRels.rules = [];
+                     whereRels.glue = "or";
+                     whereRels.rules = [];
 
-                  values
-                     // make sure values are unique:
-                     .filter((v, pos) => values.indexOf(v) == pos)
-                     .forEach((v) => {
-                        whereRels.rules.push({
-                           key: linkedObj.PK(),
-                           rule: "equals",
-                           value: v,
+                     values
+                        // make sure values are unique:
+                        .filter((v, pos) => values.indexOf(v) == pos)
+                        .forEach((v) => {
+                           whereRels.rules.push({
+                              key: linkedObj.PK(),
+                              rule: "equals",
+                              value: v,
+                           });
+
+                           if (this.indexField) {
+                              whereRels.rules.push({
+                                 key: this.indexField.id,
+                                 rule: "equals",
+                                 value: v,
+                              });
+                           }
+
+                           if (this.indexField2) {
+                              whereRels.rules.push({
+                                 key: this.indexField2.id,
+                                 rule: "equals",
+                                 value: v,
+                              });
+                           }
                         });
 
-                        if (this.indexField) {
-                           whereRels.rules.push({
-                              key: this.indexField.id,
-                              rule: "equals",
-                              value: v,
+                     if (whereRels.rules.length > 0) {
+                        selected = function () {
+                           return linkedModel.findAll({
+                              where: whereRels,
+                              sort: sortRels,
+                              populate: false,
+                              limit: OPTION_ITEM_LIMIT,
                            });
-                        }
+                        };
+                     }
+                  }
+                  try {
+                     const results = await Promise.all([options(), selected()]);
 
-                        if (this.indexField2) {
-                           whereRels.rules.push({
-                              key: this.indexField2.id,
-                              rule: "equals",
-                              value: v,
-                           });
+                     // combine options and selected items and
+                     // put the selected options at the top of the list
+                     const result = results[1].data.concat(results[0].data);
+
+                     // store results in _options
+                     this._options = result.data || result || [];
+
+                     // populate display text
+                     (this._options || []).forEach((opt) => {
+                        if (opt) {
+                           opt.text = linkedObj.displayData(opt);
+                           opt.value = opt.text;
                         }
                      });
 
-                  if (whereRels.rules.length > 0) {
-                     selected = function () {
-                        return linkedModel.findAll({
-                           where: whereRels,
-                           sort: sortRels,
-                           populate: false,
-                           limit: OPTION_ITEM_LIMIT,
-                        });
-                     };
+                     // If the number of available options exceeds the threshold, set a flag to indicate that the dataset is large.
+                     // so that we can handle this in the editor.
+                     // This is to prevent performance issues with large datasets.
+                     if (this._largeOptions == null)
+                        this._largeOptions =
+                           results[0].total_count > OPTION_ITEM_LIMIT;
+
+                     // 8/10/2023 - We are not actually using this (see line 338) - If we need to store
+                     // user data in local storage we should encrypt it.
+                     // cache options if not a xxx->one connection
+                     // if (this?.settings?.linkViaType != "one") {
+                     //    this.AB.Storage.set(storageID, this._options);
+                     // }
+                     return respond(this._options);
+                  } catch (err) {
+                     this.AB.notify.developer(err, {
+                        context:
+                           "ABFieldConnect:getOptions(): unable to retrieve options from server",
+                        field: this.toObj(),
+                        where,
+                     });
+
+                     haveResolved = true;
+                     reject(err);
                   }
-               }
-               try {
-                  const results = await Promise.all([options(), selected()]);
+               });
+         });
+      };
 
-                  // combine options and selected items and
-                  // put the selected options at the top of the list
-                  const result = results[1].data.concat(results[0].data);
-
-                  // store results in _options
-                  this._options = result.data || result || [];
-
-                  // populate display text
-                  (this._options || []).forEach((opt) => {
-                     opt.text = linkedObj.displayData(opt);
-                     opt.value = opt.text;
-                  });
-
-                  // If the number of available options exceeds the threshold, set a flag to indicate that the dataset is large.
-                  // so that we can handle this in the editor.
-                  // This is to prevent performance issues with large datasets.
-                  if (this._largeOptions == null)
-                     this._largeOptions =
-                        results[0].total_count > OPTION_ITEM_LIMIT;
-
-                  // 8/10/2023 - We are not actually using this (see line 338) - If we need to store
-                  // user data in local storage we should encrypt it.
-                  // cache options if not a xxx->one connection
-                  // if (this?.settings?.linkViaType != "one") {
-                  //    this.AB.Storage.set(storageID, this._options);
-                  // }
-                  return respond(this._options);
-               } catch (err) {
-                  this.AB.notify.developer(err, {
-                     context:
-                        "ABFieldConnect:getOptions(): unable to retrieve options from server",
-                     field: this.toObj(),
-                     where,
-                  });
-
-                  haveResolved = true;
-                  throw err;
-               }
-            });
-      });
+      // Use debounce to prevent multiple simultaneous calls for the same editor
+      // If editor is present, debounce with 350ms delay
+      // If editor is not present, execute immediately
+      return await this.debounce(theEditor, 350, fetchOptions);
    }
 
    getStorageID(where) {
@@ -746,7 +817,17 @@ module.exports = class ABFieldConnect extends ABFieldConnectCore {
 
       theEditor.blockEvent();
       theEditor.getList().clearAll();
-      theEditor.getList().define("data", data);
+      try {
+         theEditor.getList().define("data", data);
+      } catch (error) {
+         console.error(
+            "---> ABFieldConnect: populateOptions() error defining data of theEditor",
+            error
+         );
+         console.error("     - theEditor: ", theEditor);
+         console.error("     - .getList(): ", theEditor.getList());
+      }
+
       if (addCy) {
          this.populateOptionsDataCy(theEditor, field, form);
       }

@@ -493,7 +493,14 @@ module.exports = class FilterComplex extends FilterComplexCore {
          _toInternal(qbSettings, this._Fields);
 
          this.__blockOnChange = true;
-         el.define("value", qbSettings);
+         try {
+            el.define("value", qbSettings);
+         } catch (error) {
+            this.AB.notify.developer(error, {
+               context: "Error setting value of webix.query",
+            });
+         }
+
          this.__blockOnChange = false;
       }
    }

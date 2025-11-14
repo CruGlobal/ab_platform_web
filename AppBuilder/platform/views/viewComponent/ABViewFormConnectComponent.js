@@ -262,36 +262,119 @@ module.exports = class ABViewFormConnectComponent extends (
       }
    }
 
-   _timeout(ms) {
-      return new Promise(resolve => {
-         this.__throttleRefreshOption = setTimeout(() => {
-            delete this.__throttleRefreshOption;
-            resolve();
-         }, ms);
-      });
+   _timeout() {
+      // Clear any existing timeout
+      if (this.__refreshTimeout) {
+         clearTimeout(this.__refreshTimeout);
+         this.__refreshTimeout = null;
+      }
+      return this.__refreshTimeout;
    }
 
+   /**
+    * @method _refreshOptions
+    * Debounced refresh that executes once 200ms after the last call.
+    * All previous calls receive the same result from the single execution.
+    *
+    * Design:
+    * - Multiple calls queue up promises waiting for the result
+    * - Each call resets the 200ms timeout
+    * - When timeout fires, execute once and resolve ALL queued promises
+    * - All callers receive the same result, preventing duplicate API calls
+    *
+    * @param {string} search - Optional search term (uses last provided value)
+    * @return {Promise} Resolves with the result from field.getAndPopulateOptions()
+    */
    async _refreshOptions(search) {
-      if (this.__throttleRefreshOption)
-         clearTimeout(this.__throttleRefreshOption);
-
-      await this._timeout(200);
-
-      const field = this.field;
-      const idFormItem = this.ids.formItem;
-      const baseView = this.view;
-      let options = baseView.options ?? {};
-      if (search) {
-         options = this.AB.cloneDeep(options);
-         options.search = search;
+      // Initialize the refresh queue if needed
+      if (!this.__refreshQueue) {
+         this.__refreshQueue = {
+            promises: [],
+            timeoutId: null,
+            lastSearch: null,
+         };
       }
 
-      return await field.getAndPopulateOptions(
-         $$(idFormItem),
-         options,
-         field,
-         baseView.parentFormComponent()
-      );
+      // Store the search term (use the last one provided)
+      if (search !== undefined) {
+         this.__refreshQueue.lastSearch = search;
+      }
+
+      // Create a promise for this call
+      let resolvePromise;
+      let rejectPromise;
+      const promise = new Promise((resolve, reject) => {
+         resolvePromise = resolve;
+         rejectPromise = reject;
+      });
+
+      // Add this promise to the queue
+      this.__refreshQueue.promises.push({
+         promise,
+         resolve: resolvePromise,
+         reject: rejectPromise,
+      });
+
+      // Clear any existing timeout
+      this._timeout();
+
+      // Set up a new timeout that will execute once after 200ms
+      this.__refreshTimeout = setTimeout(async () => {
+         try {
+            // Get the field and options
+            const field = this.field;
+            const idFormItem = this.ids.formItem;
+            const baseView = this.view;
+            let options = baseView.options ?? {};
+
+            // Use the last search term that was provided
+            const searchTerm = this.__refreshQueue.lastSearch;
+            if (searchTerm) {
+               options = this.AB.cloneDeep(options);
+               options.search = searchTerm;
+            }
+
+            // Execute the refresh once
+            const result = await field.getAndPopulateOptions(
+               $$(idFormItem),
+               options,
+               field,
+               baseView.parentFormComponent()
+            );
+
+            // Resolve ALL queued promises with the same result
+            const promises = this.__refreshQueue.promises;
+            this.__refreshQueue.promises = [];
+            this.__refreshQueue.timeoutId = null;
+            this.__refreshTimeout = null;
+
+            promises.forEach(({ resolve }) => {
+               resolve(result);
+            });
+         } catch (err) {
+            // Reject ALL queued promises with the same error
+            const promises = this.__refreshQueue.promises;
+            this.__refreshQueue.promises = [];
+            this.__refreshQueue.timeoutId = null;
+            this.__refreshTimeout = null;
+
+            promises.forEach(({ reject }) => {
+               reject(err);
+            });
+
+            // Notify developer of the error
+            this.AB?.notify?.developer?.(err, {
+               context:
+                  "ABViewFormConnectComponent > _refreshOptions() error calling field.getAndPopulateOptions",
+            });
+         }
+      }, 200);
+
+      // Store the timeout ID
+      this.__refreshQueue.timeoutId = this.__refreshTimeout;
+
+      // Return the promise for this specific call
+      return promise;
    }
 
    async init(AB, options) {
