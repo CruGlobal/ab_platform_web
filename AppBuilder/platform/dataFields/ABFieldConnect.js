@@ -818,6 +818,9 @@ module.exports = class ABFieldConnect extends ABFieldConnectCore {
       theEditor.blockEvent();
       theEditor.getList().clearAll();
       try {
+         if (data == "") {
+            data = [{ id: "-", value: L("No results found ...") }];
+         }
          theEditor.getList().define("data", data);
       } catch (error) {
          console.error(
