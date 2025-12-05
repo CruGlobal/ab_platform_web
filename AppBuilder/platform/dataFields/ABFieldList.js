@@ -455,7 +455,13 @@ function _getSelectedOptions(field, rowData = {}) {
    if (rowData[field.columnName] != null) {
       result = rowData[field.columnName];
 
-      if (typeof result == "string") result = JSON.parse(result);
+      try {
+         if (typeof result == "string") result = JSON.parse(result);
+      } catch (e) {
+         console.error(`Error JSON.pars()ing result [${result}]: `, e);
+         // just go with what is there
+         result = rowData[field.columnName];
+      }
 
       // Pull text with current language
       if (field.settings) {

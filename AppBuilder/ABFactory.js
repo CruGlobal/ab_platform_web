@@ -885,6 +885,10 @@ class ABFactory extends ABFactoryCore {
       return _.cloneDeep(value);
    }
 
+   defaultsDeep(target, source) {
+      return _.defaultsDeep(target, source);
+   }
+
    error(message, ...rest) {
       var emitData = {
          message: `ABFactory[${this.Tenant.id()}]:${message.toString()}`,
