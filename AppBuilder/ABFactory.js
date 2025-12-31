@@ -886,6 +886,16 @@ class ABFactory extends ABFactoryCore {
       return _.cloneDeep(value);
    }
 
+   /**
+    * implements the _.defaultsDeep function
+    * @param {object} target
+    * @param {object} source
+    * @returns {object} the merged object
+    */
+   defaultsDeep(target, source) {
+      return _.defaultsDeep(target, source);
+   }
+
    error(message, ...rest) {
       var emitData = {
          message: `ABFactory[${this.Tenant.id()}]:${message.toString()}`,
