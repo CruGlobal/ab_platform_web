@@ -185,6 +185,188 @@ class Bootstrap extends EventEmitter {
          networkTestWorker,
          networkIsSlow
       );
+
+      const loadPlugin = async (purl) => {
+         // Helper to load script with proper MIME type headers
+         const loadScriptWithMimeType = async (url) => {
+            try {
+               // Fetch with Accept header to request JavaScript MIME type
+               const response = await fetch(url, {
+                  headers: {
+                     Accept:
+                        "application/javascript, text/javascript, */*;q=0.8",
+                  },
+               });
+
+               if (!response.ok) {
+                  throw new Error(
+                     `Failed to load script: ${response.status} ${response.statusText}`
+                  );
+               }
+
+               // Verify we got JavaScript content type
+               const contentType = response.headers.get("content-type");
+               if (
+                  contentType &&
+                  !contentType.includes("javascript") &&
+                  !contentType.includes("ecmascript")
+               ) {
+                  console.warn(
+                     `Unexpected content type for ${url}: ${contentType}`
+                  );
+               }
+
+               const text = await response.text();
+               // Create a blob URL with explicit JavaScript MIME type
+               const blob = new Blob([text], {
+                  type: "application/javascript",
+               });
+               return URL.createObjectURL(blob);
+            } catch (e) {
+               console.error(`Error loading script with fetch: ${url}`, e);
+               return null;
+            }
+         };
+
+         // try ESM dynamic import first; fall back to UMD global
+         const tryImport = async (url) => {
+            try {
+               // Try direct import first (may work if server is configured correctly)
+               try {
+                  const mod = await import(/* webpackIgnore: true */ url);
+                  // Try multiple ways to get the function
+                  let fn = mod?.default || mod?.registerService;
+                  if (!fn && typeof mod === "object") {
+                     // If still not found, try to find any function export
+                     const values = Object.values(mod);
+                     fn = values.find((v) => typeof v === "function");
+                  }
+                  if (fn) return fn;
+               } catch (directImportError) {
+                  // If direct import fails, try with fetch + blob URL
+                  const blobUrl = await loadScriptWithMimeType(url);
+                  if (blobUrl) {
+                     try {
+                        const mod = await import(
+                           /* webpackIgnore: true */ blobUrl
+                        );
+                        URL.revokeObjectURL(blobUrl); // Clean up
+                        let fn = mod?.default || mod?.registerService;
+                        if (!fn && typeof mod === "object") {
+                           const values = Object.values(mod);
+                           fn = values.find((v) => typeof v === "function");
+                        }
+                        if (fn) return fn;
+                     } catch (blobImportError) {
+                        URL.revokeObjectURL(blobUrl); // Clean up on error
+                        throw blobImportError;
+                     }
+                  }
+               }
+               return null;
+            } catch (e) {
+               return null;
+            }
+         };
+
+         const tryUMD = async (url) => {
+            // Load script with proper MIME type, then inject as script tag
+            const blobUrl = await loadScriptWithMimeType(url);
+            if (!blobUrl) {
+               // Fallback to original scriptLoad if available
+               if (this.AB.scriptLoad) {
+                  await this.AB.scriptLoad(url);
+                  // Look for global export after script loads
+                  const globalExport = window.Plugin;
+                  return (
+                     (globalExport &&
+                        (globalExport.default ||
+                           globalExport.registerService ||
+                           globalExport)) ||
+                     null
+                  );
+               } else {
+                  // Manual script tag creation with explicit type
+                  return new Promise((resolve, reject) => {
+                     const script = document.createElement("script");
+                     script.type = "text/javascript";
+                     script.src = url;
+                     script.onload = () => resolve();
+                     script.onerror = () =>
+                        reject(new Error(`Failed to load script: ${url}`));
+                     document.head.appendChild(script);
+                  }).then(() => {
+                     // Look for global export after script loads
+                     const globalExport = window.Plugin;
+                     return (
+                        (globalExport &&
+                           (globalExport.default ||
+                              globalExport.registerService ||
+                              globalExport)) ||
+                        null
+                     );
+                  });
+               }
+            }
+
+            // Load via blob URL with explicit type
+            return new Promise((resolve, reject) => {
+               const script = document.createElement("script");
+               script.type = "text/javascript";
+               script.src = blobUrl;
+               script.onload = () => {
+                  URL.revokeObjectURL(blobUrl); // Clean up
+                  // Conventional UMD name used by our plugin builds
+                  const globalExport = window.Plugin;
+                  resolve(
+                     (globalExport &&
+                        (globalExport.default ||
+                           globalExport.registerService ||
+                           globalExport)) ||
+                        null
+                  );
+               };
+               script.onerror = () => {
+                  URL.revokeObjectURL(blobUrl); // Clean up on error
+                  reject(new Error(`Failed to load script: ${url}`));
+               };
+               document.head.appendChild(script);
+            }).catch(() => {
+               // Fallback to original scriptLoad if available
+               if (this.AB.scriptLoad) {
+                  return this.AB.scriptLoad(url).then(() => {
+                     const globalExport = window.Plugin;
+                     return (
+                        (globalExport &&
+                           (globalExport.default ||
+                              globalExport.registerService ||
+                              globalExport)) ||
+                        null
+                     );
+                  });
+               }
+               return null;
+            });
+         };
+
+         let registerFn = await tryImport(purl);
+         if (!registerFn) {
+            registerFn = await tryUMD(purl);
+         }
+         if (typeof registerFn === "function") {
+            // Register with the ABFactory core (expects a function taking PluginAPI)
+            this.AB.pluginRegister(registerFn);
+         } else {
+            console.warn("Plugin did not export a function:", purl);
+         }
+      };
+      const loadPlugins = async (plugins) => {
+         const urls = plugins || [];
+         await Promise.all(urls.map((p) => loadPlugin(p)));
+      };
+      // load our installed plugins here:
+      await loadPlugins(window.__AB_plugins_v1);
+
       await this.AB.init();
       await webixLoading;
       // NOTE: special case: User has no Roles defined.

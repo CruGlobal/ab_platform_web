@@ -7,6 +7,8 @@ const webpack = require("webpack");
 
 module.exports = merge(common, {
    mode: "development",
+   // Use 'eval-source-map' for faster builds, or 'source-map' for better quality
+   // 'source-map' provides the best debugging experience for library code
    devtool: "source-map",
    module: {
       rules: [
