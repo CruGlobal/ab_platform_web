@@ -231,11 +231,11 @@ module.exports = class ABFieldImage extends ABFieldImageCore {
 
          const uploader = webix.ui({
             view: "uploader",
-            // id:ids.uploader,
+            // id:ids.uploader, 
             apiOnly: true,
             upload: url,
             inputName: "file",
-            multiple: false,
+            multiple: true,// Modified to support multiple file uploads, test ok
             status: (f) => {
                if (f.percent) {
                   webixContainer.hideProgress();
