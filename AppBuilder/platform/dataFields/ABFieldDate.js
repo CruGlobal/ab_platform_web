@@ -135,8 +135,28 @@ module.exports = class ABFieldDate extends ABFieldDateCore {
       // 1 - ignore, 2 - dd/mm/yyyy, 3 - mm/dd/yyyy, 4 - M D, yyyy, 5 - D M, yyyy
 
       // Return longdate if option 4 or 5
-      if (dateFormat >= 4) {
+      if (dateFormat == 4 || dateFormat == 5) {
          return webix.i18n.longDateFormatStr(dateObj);
+      } else if (dateFormat == 6) {
+         let year = dateObj.getFullYear();
+         let month = String(dateObj.getMonth() + 1).padStart(2, "0");
+         let day = String(dateObj.getDate()).padStart(2, "0");
+         return `${day}/${month}/${year}`; // e.g., "31-07-2021"
+      } else if (dateFormat == 7) {
+         let year = dateObj.getFullYear();
+         let month = String(dateObj.getMonth() + 1).padStart(2, "0");
+         let day = String(dateObj.getDate()).padStart(2, "0");
+         return `${month}/${day}/${year}`; // e.g., "07-31-2021"
+      } else if (dateFormat == 8) {
+         let year = dateObj.getFullYear();
+         let month = dateObj.toLocaleString("default", { month: "short" });
+         let day = String(dateObj.getDate());
+         return `${month} ${day}, ${year}`; // e.g., "Jul 7, 2021"
+      } else if (dateFormat == 9) {
+         let year = dateObj.getFullYear();
+         let month = dateObj.toLocaleString("default", { month: "short" });
+         let day = String(dateObj.getDate());
+         return `${day} ${month}, ${year}`; // e.g., "7 Jul, 2021"
       } else {
          return webix.i18n.dateFormatStr(dateObj);
       }
