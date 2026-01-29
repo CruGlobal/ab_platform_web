@@ -367,6 +367,7 @@ class Bootstrap extends EventEmitter {
       // load our installed plugins here:
       await loadPlugins(window.__AB_plugins_v1);
 
+      await this.AB.pluginLocalLoad();
       await this.AB.init();
       await webixLoading;
       // NOTE: special case: User has no Roles defined.
@@ -446,7 +447,11 @@ class Bootstrap extends EventEmitter {
    }
 
    alert(options) {
-      webix.alert(options);
+      if (webix?.alert) {
+         webix.alert(options);
+      } else {
+         console.error(options);
+      }
    }
 
    div(el) {

@@ -3,9 +3,13 @@ import ABPropertiesObjectPlugin from "./plugins/ABPropertiesObjectPlugin";
 import ABObjectPlugin from "./plugins/ABObjectPlugin.js";
 import ABModelPlugin from "./plugins/ABModelPlugin.js";
 import ABViewPlugin from "./plugins/ABViewPlugin.js";
+import ABViewWidgetPlugin from "./plugins/ABViewWidgetPlugin.js";
 import ABViewComponentPlugin from "./plugins/ABViewComponentPlugin.js";
 import ABViewPropertiesPlugin from "./plugins/ABViewPropertiesPlugin.js";
 import ABViewEditorPlugin from "./plugins/ABViewEditorPlugin.js";
+
+// some views need to reference ABViewContainer,
+import ABViewContainer from "./views/ABViewContainer.js";
 
 const classRegistry = {
    ObjectTypes: new Map(),
@@ -50,9 +54,11 @@ export function getPluginAPI() {
       ABObjectPlugin,
       ABModelPlugin,
       ABViewPlugin,
+      ABViewWidgetPlugin,
       ABViewComponentPlugin,
       ABViewPropertiesPlugin,
       ABViewEditorPlugin,
+      ABViewContainer,
       //  ABFieldPlugin,
       //  ABViewPlugin,
    };
