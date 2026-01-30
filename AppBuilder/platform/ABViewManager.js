@@ -10,17 +10,16 @@ module.exports = class ABViewManager extends ABViewManagerCore {
    static newView(values, application, parent) {
       parent = parent || null;
 
-      // check to see if this is a plugin view
-      if (values.plugin_key) {
-         // If this is from a plugin, create it from ClassManager
-         return ClassManager.viewCreate(
-            values.plugin_key,
-            values,
-            application,
-            parent
-         );
-      }
+      // Moving to ClassManager for our default views:
+      let key = values.plugin_key || values.key;
+      let view = null;
 
-      return super.newView(values, application, parent);
+      try {
+         view = ClassManager.viewCreate(key, values, application, parent);
+      } catch (error) {
+         // console.error(`Error creating view ${key}:`, error);
+         view = super.newView(values, application, parent);
+      }
+      return view;
    }
 };

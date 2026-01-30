@@ -446,7 +446,11 @@ class Bootstrap extends EventEmitter {
    }
 
    alert(options) {
-      webix.alert(options);
+      if (webix?.alert) {
+         webix.alert(options);
+      } else {
+         console.error(options);
+      }
    }
 
    div(el) {
