@@ -130,6 +130,8 @@ class ABViewTextCore extends ABViewWidgetPlugin {
 
    fieldKey(field) {
       let label = field.label || "";
+      // First escape backslashes to avoid leaving metacharacters unescaped
+      label = label.replace(/\\/g, "\\\\");
       // First escape backslashes, then escape parentheses
       label = label.replace(/\\/g, "\\\\");
       label = label.replace(/\(/g, "\\(");
