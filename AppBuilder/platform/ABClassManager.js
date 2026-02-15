@@ -91,6 +91,12 @@ export function allObjectProperties() {
 //    return new ObjectClass(config);
 //  }
 
+export function viewClass(type) {
+   const ViewClass = classRegistry.ViewTypes.get(type);
+   if (!ViewClass) throw new Error(`Unknown View type: ${type}`);
+   return ViewClass;
+}
+
 export function viewCreate(type, config, application, parent) {
    const ViewClass = classRegistry.ViewTypes.get(type);
    if (!ViewClass) throw new Error(`Unknown View type: ${type}`);

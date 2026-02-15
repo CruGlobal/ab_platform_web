@@ -22,4 +22,19 @@ module.exports = class ABViewManager extends ABViewManagerCore {
       }
       return view;
    }
+
+   static viewClass(key) {
+      let viewClass = null;
+      console.log(
+         "ABViewManager.viewClass() is depreciated.  Use ClassManager.viewClass() instead.",
+         key
+      );
+
+      try {
+         viewClass = ClassManager.viewClass(key);
+      } catch (error) {
+         viewClass = super.viewClass(key);
+      }
+      return viewClass;
+   }
 };
