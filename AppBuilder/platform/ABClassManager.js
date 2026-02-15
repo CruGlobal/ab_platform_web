@@ -11,6 +11,9 @@ import ABViewEditorPlugin from "./plugins/ABViewEditorPlugin.js";
 // some views need to reference ABViewContainer,
 import ABViewContainer from "./views/ABViewContainer.js";
 
+// MIGRATION: ABViewManager is depreciated.  Use ABClassManager instead.
+import ABViewManager from "./ABViewManager.js";
+
 const classRegistry = {
    ObjectTypes: new Map(),
    ObjectPropertiesTypes: new Map(),
@@ -92,8 +95,13 @@ export function allObjectProperties() {
 //  }
 
 export function viewClass(type) {
-   const ViewClass = classRegistry.ViewTypes.get(type);
-   if (!ViewClass) throw new Error(`Unknown View type: ${type}`);
+   var ViewClass = classRegistry.ViewTypes.get(type);
+   if (!ViewClass) {
+      ViewClass = ABViewManager.viewClass(type, false);
+      if (!ViewClass) {
+         throw new Error(`Unknown View type: ${type}`);
+      }
+   }
    return ViewClass;
 }
 
