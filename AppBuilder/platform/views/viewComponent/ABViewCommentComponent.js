@@ -167,30 +167,30 @@ module.exports = class ABViewCommentComponent extends ABViewComponent {
 
       const ids = this.ids;
 
-      baseView.__refreshTimeout = setTimeout(() => {
-         const $comment = $$(ids.comment);
+      // baseView.__refreshTimeout = setTimeout(() => {
+      const $comment = $$(ids.comment);
 
-         if (!$comment) return;
+      if (!$comment) return;
 
-         // clear comments
-         const $commentList = $comment.queryView({ view: "list" });
+      // clear comments
+      const $commentList = $comment.queryView({ view: "list" });
 
-         if ($commentList) $commentList.clearAll();
+      if ($commentList) $commentList.clearAll();
 
-         // populate comments
-         const commentData = this.getCommentData();
+      // populate comments
+      const commentData = this.getCommentData();
 
-         if (commentData) {
-            $comment.parse(commentData);
-         }
+      if (commentData) {
+         $comment.parse(commentData);
+      }
 
-         // scroll to the last item
-         if ($commentList) $commentList.scrollTo(0, Number.MAX_SAFE_INTEGER);
+      // scroll to the last item
+      if ($commentList) $commentList.scrollTo(0, Number.MAX_SAFE_INTEGER);
 
-         delete baseView.__refreshTimeout;
+      delete baseView.__refreshTimeout;
 
-         this.ready();
-      }, 90);
+      this.ready();
+      // }, 90);
    }
 
    addComment(commentText, dateTime) {
