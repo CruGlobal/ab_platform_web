@@ -30,7 +30,7 @@ export default function FNViewLabel({
       // {string}
       // fa-[icon] reference for this view
 
-      labelKey: "Plugin ab-view-view-label",
+      labelKey: "View Label",
       // {string}
       // the multilingual label key for the class label
    };
@@ -49,7 +49,7 @@ export default function FNViewLabel({
        * @return {string} plugin key
        */
       static getPluginKey() {
-         return "ab-view-view-label";
+         return "label";
       }
 
       /**
