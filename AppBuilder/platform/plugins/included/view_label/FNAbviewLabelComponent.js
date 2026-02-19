@@ -23,7 +23,7 @@ export default function FNAbviewLabelComponent({
        */
       ui() {
          const baseView = this.view
-         baseView.text = this.view.settings.text
+         baseView.text = baseView.text || this.view.settings.text
          this.settings = this.view.settings
 
          const _ui = super.ui([
@@ -51,6 +51,7 @@ export default function FNAbviewLabelComponent({
       uiFormatting(ui) {
          // add different css settings based upon it's format
          // type.
+         this.settings = this.view.settings
          switch (parseInt(this.settings.format)) {
             // normal
             case 0:

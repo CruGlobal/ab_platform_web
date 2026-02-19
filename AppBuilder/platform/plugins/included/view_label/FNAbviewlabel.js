@@ -17,9 +17,9 @@ export default function FNViewLabel({
    // when a new instance of your widget is created, these values will be
    // the default settings
    const ABViewLabelComponentDefaults = {
-      key: "label", // {string} unique key for this view
-      icon: "font", // {string} fa-[icon] reference for this view
-      labelKey: "Label", // {string} the multilingual label key for the class label
+      text: "", // {string}
+      format: 0,
+      alignment: "left",
    };
 
    // Define the Default Values for this ABView
@@ -27,10 +27,10 @@ export default function FNViewLabel({
    const ABViewDefaults = {
       key: "label", // {string} unique key for this view
       icon: "font", // {string} fa-[icon] reference for this view
-      labelKey: "label", // {string} the multilingual label key for the class label
+      labelKey: "Label", // {string} the multilingual label key for the class label
    };
 
-   class ABViewLabelCore extends ABViewPlugin {
+   class ABViewLabelCore extends ABViewWidgetPlugin {
       constructor(values, application, parent, defaultValues) {
          super(values, application, parent, defaultValues || ABViewDefaults);
       }
@@ -52,6 +52,22 @@ export default function FNViewLabel({
       static defaultValues() {
          return ABViewLabelComponentDefaults;
       }
+
+      /**
+       * @method toObj()
+       * properly compile the current state of this ABView instance
+       * into the values needed for saving to the DB.
+       * @return {json}
+       */
+      toObj() {
+         // NOTE: ABView auto translates/untranslates "label"
+         // add in any additional fields here:
+         this.unTranslate(this, this, ["text"]);
+
+         var obj = super.toObj();
+         obj.views = [];
+         return obj;
+      }
       /**
        * @method fromValues()
        *
@@ -60,7 +76,6 @@ export default function FNViewLabel({
        */
       fromValues(values) {
          super.fromValues(values); // <-- this performs the translations
-         console.assert(this.settings)
          this.settings = this.settings || {};
 
          // if this is being instantiated on a read from the Property UI,
@@ -81,16 +96,7 @@ export default function FNViewLabel({
 
          // NOTE: ABView auto translates/untranslates "label"
          // add in any additional fields here:
-         this.translate(this, this, ["text"]);
-      }
-
-      /**
-       * @method component()
-       * return a UI component based upon this view.
-       * @return {obj} UI component
-       */
-      component(parentId) {
-         return new ABViewLabelComponent(this, parentId);
+         this.translate(this, this, ["label", "text"]);
       }
 
       /**
@@ -125,6 +131,13 @@ export default function FNViewLabel({
       formatDescription() {
          this.settings.format = 2;
       }
+      warningsEval() {
+         super.warningsEval();
+
+         if (!this.text) {
+            this.warningsMessage("has no text value set.");
+         }
+      }
    }
 
    return class ABViewLabel extends ABViewLabelCore {
@@ -142,21 +155,13 @@ export default function FNViewLabel({
       }
 
       /**
-       * @method toObj()
-       * properly compile the current state of this ABView instance
-       * into the values needed for saving to the DB.
-       * @return {json}
+       * @method component()
+       * return a UI component based upon this view.
+       * @return {obj} UI component
        */
-      toObj() {
-         // NOTE: ABView auto translates/untranslates "label"
-         // add in any additional fields here:
-         // this.unTranslate(this, this, ["text"]);
-
-         var obj = super.toObj();
-         obj.views = [];
-         return obj;
+      component(parentId) {
+         return new ABViewLabelComponent(this, parentId);
       }
-
    };
 }
 
