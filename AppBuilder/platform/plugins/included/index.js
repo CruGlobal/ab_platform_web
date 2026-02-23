@@ -1,3 +1,4 @@
+import viewForm from "./view_form/FNAbviewform.js";
 import viewList from "./view_list/FNAbviewlist.js";
 import viewTab from "./view_tab/FNAbviewtab.js";
 import viewText from "./view_text/FNAbviewtext.js";
@@ -8,6 +9,7 @@ import viewPdfImporter from "./view_pdfImporter/FNAbviewpdfimporter.js";
 const AllPlugins = [
    viewTab,
    viewList,
+   viewForm,
    viewText,
    viewImage,
    viewDataSelect,
