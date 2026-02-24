@@ -24,7 +24,6 @@ export default class ABViewPlugin extends ABView {
       // return a new instance from ABViewManager:
       return application.viewNew(
          { key: this.common().key, plugin_key: this.getPluginKey() },
-         application,
          parent
       );
    }
