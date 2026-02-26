@@ -119,8 +119,6 @@ export default function FNAbviewcarousel({
    // const ABViewPropertyFilterData = require("./viewProperties/ABViewPropertyFilterData");
    // const ABViewPropertyLinkPage = require("./viewProperties/ABViewPropertyLinkPage");
 
-   let PopupCarouselFilterMenu = null;
-
    return class ABViewCarousel extends ABViewCarouselCore {
       /**
        * @method getPluginKey
