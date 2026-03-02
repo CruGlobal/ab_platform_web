@@ -4,9 +4,11 @@ import FNAbviewdetailComponent from "./FNAbviewdetailComponent.js";
 // All logic from both Core and platform is contained in this file.
 export default function FNAbviewdetail({
    ABViewContainer,
+   ABViewContainerComponent,
    ABViewComponentPlugin,
 }) {
    const ABViewDetailComponent = FNAbviewdetailComponent({
+      ABViewContainerComponent,
       ABViewComponentPlugin,
    });
 
