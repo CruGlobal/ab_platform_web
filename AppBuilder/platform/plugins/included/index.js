@@ -4,8 +4,17 @@ import viewDetail from "./view_detail/FNAbviewdetail.js";
 import viewText from "./view_text/FNAbviewtext.js";
 import viewImage from "./view_image/FNAbviewimage.js";
 import viewDataSelect from "./view_data-select/FNAbviewdataselect.js";
+import viewPdfImporter from "./view_pdfImporter/FNAbviewpdfimporter.js";
 
-const AllPlugins = [viewTab, viewList, viewDetail, viewText, viewImage, viewDataSelect];
+const AllPlugins = [
+   viewTab,
+   viewList,
+   viewDetail,
+   viewText,
+   viewImage,
+   viewDataSelect,
+   viewPdfImporter,
+];
 
 export default {
    load: (AB) => {
