@@ -1,6 +1,4 @@
 import FNAbviewcarouselComponent from "./FNAbviewcarouselComponent.js";
-import ABViewPropertyFilterData from "../../../views/viewProperties/ABViewPropertyFilterData";
-import ABViewPropertyLinkPage from "../../../views/viewProperties/ABViewPropertyLinkPage";
 
 // FNAbviewcarousel Web
 // A web side import for an ABView.
@@ -9,7 +7,8 @@ export default function FNAbviewcarousel({
    /*AB,*/
    ABViewWidgetPlugin,
    ABViewComponentPlugin,
-   ABViewContainer,
+   ABViewPropertyFilterData,
+   ABViewPropertyLinkPage,
 }) {
    const ABAbviewcarouselComponent = FNAbviewcarouselComponent({
       ABViewComponentPlugin,
@@ -115,9 +114,6 @@ export default function FNAbviewcarousel({
          return obj.fieldByID(this.settings.field);
       }
    }
-
-   // const ABViewPropertyFilterData = require("./viewProperties/ABViewPropertyFilterData");
-   // const ABViewPropertyLinkPage = require("./viewProperties/ABViewPropertyLinkPage");
 
    return class ABViewCarousel extends ABViewCarouselCore {
       /**

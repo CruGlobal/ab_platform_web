@@ -221,7 +221,7 @@ export default function FNAbviewcarouselComponent({
                dv.removeListener(key, this._handler_doOnShow);
             });
 
-         this.filterUI.removeListener("filter.data", this._handler_doOnShow);
+         this.filterUI.removeListener("filter.data", this._handler_doFilter);
       }
 
       myTemplate(row) {
@@ -231,7 +231,7 @@ export default function FNAbviewcarouselComponent({
             return `<div class="ab-carousel-image-container">
             <link rel="preload" href="${
                row.src
-            }" as="image" fetchpriotity="low"/>
+            }" as="image" fetchpriority="low"/>
             <img id="${this.ids.component}-${row.id}" src="${
                row.src
             }" class="content" ondragstart="return false" loading="lazy" />
