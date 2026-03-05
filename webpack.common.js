@@ -1,6 +1,7 @@
 const path = require("path");
 const APP = path.resolve(__dirname);
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
    context: APP,
@@ -33,6 +34,15 @@ module.exports = {
             "*.js.map",
             "*.gz",
             "*.LICENSE.txt",
+         ],
+      }),
+      new CopyPlugin({
+         patterns: [
+            {
+               from: path.join(APP, "node_modules", "tinymce", "models", "dom", "model.js"),
+               to: "models/dom/model.js",
+               noErrorOnMissing: true,
+            },
          ],
       }),
    ],
