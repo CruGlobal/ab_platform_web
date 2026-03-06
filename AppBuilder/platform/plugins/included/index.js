@@ -1,3 +1,4 @@
+import viewComment from "./view_comment/FNAbviewcomment.js";
 import viewList from "./view_list/FNAbviewlist.js";
 import viewTab from "./view_tab/FNAbviewtab.js";
 import viewLabel from "./view_label/FNAbviewlabel.js";
@@ -15,6 +16,7 @@ const AllPlugins = [
    viewImage,
    viewDataSelect,
    viewPdfImporter,
+   viewComment,
 ];
 
 export default {
