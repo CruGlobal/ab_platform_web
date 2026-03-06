@@ -1,13 +1,14 @@
 import viewList from "./view_list/FNAbviewlist.js";
 import viewTab from "./view_tab/FNAbviewtab.js";
+import viewCSV from "./view_csvExporter/FNAbviewcsvexporter.js";
 import viewLabel from "./view_label/FNAbviewlabel.js";
-
 import viewText from "./view_text/FNAbviewtext.js";
 import viewImage from "./view_image/FNAbviewimage.js";
 import viewDataSelect from "./view_data-select/FNAbviewdataselect.js";
 import viewPdfImporter from "./view_pdfImporter/FNAbviewpdfimporter.js";
 
 const AllPlugins = [
+   viewCSV,
    viewTab,
    viewList,
    viewText,
