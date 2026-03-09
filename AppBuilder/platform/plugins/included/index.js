@@ -1,3 +1,4 @@
+import viewCsvImporter from "./view_csvImporter/FNAbviewcsvimporter.js";
 import viewList from "./view_list/FNAbviewlist.js";
 import viewTab from "./view_tab/FNAbviewtab.js";
 import viewCSV from "./view_csvExporter/FNAbviewcsvexporter.js";
@@ -20,6 +21,7 @@ const AllPlugins = [
    viewPdfImporter,
    viewCarousel,
    viewLayout,
+   viewCsvImporter,
 ];
 
 export default {
