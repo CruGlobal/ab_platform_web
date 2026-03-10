@@ -87,6 +87,78 @@ export default function FNAbviewdetailComponent({
          }
 
          super.onShow?.();
+
+         // Ensure detail field data-cy attributes for Cypress after DOM is ready
+         setTimeout(() => this._setDetailFieldDataCy(), 0);
+      }
+
+      /**
+       * Set data-cy on each detail field element so e2e tests can find them.
+       * Format matches core ABViewDetail*Component (detail text, detail connected, etc.).
+       */
+      _setDetailFieldDataCy() {
+         if (!ContainerComponent) return;
+         const views = this.view.views() || [];
+
+         views.forEach((f) => {
+            try {
+               const comp = f.component(this.idBase);
+               if (!comp) return;
+
+               const parentId =
+                  f.parentDetailComponent?.()?.id || f.parent?.id || "";
+               const field = f.field?.();
+               const settings = f.settings || {};
+               const columnName =
+                  f.key === "detail_connect"
+                     ? (f.field?.((fl) => fl.id === settings.fieldId)?.columnName ?? "")
+                     : (field?.columnName ?? "");
+               const fieldId = field?.id ?? settings.fieldId ?? "";
+
+               let dataCy = "";
+               let targetId = comp.ids?.detailItem;
+
+               switch (f.key) {
+                  case "detail_text":
+                     dataCy = `detail text ${columnName} ${fieldId} ${parentId}`;
+                     targetId = comp.ids?.component;
+                     break;
+                  case "detail_connect":
+                     dataCy = `detail connected ${columnName} ${fieldId} ${parentId}`;
+                     break;
+                  case "detail_checkbox":
+                     dataCy = `detail checkbox ${columnName} ${fieldId} ${parentId}`;
+                     break;
+                  case "detail_image":
+                     dataCy = `detail image ${columnName} ${fieldId} ${parentId}`;
+                     break;
+                  case "detail_custom":
+                     dataCy = `detail custom ${columnName} ${fieldId} ${parentId}`;
+                     break;
+                  case "detail_selectivity":
+                     dataCy = `detail selectivity ${columnName} ${fieldId} ${parentId}`;
+                     break;
+                  default:
+                     dataCy = `detail text ${columnName} ${fieldId} ${parentId}`;
+                     targetId = comp.ids?.component ?? comp.ids?.detailItem;
+               }
+
+               if (dataCy && targetId) {
+                  const el = $$(targetId)?.$view;
+                  if (el) {
+                     // For detailItem (connect, checkbox, etc.), set data-cy on parent so
+                     // selector [data-cy="..."] > .webix_template matches (tests expect it).
+                     const target =
+                        targetId === comp.ids?.detailItem && el.parentNode
+                           ? el.parentNode
+                           : el;
+                     target.setAttribute("data-cy", dataCy);
+                  }
+               }
+            } catch (e) {
+               console.warn("Problem setting detail field data-cy", e);
+            }
+         });
       }
 
       displayData(rowData = {}) {
@@ -174,6 +246,9 @@ export default function FNAbviewdetailComponent({
             vComponent?.setValue?.(val);
             vComponent?.displayText?.(rowData);
          });
+
+         // Keep data-cy in sync for e2e (e.g. after cursor change)
+         setTimeout(() => this._setDetailFieldDataCy(), 0);
       }
    };
 }
