@@ -8,12 +8,15 @@ export default function FNAbviewpdfimporter({
    ABViewWidgetPlugin,
    ABViewComponentPlugin,
    ABViewContainer,
+   ABViewRuleListFormSubmitRules,
+   pdfJS,
 }) {
    const ABAbviewpdfimporterComponent = FNAbviewpdfimporterComponent({
       ABViewComponentPlugin,
+      pdfJS,
    });
 
-   const ABSubmitRule = require("../../../../rules/ABViewRuleListFormSubmitRules");
+   const ABSubmitRule = ABViewRuleListFormSubmitRules;
 
    const ABViewPDFImporterPropertyComponentDefaults = {
       dataviewID: null,

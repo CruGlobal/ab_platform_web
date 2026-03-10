@@ -1,6 +1,7 @@
 export default function FNAbviewpdfimporterComponent({
    /*AB,*/
    ABViewComponentPlugin,
+   pdfJS,
 }) {
    const SMALL_PAGE_WIDTH = 150;
    const BIG_PAGE_WIDTH = 250;
@@ -300,12 +301,7 @@ export default function FNAbviewpdfimporterComponent({
       async initPdfjs() {
          if (this.pdfjs && window.pdfjsWorker) return;
          this.busy();
-         this.pdfjs = (
-            await import(
-               /* webpackPrefetch: true */
-               "../../../../../init/pdfjs"
-            )
-         ).default;
+         this.pdfjs = (await pdfJS()).default;
          this.ready();
       }
 
