@@ -4,6 +4,7 @@
   "description": "AppBuilder runtime environment for the Web client.",
   "main": "index.js",
   "scripts": {
+    "postinstall": "patch-package",
     "lint": "eslint AppBuilder/. init/. resources/. ui/. webix_custom_components/. --fix --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look good.'",
     "test": "mocha -r esm --require @babel/register --config test/.mocharc.js test/**/*.test.js",
     "build": "webpack-cli --config webpack.prod.js --progress",
@@ -20,6 +21,7 @@
     "@babel/preset-env": "^7.18.6",
     "@babel/register": "^7.18.6",
     "babel-loader": "^8.2.2",
+    "copy-webpack-plugin": "^12.0.2",
     "clean-webpack-plugin": "^4.0.0",
     "compression-webpack-plugin": "^10.0.0",
     "critters-webpack-plugin": "^3.0.2",
@@ -42,7 +44,8 @@
     "webpack": "^5.91.0",
     "webpack-bundle-analyzer": "^4.10.1",
     "webpack-cli": "^4.10.0",
-    "webpack-merge": "^5.8.0"
+    "webpack-merge": "^5.8.0",
+    "patch-package": "^8.0.0"
   },
   "dependencies": {
     "@sentry/browser": "^7.69.0",
@@ -54,13 +57,12 @@
     "formiojs": "^4.18.0",
     "image-size": "^1.1.1",
     "jszip-utils": "^0.1.0",
-    "nanoid": "^3.3.4",
     "papaparse": "^5.5.2",
     "pdfjs-dist": "^4.2.67",
     "sails.io.js": "^1.2.1",
     "semver": "^7.7.4",
     "socket.io-client": "^2.5.0",
-    "tinymce": "^5.10.6",
+    "tinymce": "^8.3.2",
     "uuid": "^8.3.2"
   },
   "sideEffects": [
@@ -74,6 +76,11 @@
   "overrides": {
     "critters-webpack-plugin": {
       "html-webpack-plugin": "$html-webpack-plugin"
-    }
+    },
+    "bfj": "9.1.3",
+    "minimatch": "10.2.3",
+    "serialize-javascript": "^7.0.3",
+    "nanoid": "3.3.8",
+    "quill": "2.0.2"
   }
 }
