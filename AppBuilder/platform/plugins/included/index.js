@@ -1,4 +1,3 @@
-import viewComment from "./view_comment/FNAbviewcomment.js";
 import viewList from "./view_list/FNAbviewlist.js";
 import viewTab from "./view_tab/FNAbviewtab.js";
 import viewLabel from "./view_label/FNAbviewlabel.js";
@@ -7,6 +6,9 @@ import viewText from "./view_text/FNAbviewtext.js";
 import viewImage from "./view_image/FNAbviewimage.js";
 import viewDataSelect from "./view_data-select/FNAbviewdataselect.js";
 import viewPdfImporter from "./view_pdfImporter/FNAbviewpdfimporter.js";
+import viewCarousel from "./view_carousel/FNAbviewcarousel.js";
+import viewLayout from "./view_layout/FNAbviewlayout.js";
+import viewComment from "./view_comment/FNAbviewcomment.js";
 
 const AllPlugins = [
    viewTab,
@@ -16,6 +18,8 @@ const AllPlugins = [
    viewImage,
    viewDataSelect,
    viewPdfImporter,
+   viewCarousel,
+   viewLayout,
    viewComment,
 ];
 

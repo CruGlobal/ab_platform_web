@@ -68,6 +68,7 @@ webix.protoUI(
             {
                selector: "#" + this._mce_id,
                resize: false,
+               license_key: "gpl",
             },
             true
          );
