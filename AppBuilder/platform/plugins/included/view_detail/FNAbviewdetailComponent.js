@@ -24,12 +24,114 @@ export default function FNAbviewdetailComponent({
             return this._uiDataviewFallback();
          }
          const _ui = super.ui();
+         const hasContent = (this.view.views() || []).length > 0;
          return {
             type: "form",
             id: this.ids.component,
             borderless: true,
+            minHeight: hasContent ? undefined : 120,
             rows: [{ body: _ui }],
          };
+      }
+
+      /**
+       * Override getElements to inject data-cy into each child view config (like Carousel does in init).
+       * Webix applies attributes when the view is created, so this avoids timing issues in tabs/CI.
+       */
+      getElements(views) {
+         const rows = [];
+         const componentMap = {};
+         let curRowIndex;
+         let curColIndex;
+         const settings = this.settings;
+         const defaultSettings = this.view.constructor.defaultValues();
+
+         views.forEach((v) => {
+            let component;
+            try {
+               component = v.component(this.idBase);
+               v.removeAllListeners("changePage");
+            } catch (err) {
+               component = v.component(this.idBase);
+               const ui = component.ui;
+               component.ui = (() => ui).bind(component);
+            }
+
+            this.viewComponents[v.id] = component;
+
+            if (v.position.y == null || v.position.y !== curRowIndex) {
+               curRowIndex = v.position.y || rows.length;
+               curColIndex = 0;
+               const rowNew = { cols: [] };
+               const colNumber = settings.columns || defaultSettings.columns;
+               for (let i = 0; i < colNumber; i++)
+                  rowNew.cols.push({
+                     gravity: settings.gravity?.[i]
+                        ? parseInt(settings.gravity[i])
+                        : defaultSettings.gravity,
+                  });
+               rows.push(rowNew);
+            }
+
+            const rowIndx = rows.length - 1;
+            const curRow = rows[rowIndx];
+            const newPos = v.position.x ?? 0;
+            const mapKey = `${rowIndx}-${newPos}`;
+            let getGrav = 1;
+            if (componentMap[mapKey])
+               console.error(
+                  `Component[${component?.ids?.component}] is overwriting component[${componentMap[mapKey].ids?.component}]. <-- Reorder them to fix.`
+               );
+            componentMap[mapKey] = component;
+            if (curRow.cols[newPos]?.gravity)
+               getGrav = curRow.cols[newPos].gravity;
+
+            const _ui = component.ui();
+            const info = this._dataCyForView(v);
+            if (info?.dataCy) {
+               const dataCy = info.dataCy;
+               const useRoot = info.useRoot;
+               const detailItemId = component.ids?.detailItem;
+               _ui.attributes = Object.assign({}, _ui.attributes, {
+                  "data-cy": dataCy,
+               });
+               const prevOnAfterRender = _ui.on?.onAfterRender;
+               _ui.on = _ui.on || {};
+               _ui.on.onAfterRender = function () {
+                  if (typeof prevOnAfterRender === "function")
+                     prevOnAfterRender.call(this);
+                  try {
+                     let node;
+                     if (useRoot) {
+                        node =
+                           (typeof $$ !== "undefined" && $$(this.config?.id)?.$view) ||
+                           (typeof document !== "undefined" &&
+                              this.config?.id &&
+                              document.getElementById(this.config.id));
+                     } else if (detailItemId) {
+                        node =
+                           (typeof $$ !== "undefined" && $$(detailItemId)?.$view) ||
+                           (typeof document !== "undefined" &&
+                              document.getElementById(detailItemId));
+                     }
+                     if (node?.setAttribute) node.setAttribute("data-cy", dataCy);
+                  } catch (e) {}
+               };
+            }
+
+            this.viewComponentIDs[v.id] = _ui.id;
+            _ui.gravity = getGrav;
+            curRow.cols[newPos] = _ui;
+
+            this.eventAdd({
+               emitter: v,
+               eventName: "changePage",
+               listener: this._handlerChangePage,
+            });
+            curColIndex++;
+         });
+
+         return rows;
       }
 
       _uiDataviewFallback() {
@@ -45,6 +147,15 @@ export default function FNAbviewdetailComponent({
          const _ui = super.ui([_uiDetail]);
          delete _ui.type;
          return _ui;
+      }
+
+      async init(AB, accessLevel = 0, options = {}) {
+         await super.init(AB, accessLevel, options);
+         try {
+            this._setDetailFieldDataCy();
+         } catch (e) {
+            console.warn("Detail _setDetailFieldDataCy (init)", e);
+         }
       }
 
       onShow() {
@@ -88,18 +199,96 @@ export default function FNAbviewdetailComponent({
 
          super.onShow?.();
 
-         // Ensure detail field data-cy for Cypress; run with delays so DOM is ready
-         [0, 150, 400].forEach((ms) =>
-            setTimeout(() => this._setDetailFieldDataCy(), ms)
+         try {
+            this._setDetailFieldDataCy();
+         } catch (e) {
+            console.warn("Detail _setDetailFieldDataCy (sync)", e);
+         }
+         if (typeof requestAnimationFrame !== "undefined") {
+            requestAnimationFrame(() => {
+               try {
+                  this._setDetailFieldDataCy();
+               } catch (err) {
+                  console.warn("Detail _setDetailFieldDataCy (rAF)", err);
+               }
+            });
+         }
+         [0, 100, 300, 600, 1200].forEach((ms) =>
+            setTimeout(() => {
+               try {
+                  this._setDetailFieldDataCy();
+               } catch (err) {
+                  console.warn("Detail _setDetailFieldDataCy (timeout)", err);
+               }
+            }, ms)
          );
       }
 
-      /**
-       * Set data-cy on each detail field element so e2e tests can find them.
-       * Format matches core ABViewDetail*Component.
-       * Lookup: use ids that were actually used in the DOM (viewComponentIDs when
-       * available) and resolve the Webix view before accessing $view.
-       */
+      /** Build data-cy string for a detail view (matches core). Values trimmed for exact e2e match. */
+      _dataCyForView(f) {
+         const parentId = String(
+            f.parentDetailComponent?.()?.id || f.parent?.id || ""
+         ).trim();
+         const field = f.field?.();
+         const settings = f.settings || {};
+         const columnName = String(
+            f.key === "detail_connect"
+               ? (f.field?.((fl) => fl.id === settings.fieldId)?.columnName ?? "")
+               : (field?.columnName ?? "")
+         ).trim();
+         const fieldId = String(field?.id ?? settings.fieldId ?? "").trim();
+
+         let dataCy = "";
+         let useRoot = false;
+         switch (f.key) {
+            case "detail_text":
+               dataCy = `detail text ${columnName} ${fieldId} ${parentId}`;
+               useRoot = true;
+               break;
+            case "detail_connect":
+               dataCy = `detail connected ${columnName} ${fieldId} ${parentId}`;
+               break;
+            case "detail_checkbox":
+               dataCy = `detail checkbox ${columnName} ${fieldId} ${parentId}`;
+               break;
+            case "detail_image":
+               dataCy = `detail image ${columnName} ${fieldId} ${parentId}`;
+               break;
+            case "detail_custom":
+               dataCy = `detail custom ${columnName} ${fieldId} ${parentId}`;
+               break;
+            case "detail_selectivity":
+               dataCy = `detail selectivity ${columnName} ${fieldId} ${parentId}`;
+               break;
+            default:
+               dataCy = `detail text ${columnName} ${fieldId} ${parentId}`;
+               useRoot = true;
+         }
+         return dataCy ? { dataCy, useRoot } : null;
+      }
+
+      /** Set data-cy on one component; use $$(id) or document.getElementById so CI finds element. */
+      _setDataCyOnComponent(comp, _f, { dataCy, useRoot }) {
+         if (!comp?.ids || !dataCy) return;
+         try {
+            const id = useRoot ? comp.ids.component : comp.ids.detailItem;
+            if (!id) return;
+            let el =
+               typeof $$ !== "undefined" && $$(id)?.$view
+                  ? $$(id).$view
+                  : null;
+            if (!el && typeof document !== "undefined")
+               el = document.getElementById(id);
+            if (!el?.setAttribute) return;
+            const target =
+               !useRoot && el.parentNode ? el.parentNode : el;
+            target.setAttribute("data-cy", dataCy);
+         } catch (e) {
+            console.warn("Problem setting detail field data-cy", e);
+         }
+      }
+
+      /** Set data-cy on all detail fields; try comp.ids then viewComponentIDs then getElementById. */
       _setDetailFieldDataCy() {
          if (!ContainerComponent || !this.viewComponents) return;
          const viewList = this.view.views() || [];
@@ -110,67 +299,27 @@ export default function FNAbviewdetailComponent({
             const f = viewList.find((v) => v.id === viewId);
             if (!comp || !f) return;
 
-            try {
-               const parentId =
-                  f.parentDetailComponent?.()?.id || f.parent?.id || "";
-               const field = f.field?.();
-               const settings = f.settings || {};
-               const columnName =
-                  f.key === "detail_connect"
-                     ? (f.field?.((fl) => fl.id === settings.fieldId)?.columnName ?? "")
-                     : (field?.columnName ?? "");
-               const fieldId = field?.id ?? settings.fieldId ?? "";
+            const info = this._dataCyForView(f);
+            if (!info) return;
 
-               let dataCy = "";
-               let useRoot = false;
+            const id =
+               (info.useRoot
+                  ? comp.ids?.component
+                  : comp.ids?.detailItem) ||
+               viewComponentIDs[viewId];
+            if (!id) return;
 
-               switch (f.key) {
-                  case "detail_text":
-                     dataCy = `detail text ${columnName} ${fieldId} ${parentId}`;
-                     useRoot = true;
-                     break;
-                  case "detail_connect":
-                     dataCy = `detail connected ${columnName} ${fieldId} ${parentId}`;
-                     break;
-                  case "detail_checkbox":
-                     dataCy = `detail checkbox ${columnName} ${fieldId} ${parentId}`;
-                     break;
-                  case "detail_image":
-                     dataCy = `detail image ${columnName} ${fieldId} ${parentId}`;
-                     break;
-                  case "detail_custom":
-                     dataCy = `detail custom ${columnName} ${fieldId} ${parentId}`;
-                     break;
-                  case "detail_selectivity":
-                     dataCy = `detail selectivity ${columnName} ${fieldId} ${parentId}`;
-                     break;
-                  default:
-                     dataCy = `detail text ${columnName} ${fieldId} ${parentId}`;
-                     useRoot = true;
-               }
+            let el =
+               typeof $$ !== "undefined" && $$(id)?.$view
+                  ? $$(id).$view
+                  : null;
+            if (!el && typeof document !== "undefined")
+               el = document.getElementById(id);
+            if (!el?.setAttribute) return;
 
-               if (!dataCy) return;
-
-               const rootId =
-                  viewComponentIDs[viewId] ?? comp.ids?.component;
-               const detailItemId = comp.ids?.detailItem;
-
-               const webixRoot = rootId ? $$(rootId) : null;
-               const webixDetailItem =
-                  detailItemId && !useRoot ? $$(detailItemId) : null;
-
-               const el = useRoot
-                  ? webixRoot?.$view
-                  : webixDetailItem?.$view;
-               if (!el || !el.setAttribute) return;
-
-               const isDetailItem = !useRoot && webixDetailItem;
-               const target =
-                  isDetailItem && el.parentNode ? el.parentNode : el;
-               target.setAttribute("data-cy", dataCy);
-            } catch (e) {
-               console.warn("Problem setting detail field data-cy", e);
-            }
+            const target =
+               !info.useRoot && el.parentNode ? el.parentNode : el;
+            target.setAttribute("data-cy", info.dataCy);
          });
       }
 
@@ -255,13 +404,23 @@ export default function FNAbviewdetailComponent({
                }
             }
 
-            const vComponent = f.component(this.idBase);
+            const vComponent =
+               this.viewComponents?.[f.id] ?? f.component(this.idBase);
             vComponent?.setValue?.(val);
             vComponent?.displayText?.(rowData);
+
+            try {
+               const dataCyInfo = this._dataCyForView(f);
+               if (dataCyInfo)
+                  this._setDataCyOnComponent(vComponent, f, dataCyInfo);
+            } catch (e) {
+               console.warn("Detail data-cy in displayData", e);
+            }
          });
 
-         // Keep data-cy in sync for e2e (e.g. after cursor change)
-         setTimeout(() => this._setDetailFieldDataCy(), 0);
+         [0, 100, 400].forEach((ms) =>
+            setTimeout(() => this._setDetailFieldDataCy(), ms)
+         );
       }
    };
 }
