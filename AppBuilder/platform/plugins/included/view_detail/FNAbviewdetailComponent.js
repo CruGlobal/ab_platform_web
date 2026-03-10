@@ -88,23 +88,29 @@ export default function FNAbviewdetailComponent({
 
          super.onShow?.();
 
-         // Ensure detail field data-cy attributes for Cypress after DOM is ready
-         setTimeout(() => this._setDetailFieldDataCy(), 0);
+         // Ensure detail field data-cy for Cypress; run with delays so DOM is ready
+         [0, 150, 400].forEach((ms) =>
+            setTimeout(() => this._setDetailFieldDataCy(), ms)
+         );
       }
 
       /**
        * Set data-cy on each detail field element so e2e tests can find them.
-       * Format matches core ABViewDetail*Component (detail text, detail connected, etc.).
+       * Format matches core ABViewDetail*Component.
+       * Lookup: use ids that were actually used in the DOM (viewComponentIDs when
+       * available) and resolve the Webix view before accessing $view.
        */
       _setDetailFieldDataCy() {
-         if (!ContainerComponent) return;
-         const views = this.view.views() || [];
+         if (!ContainerComponent || !this.viewComponents) return;
+         const viewList = this.view.views() || [];
+         const viewComponentIDs = this.viewComponentIDs || {};
 
-         views.forEach((f) => {
+         Object.keys(this.viewComponents).forEach((viewId) => {
+            const comp = this.viewComponents[viewId];
+            const f = viewList.find((v) => v.id === viewId);
+            if (!comp || !f) return;
+
             try {
-               const comp = f.component(this.idBase);
-               if (!comp) return;
-
                const parentId =
                   f.parentDetailComponent?.()?.id || f.parent?.id || "";
                const field = f.field?.();
@@ -116,12 +122,12 @@ export default function FNAbviewdetailComponent({
                const fieldId = field?.id ?? settings.fieldId ?? "";
 
                let dataCy = "";
-               let targetId = comp.ids?.detailItem;
+               let useRoot = false;
 
                switch (f.key) {
                   case "detail_text":
                      dataCy = `detail text ${columnName} ${fieldId} ${parentId}`;
-                     targetId = comp.ids?.component;
+                     useRoot = true;
                      break;
                   case "detail_connect":
                      dataCy = `detail connected ${columnName} ${fieldId} ${parentId}`;
@@ -140,21 +146,28 @@ export default function FNAbviewdetailComponent({
                      break;
                   default:
                      dataCy = `detail text ${columnName} ${fieldId} ${parentId}`;
-                     targetId = comp.ids?.component ?? comp.ids?.detailItem;
+                     useRoot = true;
                }
 
-               if (dataCy && targetId) {
-                  const el = $$(targetId)?.$view;
-                  if (el) {
-                     // For detailItem (connect, checkbox, etc.), set data-cy on parent so
-                     // selector [data-cy="..."] > .webix_template matches (tests expect it).
-                     const target =
-                        targetId === comp.ids?.detailItem && el.parentNode
-                           ? el.parentNode
-                           : el;
-                     target.setAttribute("data-cy", dataCy);
-                  }
-               }
+               if (!dataCy) return;
+
+               const rootId =
+                  viewComponentIDs[viewId] ?? comp.ids?.component;
+               const detailItemId = comp.ids?.detailItem;
+
+               const webixRoot = rootId ? $$(rootId) : null;
+               const webixDetailItem =
+                  detailItemId && !useRoot ? $$(detailItemId) : null;
+
+               const el = useRoot
+                  ? webixRoot?.$view
+                  : webixDetailItem?.$view;
+               if (!el || !el.setAttribute) return;
+
+               const isDetailItem = !useRoot && webixDetailItem;
+               const target =
+                  isDetailItem && el.parentNode ? el.parentNode : el;
+               target.setAttribute("data-cy", dataCy);
             } catch (e) {
                console.warn("Problem setting detail field data-cy", e);
             }
