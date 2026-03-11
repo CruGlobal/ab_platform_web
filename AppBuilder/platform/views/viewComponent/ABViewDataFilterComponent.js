@@ -271,7 +271,64 @@ export default class ABViewDataFilterComponent extends ABViewComponent {
             },
             showAllOptions: true,
          });
-         field.getAndPopulateOptions(suggest, null, field);
+
+         const filterNested = (arr, conditionFn) => {
+            // check if where has rules
+            if (arr?.rules) {
+               let filterRules = filterNested(arr.rules, conditionFn);
+               arr.rules = filterRules;
+               return arr;
+            } else if (Array.isArray(arr)) {
+               // check if we are looking at an array of rules
+               let filtered = arr
+                  .map((item) => {
+                     // If the item is an array, recurse into it
+                     if (Array.isArray(item?.rules)) {
+                        // Return the filtered nested array
+                        let filterRules = filterNested(item.rules, conditionFn);
+                        item.rules = filterRules;
+                        return item;
+                     }
+                     // If the rule meets the condition, keep it
+                     else if (conditionFn(item)) {
+                        return item;
+                     }
+                     // Otherwise, return undefined, which will be filtered out later
+                     return undefined;
+                  })
+                  .filter((item) => item !== undefined); // Remove undefined items
+               return filtered
+                  .map((item) => {
+                     // if array is empty set to undefined and we will remove it later
+                     if (item?.length == 0) {
+                        return undefined;
+                     } else {
+                        return item;
+                     }
+                  })
+                  .filter((item) => item !== undefined); // Remove undefined items
+            }
+         };
+
+         let options = null;
+         // check if the datasource has a filter
+         if (this.datacollection?.datasource?.where) {
+            // check if the field's datasource link has fields that need to be filtered
+            // copy the where so we don't edit the original
+            let wheres = { ...this.datacollection.datasource.where };
+            const filteredWheres = filterNested(wheres, (item) =>
+               field.datasourceLink.fieldIDs.includes(item.key)
+            );
+
+            // create options so we can pass
+            options = {
+               filters: filteredWheres,
+               // sort: [], // we should consider adding this at some point
+               filterByConnectValues: [],
+            };
+         }
+
+         field.getAndPopulateOptions(suggest, options, field);
 
          const $filter = $$(ids.filter);
 
