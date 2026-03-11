@@ -4,16 +4,17 @@ import FNAbviewpdfimporterComponent from "./FNAbviewpdfimporterComponent.js";
 // A web side import for an ABView.
 //
 export default function FNAbviewpdfimporter({
-   /*AB,*/
+   AB,
    ABViewWidgetPlugin,
    ABViewComponentPlugin,
    ABViewContainer,
+   ABViewRuleListFormSubmitRules,
 }) {
    const ABAbviewpdfimporterComponent = FNAbviewpdfimporterComponent({
       ABViewComponentPlugin,
    });
 
-   const ABSubmitRule = require("../../../../rules/ABViewRuleListFormSubmitRules");
+   const ABSubmitRule = ABViewRuleListFormSubmitRules;
 
    const ABViewPDFImporterPropertyComponentDefaults = {
       dataviewID: null,
