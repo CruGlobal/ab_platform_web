@@ -1,5 +1,5 @@
 export default function FNAbviewpdfimporterComponent({
-   /*AB,*/
+   AB,
    ABViewComponentPlugin,
 }) {
    const SMALL_PAGE_WIDTH = 150;
@@ -134,7 +134,7 @@ export default function FNAbviewpdfimporterComponent({
                               e?.target?.className?.includes?.("pdf-zoom")
                            ) {
                               self._fullImagePopup.show();
-                              $$(self.ids.fullImageCarousel).setActiveIndex(
+                              this.AB.Webix.$$(self.ids.fullImageCarousel).setActiveIndex(
                                  parseInt(id ?? 0) - 1
                               );
                               self.refreshFullImage();
@@ -212,7 +212,7 @@ export default function FNAbviewpdfimporterComponent({
                      maxWidth: 25,
                      height: 25,
                      click: () => {
-                        $$(ids.fullImagePopup)?.hide();
+                        this.AB.Webix.$$(ids.fullImagePopup)?.hide();
                      },
                   },
                ],
@@ -250,7 +250,7 @@ export default function FNAbviewpdfimporterComponent({
                            width: 130,
                            on: {
                               onChange: (isSelected) => {
-                                 const activeIndex = $$(
+                                 const activeIndex = this.AB.Webix.$$(
                                     this.ids.fullImageCarousel
                                  ).getActiveIndex();
                                  const pageNumber = activeIndex + 1;
@@ -279,8 +279,8 @@ export default function FNAbviewpdfimporterComponent({
       async init(AB) {
          await super.init(AB);
 
-         const $dataview = $$(this.ids.dataview);
-         if ($dataview) this.AB.Webix.extend($dataview, webix.ProgressBar);
+         const $dataview = this.AB.Webix.$$(this.ids.dataview);
+         if ($dataview) this.AB.Webix.extend($dataview, this.AB.Webix.ProgressBar);
 
          if (!this._fullImagePopup) {
             const fullImagePopup = this.uiPopup();
@@ -303,7 +303,7 @@ export default function FNAbviewpdfimporterComponent({
          this.pdfjs = (
             await import(
                /* webpackPrefetch: true */
-               "../../../../../init/pdfjs"
+               "./pdfjs"
             )
          ).default;
          this.ready();
@@ -384,7 +384,7 @@ export default function FNAbviewpdfimporterComponent({
       }
 
       _increaseProgressValue() {
-         const $dataview = $$(this.ids.dataview);
+         const $dataview = this.AB.Webix.$$(this.ids.dataview);
          const maxProgressStep =
             ($dataview.getSelectedId(true) ?? []).length * 2;
 
@@ -407,8 +407,8 @@ export default function FNAbviewpdfimporterComponent({
          this._pdfDoc = await this.pdfjs.getDocument(fileBuffer).promise;
 
          const total_page = this._pdfDoc.numPages;
-         const $dataview = $$(this.ids.dataview);
-         const $carousel = $$(this.ids.fullImageCarousel);
+         const $dataview = this.AB.Webix.$$(this.ids.dataview);
+         const $carousel = this.AB.Webix.$$(this.ids.fullImageCarousel);
          const carousel_list = [];
          for (let pageNumber = 1; pageNumber <= total_page; pageNumber++) {
             $dataview.add({
@@ -432,17 +432,17 @@ export default function FNAbviewpdfimporterComponent({
          // Select all of images by default
          this.selectAll();
 
-         $$(this.ids.submit)?.enable();
+         this.AB.Webix.$$(this.ids.submit)?.enable();
       }
 
       removeFile(id) {
-         $$(this.ids.uploadList)?.remove(id);
+         this.AB.Webix.$$(this.ids.uploadList)?.remove(id);
 
          delete this._pdfDoc;
          delete this._csvFileInfo;
          this.clearDataview();
 
-         $$(this.ids.submit)?.disable();
+         this.AB.Webix.$$(this.ids.submit)?.disable();
 
          return true;
       }
@@ -452,7 +452,7 @@ export default function FNAbviewpdfimporterComponent({
       }
 
       pageTemplate(item) {
-         const $dataview = $$(this.ids.dataview);
+         const $dataview = this.AB.Webix.$$(this.ids.dataview);
          let selectedPageIds = $dataview.getSelectedId(true);
 
          return `
@@ -482,7 +482,7 @@ export default function FNAbviewpdfimporterComponent({
       }
 
       renderPageImages() {
-         const $dataview = $$(this.ids.dataview);
+         const $dataview = this.AB.Webix.$$(this.ids.dataview);
          $dataview?.find({}).forEach((item) => {
             const canvas_dom = document.querySelector(
                `#${this.pageTemplateId(item.pageNumber)}`
@@ -510,8 +510,8 @@ export default function FNAbviewpdfimporterComponent({
       }
 
       clearDataview() {
-         const $dataview = $$(this.ids.dataview);
-         const $carousel = $$(this.ids.fullImageCarousel);
+         const $dataview = this.AB.Webix.$$(this.ids.dataview);
+         const $carousel = this.AB.Webix.$$(this.ids.fullImageCarousel);
 
          $dataview?.clearAll();
          if ($carousel)
@@ -530,13 +530,13 @@ export default function FNAbviewpdfimporterComponent({
 
       displaySmall() {
          this._isDisplayBig = false;
-         $$(this.ids.dataview)?.render();
+         this.AB.Webix.$$(this.ids.dataview)?.render();
          this.renderPageImages();
       }
 
       displayBig() {
          this._isDisplayBig = true;
-         $$(this.ids.dataview)?.render();
+         this.AB.Webix.$$(this.ids.dataview)?.render();
          this.renderPageImages();
       }
 
@@ -545,7 +545,7 @@ export default function FNAbviewpdfimporterComponent({
       }
 
       select(pageNumber) {
-         const $dataview = $$(this.ids.dataview);
+         const $dataview = this.AB.Webix.$$(this.ids.dataview);
 
          let selectedIds = $dataview.getSelectedId(true);
 
@@ -557,7 +557,7 @@ export default function FNAbviewpdfimporterComponent({
       }
 
       unselect(pageNumber) {
-         const $dataview = $$(this.ids.dataview);
+         const $dataview = this.AB.Webix.$$(this.ids.dataview);
 
          let selectedIds = $dataview.getSelectedId(true);
 
@@ -570,11 +570,11 @@ export default function FNAbviewpdfimporterComponent({
       }
 
       selectAll() {
-         $$(this.ids.dataview)?.selectAll();
+         this.AB.Webix.$$(this.ids.dataview)?.selectAll();
       }
 
       unselectAll() {
-         $$(this.ids.dataview)?.unselectAll();
+         this.AB.Webix.$$(this.ids.dataview)?.unselectAll();
       }
 
       fullImageTemplateId(pageNumber) {
@@ -582,7 +582,7 @@ export default function FNAbviewpdfimporterComponent({
       }
 
       fullImageTemplate(item) {
-         const $carousel = $$(this.ids.fullImageCarousel);
+         const $carousel = this.AB.Webix.$$(this.ids.fullImageCarousel);
          return `<canvas width="${
             $carousel.config.width - 20
          }" id="${this.fullImageTemplateId(item.pageNumber)}"></canvas>`;
@@ -590,19 +590,19 @@ export default function FNAbviewpdfimporterComponent({
 
       refreshFullImage() {
          const ids = this.ids;
-         const activeIndex = $$(ids.fullImageCarousel).getActiveIndex();
+         const activeIndex = this.AB.Webix.$$(ids.fullImageCarousel).getActiveIndex();
          const pageNumber = activeIndex + 1;
          const canvas_dom = document.querySelector(
             `#${this.fullImageTemplateId(pageNumber)}`
          );
          this.showPage(pageNumber, canvas_dom);
 
-         const selectedPageIds = $$(ids.dataview).getSelectedId(true);
+         const selectedPageIds = this.AB.Webix.$$(ids.dataview).getSelectedId(true);
          const isSelected =
             selectedPageIds.filter((pageId) => pageId == pageNumber).length > 0;
-         $$(ids.fullImageSelectToggle).setValue(isSelected);
+         this.AB.Webix.$$(ids.fullImageSelectToggle).setValue(isSelected);
 
-         $$(ids.fullImageLabel).setValue(
+         this.AB.Webix.$$(ids.fullImageLabel).setValue(
             `${this.label("Page Number")}: ${pageNumber}`
          );
       }
@@ -620,13 +620,13 @@ export default function FNAbviewpdfimporterComponent({
       busy() {
          const ids = this.ids;
 
-         const $fileUploader = $$(ids.fileUploader);
-         const $uploadList = $$(ids.uploadList);
-         const $dataview = $$(ids.dataview);
-         const $submit = $$(ids.submit);
-         const $selectAll = $$(ids.selectAll);
-         const $unselectAll = $$(ids.unselectAll);
-         const $selectToggle = $$(ids.fullImageSelectToggle);
+         const $fileUploader = this.AB.Webix.$$(ids.fileUploader);
+         const $uploadList = this.AB.Webix.$$(ids.uploadList);
+         const $dataview = this.AB.Webix.$$(ids.dataview);
+         const $submit = this.AB.Webix.$$(ids.submit);
+         const $selectAll = this.AB.Webix.$$(ids.selectAll);
+         const $unselectAll = this.AB.Webix.$$(ids.unselectAll);
+         const $selectToggle = this.AB.Webix.$$(ids.fullImageSelectToggle);
 
          $fileUploader?.disable();
          $uploadList?.disable();
@@ -643,13 +643,13 @@ export default function FNAbviewpdfimporterComponent({
       ready() {
          const ids = this.ids;
 
-         const $fileUploader = $$(ids.fileUploader);
-         const $uploadList = $$(ids.uploadList);
-         const $dataview = $$(ids.dataview);
-         const $submit = $$(ids.submit);
-         const $selectAll = $$(ids.selectAll);
-         const $unselectAll = $$(ids.unselectAll);
-         const $selectToggle = $$(ids.fullImageSelectToggle);
+         const $fileUploader = this.AB.Webix.$$(ids.fileUploader);
+         const $uploadList = this.AB.Webix.$$(ids.uploadList);
+         const $dataview = this.AB.Webix.$$(ids.dataview);
+         const $submit = this.AB.Webix.$$(ids.submit);
+         const $selectAll = this.AB.Webix.$$(ids.selectAll);
+         const $unselectAll = this.AB.Webix.$$(ids.unselectAll);
+         const $selectToggle = this.AB.Webix.$$(ids.fullImageSelectToggle);
 
          $fileUploader?.enable();
          $uploadList?.enable();
@@ -669,7 +669,7 @@ export default function FNAbviewpdfimporterComponent({
          this.busy();
 
          const ids = this.ids;
-         const $dataview = $$(ids.dataview);
+         const $dataview = this.AB.Webix.$$(ids.dataview);
          const selectedPageIds = $dataview.getSelectedId(true) ?? [];
          const model = field.object.model();
          const dcLink = this.datacollection.datacollectionLink;
