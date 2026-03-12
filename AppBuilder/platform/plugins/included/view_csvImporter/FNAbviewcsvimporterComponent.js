@@ -1352,10 +1352,6 @@ export default function FNAbviewcsvimporterComponent({
                errors.forEach((err) => {
                   if (!err?.name) return;
 
-                  const fieldInfo = matchFields.filter(
-                     (f) => f.field && f.field.columnName == err.name
-                  )[0];
-
                   errorMsg.push(err.name + ": " + err.message);
                   // we also need to define an error message
                   // abWebix.message({
