@@ -9,6 +9,7 @@ import viewPdfImporter from "./view_pdfImporter/FNAbviewpdfimporter.js";
 import viewCarousel from "./view_carousel/FNAbviewcarousel.js";
 import viewLayout from "./view_layout/FNAbviewlayout.js";
 import viewComment from "./view_comment/FNAbviewcomment.js";
+import viewDetail from "./view_detail/FNAbviewdetail.js";
 
 const AllPlugins = [
    viewTab,
@@ -21,6 +22,7 @@ const AllPlugins = [
    viewCarousel,
    viewLayout,
    viewComment,
+   viewDetail,
 ];
 
 export default {
