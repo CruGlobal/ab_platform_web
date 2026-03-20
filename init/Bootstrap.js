@@ -85,7 +85,7 @@ class Bootstrap extends EventEmitter {
          $icon.remove();
          document.getElementById(
             "preload-text"
-         ).innerHTML = `⚠️ You don't have permission to use this app, please contact your HRG to request access.`;
+         ).innerHTML = `<div style="font-size: 12px;">⚠️ You don't have permission to use this app, please contact your HRG to request access.</div>`;
       };
       /**
        * @type {Function}
