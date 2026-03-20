@@ -101,19 +101,14 @@ export default function FNAbviewdetailComponent({
                   if (typeof prevOnAfterRender === "function")
                      prevOnAfterRender.call(this);
                   try {
-                     let node;
-                     if (useRoot) {
-                        node =
-                           (typeof $$ !== "undefined" && $$(this.config?.id)?.$view) ||
-                           (typeof document !== "undefined" &&
-                              this.config?.id &&
-                              document.getElementById(this.config.id));
-                     } else if (detailItemId) {
-                        node =
-                           (typeof $$ !== "undefined" && $$(detailItemId)?.$view) ||
-                           (typeof document !== "undefined" &&
-                              document.getElementById(detailItemId));
-                     }
+                     const idToUse = useRoot ? this.config?.id : detailItemId;
+                     let node =
+                        (typeof $$ !== "undefined" && idToUse && $$(idToUse)?.$view) ||
+                        (typeof document !== "undefined" &&
+                           idToUse &&
+                           document.getElementById(idToUse));
+                     if (!node?.setAttribute && typeof document !== "undefined" && idToUse)
+                        node = document.querySelector(`[id$="${idToUse}"]`);
                      if (node?.setAttribute) node.setAttribute("data-cy", dataCy);
                   } catch (e) {}
                };
@@ -264,6 +259,7 @@ export default function FNAbviewdetailComponent({
                dataCy = `detail text ${columnName} ${fieldId} ${parentId}`;
                useRoot = true;
          }
+         if (dataCy) dataCy = dataCy.replace(/\s+/g, " ").trim();
          return dataCy ? { dataCy, useRoot } : null;
       }
 
@@ -310,11 +306,10 @@ export default function FNAbviewdetailComponent({
             if (!id) return;
 
             let el =
-               typeof $$ !== "undefined" && $$(id)?.$view
-                  ? $$(id).$view
-                  : null;
-            if (!el && typeof document !== "undefined")
-               el = document.getElementById(id);
+               (typeof $$ !== "undefined" && $$(id)?.$view) ||
+               (typeof document !== "undefined" && document.getElementById(id));
+            if (!el?.setAttribute && typeof document !== "undefined")
+               el = document.querySelector(`[id$="${id}"]`);
             if (!el?.setAttribute) return;
 
             const target =
