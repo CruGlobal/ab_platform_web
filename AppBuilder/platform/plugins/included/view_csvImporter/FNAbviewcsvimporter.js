@@ -8,11 +8,11 @@ export default function FNAbviewcsvimporter({
    /*AB,*/
    ABViewWidgetPlugin,
    ABViewComponentPlugin,
-   ABViewContainer
+   ABViewRuleListFormRecordRules
 }) {
    const ABAbviewcsvimporterComponent = FNAbviewcsvimporterComponent({ ABViewComponentPlugin });
 
-   const ABRecordRule = require("../../../../rules/ABViewRuleListFormRecordRules");
+   const ABRecordRule = ABViewRuleListFormRecordRules;
 
    const ABViewCSVImporterDefaults = {
       key: "csvImporter",
