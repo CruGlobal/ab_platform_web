@@ -1,6 +1,10 @@
-const ABViewComponent = require("./ABViewComponent").default;
+export default function FNAbviewcsvexporterComponent({
+   /*AB,*/
+   ABViewComponentPlugin,
+}) {
+   return class ABAbviewcsvexporterComponent extends ABViewComponentPlugin {
 
-module.exports = class ABViewCSVExporterComponent extends ABViewComponent {
+
    constructor(baseView, idBase, ids) {
       super(
          baseView,
@@ -131,4 +135,8 @@ module.exports = class ABViewCSVExporterComponent extends ABViewComponent {
       $buttonFilter.define("badge", (where.rules || []).length || null);
       $buttonFilter.refresh();
    }
-};
+
+
+   };
+
+}
