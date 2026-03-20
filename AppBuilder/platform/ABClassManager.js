@@ -10,6 +10,7 @@ import ABViewEditorPlugin from "./plugins/ABViewEditorPlugin.js";
 
 // some views need to reference ABViewContainer,
 import ABViewContainer from "./views/ABViewContainer.js";
+import ABViewContainerComponent from "./views/viewComponent/ABViewContainerComponent.js";
 
 // view property helpers used by plugins
 import ABViewPropertyFilterData from "./views/viewProperties/ABViewPropertyFilterData";
@@ -68,6 +69,7 @@ export function getPluginAPI() {
       ABViewPropertiesPlugin,
       ABViewEditorPlugin,
       ABViewContainer,
+      ABViewContainerComponent,
       ABViewPropertyFilterData,
       ABViewPropertyLinkPage,
       ABViewRuleListFormRecordRules,
