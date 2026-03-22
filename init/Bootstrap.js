@@ -76,6 +76,17 @@ class Bootstrap extends EventEmitter {
        */
       const preloadMessage = (m) =>
          (document.getElementById("preload-text").innerHTML = m);
+      const postloadNoRole = () => {
+         //document.getElementById("preload-text").innerHTML = `<i class="fa fa-lock" aria-hidden="true"></i>You don't have permission to use this app, please contact your HRG to request access.`
+         const $icon = document.getElementsByClassName("lds-default")[0];
+         $icon.parentElement.style.lineHeight = "50px";
+         $icon.parentElement.innerHTML =
+            '<i class="fa fa-lock" style="border-color: #e2e8f0; border-radius: 50%; background: #f1f5f9; padding: 8px 20px; "></i><div style="font-size: 20px"><b>Access required</b></div>';
+         $icon.remove();
+         document.getElementById(
+            "preload-text"
+         ).innerHTML = `<div style="font-size: 12px;">⚠️ You don't have permission to use this app, please contact your HRG to request access.</div>`;
+      };
       /**
        * @type {Function}
        * @description remove the preload ui elements
@@ -379,7 +390,7 @@ class Bootstrap extends EventEmitter {
          if (Config.userReal()) {
             ErrorNoDefsUI.switcherooUser(Config.userConfig());
          }
-         destroyPreloadUI();
+         postloadNoRole();
          this.ui(ErrorNoDefsUI);
 
          let err = new Error("No Definitions");

@@ -68,7 +68,7 @@ export default function FNAbviewtext({
       /**
        * @method toObj()
        *
-       * properly compile the current state of this ABViewLabel instance
+       * properly compile the current state of this ABViewText instance
        * into the values needed for saving.
        *
        * @return {json}
