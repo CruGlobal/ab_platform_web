@@ -16,6 +16,16 @@ import ABViewContainerComponent from "./views/viewComponent/ABViewContainerCompo
 import ABViewPropertyFilterData from "./views/viewProperties/ABViewPropertyFilterData";
 import ABViewPropertyLinkPage from "./views/viewProperties/ABViewPropertyLinkPage";
 
+// Form plugin (FNAbviewform): rule popups + form field view classes — same pattern as
+// Detail's ABViewContainerComponent in getPluginAPI() (Johnny's review / Ben's PDF PR).
+import ABViewRuleListFormRecordRules from "../rules/ABViewRuleListFormRecordRules.js";
+import ABViewRuleListFormSubmitRules from "../rules/ABViewRuleListFormSubmitRules.js";
+import ABViewFormItem from "./views/ABViewFormItem.js";
+import ABViewFormConnect from "./views/ABViewFormConnect.js";
+import ABViewFormCustom from "./views/ABViewFormCustom.js";
+import ABViewFormTextbox from "./views/ABViewFormTextbox.js";
+import ABViewFormJson from "./views/ABViewFormJson.js";
+
 // MIGRATION: ABViewManager is depreciated.  Use ABClassManager instead.
 import ABViewManager from "./ABViewManager.js";
 
@@ -70,6 +80,13 @@ export function getPluginAPI() {
       ABViewContainerComponent,
       ABViewPropertyFilterData,
       ABViewPropertyLinkPage,
+      ABViewRuleListFormRecordRules,
+      ABViewRuleListFormSubmitRules,
+      ABViewFormItem,
+      ABViewFormConnect,
+      ABViewFormCustom,
+      ABViewFormTextbox,
+      ABViewFormJson,
       //  ABFieldPlugin,
       //  ABViewPlugin,
    };
@@ -121,6 +138,22 @@ export function viewCreate(type, config, application, parent) {
 
 export function viewAll(fn = () => true) {
    return Array.from(classRegistry.ViewTypes.values()).filter(fn);
+}
+
+/**
+ * Merge core ViewManager classes with plugin-registered ones by common().key.
+ * Plugin entry wins for the same key so Add Widget shows Form(plugin) / Detail(plugin) only.
+ */
+export function viewAllMerged(coreViews, fn = () => true) {
+   const byKey = new Map();
+   const reg = (ctor) => {
+      if (!ctor || typeof ctor.common !== "function") return;
+      const key = ctor.common()?.key;
+      if (key) byKey.set(key, ctor);
+   };
+   (coreViews || []).filter(fn).forEach(reg);
+   viewAll(fn).forEach(reg);
+   return Array.from(byKey.values());
 }
 
 export function viewPropertiesAll(fn = () => true) {

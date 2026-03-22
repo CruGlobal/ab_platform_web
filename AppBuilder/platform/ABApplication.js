@@ -334,8 +334,8 @@ module.exports = class ABClassApplication extends ABApplicationCore {
 
    viewAll(fn = () => true) {
       let vmViews = super.viewAll(fn);
-      let pluginViews = this.AB.ClassManager.viewAll(fn);
-      let allViews = [...vmViews, ...pluginViews];
+      // Dedupe by view key; plugin replaces core (Form/Detail → Form(plugin) / Detail(plugin)).
+      let allViews = this.AB.ClassManager.viewAllMerged(vmViews, fn);
       let L = this.AB.Label();
 
       // Sort by label from common() if available, otherwise by key
