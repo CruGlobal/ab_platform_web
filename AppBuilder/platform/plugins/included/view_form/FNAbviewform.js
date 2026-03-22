@@ -17,6 +17,24 @@ export default function FNAbviewform({
    ABViewFormTextbox,
    ABViewFormJson,
 }) {
+   // When webpack splits chunks, `instanceof ABViewFormItem` can fail (two module copies).
+   // Fall back to view key + .field() like platform widget identity.
+   const _FORM_FIELD_VIEW_KEYS = new Set([
+      "textbox",
+      "numberbox",
+      "datepicker",
+      "connect",
+      "checkbox",
+      "fieldcustom",
+      "selectsingle",
+      "selectmultiple",
+      "formtree",
+      "fieldreadonly",
+      "json",
+      "url",
+      "button",
+   ]);
+
    const ABAbviewformComponent = FNAbviewformComponent({
       ABViewComponentPlugin,
       ABViewFormItem,
@@ -189,13 +207,16 @@ export default function FNAbviewform({
             const allComponents = flattenComponents(this._views);
 
             if (filter == null) {
-               // Must match core ABViewFormCore.fieldComponents: all form field widgets
-               // extend ABViewFormItem (textbox, connect, …). Using key.startsWith("form")
-               // wrongly drops textbox/numberbox/etc. and breaks displayData, validation,
-               // and e2e selectors that depend on rendered inputs + data-cy.
                const FormItemCtor =
                   ABViewFormItem?.default ?? ABViewFormItem;
-               filter = (comp) => comp instanceof FormItemCtor;
+               filter = (comp) => {
+                  if (!comp?.key) return false;
+                  if (comp instanceof FormItemCtor) return true;
+                  return (
+                     typeof comp.field === "function" &&
+                     _FORM_FIELD_VIEW_KEYS.has(comp.key)
+                  );
+               };
             }
 
             return allComponents.filter(filter);

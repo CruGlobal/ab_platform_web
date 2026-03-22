@@ -19,6 +19,56 @@ export default function FNAbviewformComponent({
       ABViewFormJson?.default ?? ABViewFormJson;
    const fieldValidations = [];
 
+   // Webpack can load two copies of ABViewFormItem etc.; instanceof then fails in CI.
+   // Mirror platform behavior using key + settings when instanceof misses (Johnny/Ben API pattern).
+   const FORM_FIELD_VIEW_KEYS = new Set([
+      "textbox",
+      "numberbox",
+      "datepicker",
+      "connect",
+      "checkbox",
+      "fieldcustom",
+      "selectsingle",
+      "selectmultiple",
+      "formtree",
+      "fieldreadonly",
+      "json",
+      "url",
+      "button",
+   ]);
+
+   function isCustomFormField(comp) {
+      if (!comp) return false;
+      if (comp instanceof FormCustom) return true;
+      if (comp instanceof FormTextbox && comp.settings?.type === "rich")
+         return true;
+      if (comp instanceof FormJson && comp.settings?.type === "filter")
+         return true;
+      if (comp.key === "fieldcustom") return true;
+      if (comp.key === "textbox" && comp.settings?.type === "rich")
+         return true;
+      if (comp.key === "json" && comp.settings?.type === "filter")
+         return true;
+      return false;
+   }
+
+   function isNormalFormField(comp) {
+      if (!comp?.key) return false;
+      if (isCustomFormField(comp)) return false;
+      if (comp instanceof FormItem && !(comp instanceof FormCustom)) return true;
+      if (["layout", "label", "text"].includes(comp.key)) return false;
+      return (
+         typeof comp.field === "function" &&
+         FORM_FIELD_VIEW_KEYS.has(comp.key)
+      );
+   }
+
+   function isFormConnectField(comp) {
+      if (!comp) return false;
+      if (comp instanceof FormConnect) return true;
+      return comp.key === "connect" && typeof comp.field === "function";
+   }
+
    return class ABAbviewformComponent extends ABViewComponentPlugin {
 
 
@@ -170,7 +220,7 @@ export default function FNAbviewformComponent({
             listener: (rowData) => {
                const baseView = this.view;
                const linkViaOneConnection = baseView.fieldComponents(
-                  (comp) => comp instanceof FormConnect
+                  (comp) => isFormConnectField(comp)
                );
                // clear previous xxx->one selections and add new from
                // cursor change
@@ -426,19 +476,12 @@ export default function FNAbviewformComponent({
       await new Promise((resolve) => setTimeout(resolve, 80));
 
       const baseView = this.view;
-      const customFields = baseView.fieldComponents(
-         (comp) =>
-            comp instanceof FormCustom ||
-            // rich text
-            (comp instanceof FormTextbox &&
-               comp.settings.type === "rich") ||
-            (comp instanceof FormJson && comp.settings.type === "filter")
+      const customFields = baseView.fieldComponents((comp) =>
+         isCustomFormField(comp)
       );
 
-      const normalFields = baseView.fieldComponents(
-         (comp) =>
-            comp instanceof FormItem &&
-            !(comp instanceof FormCustom)
+      const normalFields = baseView.fieldComponents((comp) =>
+         isNormalFormField(comp)
       );
 
       // Set default values
@@ -542,11 +585,9 @@ export default function FNAbviewformComponent({
 
       const baseView = this.view;
       // Pull a component of relation field
-      const relationFieldCom = baseView.fieldComponents((comp) => {
-         if (!(comp instanceof FormItem)) return false;
-
-         return comp.field()?.id === relationField.id;
-      })[0];
+      const relationFieldCom = baseView.fieldComponents(
+         (comp) => comp.field()?.id === relationField.id
+      )[0];
       if (!relationFieldCom) return;
 
       const relationFieldView = baseView.viewComponents[relationFieldCom.id];
