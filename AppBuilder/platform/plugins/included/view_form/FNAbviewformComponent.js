@@ -2,12 +2,15 @@ export default function FNAbviewformComponent({
    /*AB,*/
    ABViewComponentPlugin,
    ABViewFormItem,
+   ABViewFormConnect,
    ABViewFormCustom,
    ABViewFormTextbox,
    ABViewFormJson,
 }) {
    const FormItem =
       ABViewFormItem?.default ?? ABViewFormItem;
+   const FormConnect =
+      ABViewFormConnect?.default ?? ABViewFormConnect;
    const FormCustom =
       ABViewFormCustom?.default ?? ABViewFormCustom;
    const FormTextbox =
@@ -167,7 +170,7 @@ export default function FNAbviewformComponent({
             listener: (rowData) => {
                const baseView = this.view;
                const linkViaOneConnection = baseView.fieldComponents(
-                  (comp) => comp instanceof ABViewFormConnect
+                  (comp) => comp instanceof FormConnect
                );
                // clear previous xxx->one selections and add new from
                // cursor change

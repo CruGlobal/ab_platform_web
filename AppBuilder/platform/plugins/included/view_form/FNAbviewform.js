@@ -12,6 +12,7 @@ export default function FNAbviewform({
    ABViewRuleListFormRecordRules,
    ABViewRuleListFormSubmitRules,
    ABViewFormItem,
+   ABViewFormConnect,
    ABViewFormCustom,
    ABViewFormTextbox,
    ABViewFormJson,
@@ -19,6 +20,7 @@ export default function FNAbviewform({
    const ABAbviewformComponent = FNAbviewformComponent({
       ABViewComponentPlugin,
       ABViewFormItem,
+      ABViewFormConnect,
       ABViewFormCustom,
       ABViewFormTextbox,
       ABViewFormJson,
@@ -187,7 +189,13 @@ export default function FNAbviewform({
             const allComponents = flattenComponents(this._views);
 
             if (filter == null) {
-               filter = (comp) => comp?.key?.startsWith("form");
+               // Must match core ABViewFormCore.fieldComponents: all form field widgets
+               // extend ABViewFormItem (textbox, connect, …). Using key.startsWith("form")
+               // wrongly drops textbox/numberbox/etc. and breaks displayData, validation,
+               // and e2e selectors that depend on rendered inputs + data-cy.
+               const FormItemCtor =
+                  ABViewFormItem?.default ?? ABViewFormItem;
+               filter = (comp) => comp instanceof FormItemCtor;
             }
 
             return allComponents.filter(filter);

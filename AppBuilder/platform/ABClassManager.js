@@ -21,6 +21,7 @@ import ABViewPropertyLinkPage from "./views/viewProperties/ABViewPropertyLinkPag
 import ABViewRuleListFormRecordRules from "../rules/ABViewRuleListFormRecordRules.js";
 import ABViewRuleListFormSubmitRules from "../rules/ABViewRuleListFormSubmitRules.js";
 import ABViewFormItem from "./views/ABViewFormItem.js";
+import ABViewFormConnect from "./views/ABViewFormConnect.js";
 import ABViewFormCustom from "./views/ABViewFormCustom.js";
 import ABViewFormTextbox from "./views/ABViewFormTextbox.js";
 import ABViewFormJson from "./views/ABViewFormJson.js";
@@ -82,6 +83,7 @@ export function getPluginAPI() {
       ABViewRuleListFormRecordRules,
       ABViewRuleListFormSubmitRules,
       ABViewFormItem,
+      ABViewFormConnect,
       ABViewFormCustom,
       ABViewFormTextbox,
       ABViewFormJson,
