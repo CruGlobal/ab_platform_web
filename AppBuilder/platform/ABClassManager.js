@@ -16,6 +16,15 @@ import ABViewContainerComponent from "./views/viewComponent/ABViewContainerCompo
 import ABViewPropertyFilterData from "./views/viewProperties/ABViewPropertyFilterData";
 import ABViewPropertyLinkPage from "./views/viewProperties/ABViewPropertyLinkPage";
 
+// Form plugin (FNAbviewform): rule popups + form field view classes — same pattern as
+// Detail's ABViewContainerComponent in getPluginAPI() (Johnny's review / Ben's PDF PR).
+import ABViewRuleListFormRecordRules from "../rules/ABViewRuleListFormRecordRules.js";
+import ABViewRuleListFormSubmitRules from "../rules/ABViewRuleListFormSubmitRules.js";
+import ABViewFormItem from "./views/ABViewFormItem.js";
+import ABViewFormCustom from "./views/ABViewFormCustom.js";
+import ABViewFormTextbox from "./views/ABViewFormTextbox.js";
+import ABViewFormJson from "./views/ABViewFormJson.js";
+
 // MIGRATION: ABViewManager is depreciated.  Use ABClassManager instead.
 import ABViewManager from "./ABViewManager.js";
 
@@ -70,6 +79,12 @@ export function getPluginAPI() {
       ABViewContainerComponent,
       ABViewPropertyFilterData,
       ABViewPropertyLinkPage,
+      ABViewRuleListFormRecordRules,
+      ABViewRuleListFormSubmitRules,
+      ABViewFormItem,
+      ABViewFormCustom,
+      ABViewFormTextbox,
+      ABViewFormJson,
       //  ABFieldPlugin,
       //  ABViewPlugin,
    };
