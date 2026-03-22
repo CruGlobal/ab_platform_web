@@ -1,12 +1,19 @@
-import ABViewFormItem from "../../../views/ABViewFormItem.js";
-import ABViewFormCustom from "../../../views/ABViewFormCustom.js";
-import ABViewFormTextbox from "../../../views/ABViewFormTextbox.js";
-import ABViewFormJson from "../../../views/ABViewFormJson.js";
-
 export default function FNAbviewformComponent({
    /*AB,*/
    ABViewComponentPlugin,
+   ABViewFormItem,
+   ABViewFormCustom,
+   ABViewFormTextbox,
+   ABViewFormJson,
 }) {
+   const FormItem =
+      ABViewFormItem?.default ?? ABViewFormItem;
+   const FormCustom =
+      ABViewFormCustom?.default ?? ABViewFormCustom;
+   const FormTextbox =
+      ABViewFormTextbox?.default ?? ABViewFormTextbox;
+   const FormJson =
+      ABViewFormJson?.default ?? ABViewFormJson;
    const fieldValidations = [];
 
    return class ABAbviewformComponent extends ABViewComponentPlugin {
@@ -418,17 +425,17 @@ export default function FNAbviewformComponent({
       const baseView = this.view;
       const customFields = baseView.fieldComponents(
          (comp) =>
-            comp instanceof ABViewFormCustom ||
+            comp instanceof FormCustom ||
             // rich text
-            (comp instanceof ABViewFormTextbox &&
+            (comp instanceof FormTextbox &&
                comp.settings.type === "rich") ||
-            (comp instanceof ABViewFormJson && comp.settings.type === "filter")
+            (comp instanceof FormJson && comp.settings.type === "filter")
       );
 
       const normalFields = baseView.fieldComponents(
          (comp) =>
-            comp instanceof ABViewFormItem &&
-            !(comp instanceof ABViewFormCustom)
+            comp instanceof FormItem &&
+            !(comp instanceof FormCustom)
       );
 
       // Set default values
@@ -533,7 +540,7 @@ export default function FNAbviewformComponent({
       const baseView = this.view;
       // Pull a component of relation field
       const relationFieldCom = baseView.fieldComponents((comp) => {
-         if (!(comp instanceof ABViewFormItem)) return false;
+         if (!(comp instanceof FormItem)) return false;
 
          return comp.field()?.id === relationField.id;
       })[0];

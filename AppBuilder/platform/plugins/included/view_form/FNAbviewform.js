@@ -8,12 +8,26 @@ export default function FNAbviewform({
    /*AB,*/
    ABViewPlugin,
    ABViewComponentPlugin,
-   ABViewContainer
+   ABViewContainer,
+   ABViewRuleListFormRecordRules,
+   ABViewRuleListFormSubmitRules,
+   ABViewFormItem,
+   ABViewFormCustom,
+   ABViewFormTextbox,
+   ABViewFormJson,
 }) {
-   const ABAbviewformComponent = FNAbviewformComponent({ ABViewComponentPlugin });
+   const ABAbviewformComponent = FNAbviewformComponent({
+      ABViewComponentPlugin,
+      ABViewFormItem,
+      ABViewFormCustom,
+      ABViewFormTextbox,
+      ABViewFormJson,
+   });
 
-   const ABRecordRule = require("../../../../rules/ABViewRuleListFormRecordRules");
-   const ABSubmitRule = require("../../../../rules/ABViewRuleListFormSubmitRules");
+   const ABRecordRule =
+      ABViewRuleListFormRecordRules?.default ?? ABViewRuleListFormRecordRules;
+   const ABSubmitRule =
+      ABViewRuleListFormSubmitRules?.default ?? ABViewRuleListFormSubmitRules;
 
    const ABViewFormDefaults = {
       key: "form", // unique key identifier for this ABViewForm
@@ -250,9 +264,6 @@ export default function FNAbviewform({
    };
 
    // const L = (...params) => AB.Multilingual.label(...params);
-
-   // const ABRecordRule = require("../../rules/ABViewRuleListFormRecordRules");
-   // const ABSubmitRule = require("../../rules/ABViewRuleListFormSubmitRules");
 
    // let PopupRecordRule = null;
    // let PopupSubmitRule = null;
