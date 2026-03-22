@@ -395,14 +395,15 @@ export default function FNAbviewform({
             formVals[val] = allVals[val];
          });
 
-         // get custom values
+         // get custom values (keys match ABViewForm*Core.common().key — same as platform
+         // ABViewForm.getFormValues which uses instanceof, not "formconnect" etc.)
          this.fieldComponents(
             (comp) =>
-               comp?.key === "formcustom" ||
-               comp?.key === "formconnect" ||
-               comp?.key === "formdatepicker" ||
-               comp?.key === "formselectmultiple" ||
-               (comp?.key === "formjson" && comp?.settings?.type === "filter")
+               comp?.key === "fieldcustom" ||
+               comp?.key === "connect" ||
+               comp?.key === "datepicker" ||
+               comp?.key === "selectmultiple" ||
+               (comp?.key === "json" && comp?.settings?.type === "filter")
          ).forEach((f) => {
             const vComponent = this.viewComponents[f.id];
             if (vComponent == null) return;
