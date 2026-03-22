@@ -700,7 +700,9 @@ class PortalWork extends ClassUI {
       //
       PortalWorkInbox.on("updated", () => {
          const count = PortalWorkInbox.count();
-         $$("inbox_icon").define({ badge: count ? count : false });
+         // Use numeric badge including 0 so Webix renders .webix_badge (Cypress / e2e
+         // can assert presence). badge: false omits the node entirely when inbox is empty.
+         $$("inbox_icon").define({ badge: count });
          $$("inbox_icon").refresh();
       });
 
