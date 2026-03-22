@@ -123,6 +123,22 @@ export function viewAll(fn = () => true) {
    return Array.from(classRegistry.ViewTypes.values()).filter(fn);
 }
 
+/**
+ * Merge core ViewManager classes with plugin-registered ones by common().key.
+ * Plugin entry wins for the same key so Add Widget shows Form(plugin) / Detail(plugin) only.
+ */
+export function viewAllMerged(coreViews, fn = () => true) {
+   const byKey = new Map();
+   const reg = (ctor) => {
+      if (!ctor || typeof ctor.common !== "function") return;
+      const key = ctor.common()?.key;
+      if (key) byKey.set(key, ctor);
+   };
+   (coreViews || []).filter(fn).forEach(reg);
+   viewAll(fn).forEach(reg);
+   return Array.from(byKey.values());
+}
+
 export function viewPropertiesAll(fn = () => true) {
    return Array.from(classRegistry.ViewPropertiesTypes.values()).filter(fn);
 }
