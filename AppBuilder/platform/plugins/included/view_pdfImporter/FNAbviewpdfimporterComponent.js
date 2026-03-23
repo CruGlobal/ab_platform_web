@@ -1,5 +1,5 @@
 export default function FNAbviewpdfimporterComponent({
-   AB,
+   /* AB, */
    ABViewComponentPlugin,
 }) {
    const SMALL_PAGE_WIDTH = 150;
