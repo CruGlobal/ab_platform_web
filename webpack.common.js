@@ -58,9 +58,9 @@ module.exports = {
          cacheGroups: {
             vendors: false,
             default: false,
-            pdfjs: {
-               test: /[\\/]node_modules[\\/]pdfjs-dist|[\\/]init[\\/]pdfjs/,
-               filename: "pdfjs.[name].[contenthash].mjs",
+             pdfjs: {
+                test: /[\\/]node_modules[\\/]pdfjs-dist|[\\/]AppBuilder[\\/]platform[\\/]plugins[\\/]included[\\/]view_pdfImporter[\\/]pdfjs/,
+                filename: "pdfjs.[name].[contenthash].mjs",
                chunks: "all",
                reuseExistingChunk: true,
                priority: 10,
