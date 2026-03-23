@@ -4,7 +4,7 @@ import FNAbviewpdfimporterComponent from "./FNAbviewpdfimporterComponent.js";
 // A web side import for an ABView.
 //
 export default function FNAbviewpdfimporter({
-   AB,
+   /* AB, */
    ABViewWidgetPlugin,
    ABViewComponentPlugin,
    ABViewContainer,
