@@ -29,8 +29,6 @@ import Multilingual from "../resources/Multilingual.js";
 import Network from "../resources/Network.js";
 // Network: our interface for communicating to our server
 
-import LocalPlugins from "./platform/plugins/included/index.js";
-
 import Storage from "../resources/Storage.js";
 // Storage: manages our interface for local storage
 
@@ -877,11 +875,15 @@ class ABFactory extends ABFactoryCore {
       this._plugins.push(p);
    }
 
-   pluginLocalLoad() {
-      // This is a placeholder for a local plugin load.
-      // The platform version of this method will load the plugins from
-      // /platform/plugins/local/
-      return LocalPlugins.load(this);
+   async pluginLocalLoad() {
+      // Load included plugins when available (e.g. platform/plugins/included/).
+      // Optional so unit tests and CI can run when that path is not present.
+      try {
+         const LocalPlugins = await import("./platform/plugins/included/index.js");
+         return LocalPlugins.default.load(this);
+      } catch (e) {
+         if (e?.code !== "MODULE_NOT_FOUND") throw e;
+      }
    }
 
    //
