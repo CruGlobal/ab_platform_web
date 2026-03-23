@@ -10,10 +10,12 @@ import ABViewEditorPlugin from "./plugins/ABViewEditorPlugin.js";
 
 // some views need to reference ABViewContainer,
 import ABViewContainer from "./views/ABViewContainer.js";
+import ABViewContainerComponent from "./views/viewComponent/ABViewContainerComponent.js";
 
 // view property helpers used by plugins
 import ABViewPropertyFilterData from "./views/viewProperties/ABViewPropertyFilterData";
 import ABViewPropertyLinkPage from "./views/viewProperties/ABViewPropertyLinkPage";
+import ABViewRuleListFormSubmitRules from "../rules/ABViewRuleListFormSubmitRules";
 
 // MIGRATION: ABViewManager is depreciated.  Use ABClassManager instead.
 import ABViewManager from "./ABViewManager.js";
@@ -66,8 +68,10 @@ export function getPluginAPI() {
       ABViewPropertiesPlugin,
       ABViewEditorPlugin,
       ABViewContainer,
+      ABViewContainerComponent,
       ABViewPropertyFilterData,
       ABViewPropertyLinkPage,
+      ABViewRuleListFormSubmitRules,
       //  ABFieldPlugin,
       //  ABViewPlugin,
    };

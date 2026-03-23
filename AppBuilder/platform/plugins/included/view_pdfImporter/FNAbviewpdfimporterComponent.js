@@ -1,5 +1,5 @@
 export default function FNAbviewpdfimporterComponent({
-   /*AB,*/
+   /* AB, */
    ABViewComponentPlugin,
 }) {
    const SMALL_PAGE_WIDTH = 150;
@@ -280,11 +280,11 @@ export default function FNAbviewpdfimporterComponent({
          await super.init(AB);
 
          const $dataview = $$(this.ids.dataview);
-         if ($dataview) this.AB.Webix.extend($dataview, webix.ProgressBar);
+         if ($dataview) webix.extend($dataview, webix.ProgressBar);
 
          if (!this._fullImagePopup) {
             const fullImagePopup = this.uiPopup();
-            this._fullImagePopup = this.AB.Webix.ui(fullImagePopup);
+            this._fullImagePopup = webix.ui(fullImagePopup);
          }
       }
 
@@ -303,7 +303,7 @@ export default function FNAbviewpdfimporterComponent({
          this.pdfjs = (
             await import(
                /* webpackPrefetch: true */
-               "../../../../../init/pdfjs"
+               "./pdfjs"
             )
          ).default;
          this.ready();
@@ -359,7 +359,7 @@ export default function FNAbviewpdfimporterComponent({
 
          return new Promise((resolve, reject) => {
             // Create a uploader to upload images
-            const $uploader = this.AB.Webix.ui({
+            const $uploader = webix.ui({
                view: "uploader",
                apiOnly: true,
                upload: this.field.urlUpload(),
@@ -427,7 +427,7 @@ export default function FNAbviewpdfimporterComponent({
          }
 
          this.renderPageImages();
-         if ($carousel) this.AB.Webix.ui(carousel_list, $carousel);
+         if ($carousel) webix.ui(carousel_list, $carousel);
 
          // Select all of images by default
          this.selectAll();
@@ -515,7 +515,7 @@ export default function FNAbviewpdfimporterComponent({
 
          $dataview?.clearAll();
          if ($carousel)
-            this.AB.Webix.ui(
+            webix.ui(
                [
                   {
                      view: "label",
