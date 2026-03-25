@@ -16,6 +16,7 @@ import ABViewContainerComponent from "./views/viewComponent/ABViewContainerCompo
 import ABViewPropertyFilterData from "./views/viewProperties/ABViewPropertyFilterData";
 import ABViewPropertyLinkPage from "./views/viewProperties/ABViewPropertyLinkPage";
 import ABViewRuleListFormSubmitRules from "../rules/ABViewRuleListFormSubmitRules";
+import ABViewRuleListFormRecordRules from "../rules/ABViewRuleListFormRecordRules";
 
 // MIGRATION: ABViewManager is depreciated.  Use ABClassManager instead.
 import ABViewManager from "./ABViewManager.js";
@@ -72,6 +73,7 @@ export function getPluginAPI() {
       ABViewPropertyFilterData,
       ABViewPropertyLinkPage,
       ABViewRuleListFormSubmitRules,
+      ABViewRuleListFormRecordRules,
       //  ABFieldPlugin,
       //  ABViewPlugin,
    };
