@@ -344,7 +344,7 @@ export default function FNAbviewdetailComponent({
                      break;
                   case "list":
                      val = rowData?.[field.columnName];
-                     if (!val) {
+                     if (!val || (Array.isArray(val) && val.length === 0)) {
                         val = "";
                         break;
                      }
@@ -367,7 +367,7 @@ export default function FNAbviewdetailComponent({
                         }
                         val = myVal;
                      } else {
-                        const items = (val || []).map((value) => {
+                        const items = val.map((value) => {
                            let myVal = "";
                            (field.settings.options || []).forEach((opt) => {
                               if (opt.id === value.id) myVal = opt.text;

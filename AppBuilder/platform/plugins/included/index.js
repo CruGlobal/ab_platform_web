@@ -6,6 +6,7 @@ import viewCsvImporter from "./view_csvImporter/FNAbviewcsvimporter.js";
 import viewCsvExporter from "./view_csvExporter/FNAbviewcsvexporter.js";
 import viewList from "./view_list/FNAbviewlist.js";
 import viewTab from "./view_tab/FNAbviewtab.js";
+import viewDetail from "./view_detail/FNAbviewdetail.js";
 import viewLabel from "./view_label/FNAbviewlabel.js";
 import viewText from "./view_text/FNAbviewtext.js";
 import viewImage from "./view_image/FNAbviewimage.js";
@@ -18,6 +19,7 @@ const AllPlugins = [
    viewCsvImporter,
    viewTab,
    viewList,
+   viewDetail,
    viewText,
    viewLabel,
    viewImage,
