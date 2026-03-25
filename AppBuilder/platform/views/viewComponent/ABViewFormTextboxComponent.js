@@ -34,7 +34,7 @@ module.exports = class ABViewFormTextboxComponent extends (
                   plugins: "link",
                   menubar: "format edit",
                   toolbar:
-                     "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | fontsizeselect | link",
+                     "undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | fontsize | link",
                },
             };
             break;
