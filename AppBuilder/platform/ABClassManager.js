@@ -18,6 +18,16 @@ import ABViewPropertyLinkPage from "./views/viewProperties/ABViewPropertyLinkPag
 import ABViewRuleListFormRecordRules from "../rules/ABViewRuleListFormRecordRules";
 import ABViewRuleListFormSubmitRules from "../rules/ABViewRuleListFormSubmitRules";
 
+import ABViewForm from "./views/ABViewForm";
+import ABViewFormButton from "./views/ABViewFormButton";
+import ABViewFormConnect from "./views/ABViewFormConnect";
+import ABViewFormCustom from "./views/ABViewFormCustom";
+import ABViewFormDatepicker from "./views/ABViewFormDatepicker";
+import ABViewFormItem from "./views/ABViewFormItem";
+import ABViewFormJson from "./views/ABViewFormJson";
+import ABViewFormSelectMultiple from "./views/ABViewFormSelectMultiple";
+import ABViewFormTextbox from "./views/ABViewFormTextbox";
+
 // MIGRATION: ABViewManager is depreciated.  Use ABClassManager instead.
 import ABViewManager from "./ABViewManager.js";
 
@@ -74,6 +84,15 @@ export function getPluginAPI() {
       ABViewPropertyLinkPage,
       ABViewRuleListFormRecordRules,
       ABViewRuleListFormSubmitRules,
+      ABViewForm,
+      ABViewFormButton,
+      ABViewFormConnect,
+      ABViewFormCustom,
+      ABViewFormDatepicker,
+      ABViewFormItem,
+      ABViewFormJson,
+      ABViewFormSelectMultiple,
+      ABViewFormTextbox,
       //  ABFieldPlugin,
       //  ABViewPlugin,
    };
