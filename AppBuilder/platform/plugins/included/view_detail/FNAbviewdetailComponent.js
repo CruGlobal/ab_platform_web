@@ -19,6 +19,10 @@ export default function FNAbviewdetailComponent({ ABViewContainerComponent }) {
 
       ui() {
          const _ui = super.ui();
+
+         // this wrapper allows the detail view to have a
+         // card appearance as well as enables the edit and
+         // details functions to work when clicked
          return {
             type: "form",
             id: this.ids.component,
@@ -32,6 +36,7 @@ export default function FNAbviewdetailComponent({ ABViewContainerComponent }) {
          const dataCy = `Detail ${baseView.name?.split(".")[0]} ${baseView.id}`;
          $$(this.ids.component)?.$view?.setAttribute("data-cy", dataCy);
 
+         // listen DC events
          const dv = this.datacollection;
          if (dv) {
             const currData = dv.getCursor();
@@ -66,12 +71,17 @@ export default function FNAbviewdetailComponent({ ABViewContainerComponent }) {
       }
 
       displayData(rowData = {}) {
+         // make sure we have data to work with.  If null is passed in
+         // then pull current cursor.
          if (rowData == null) {
             rowData = this.datacollection.getCursor();
          }
 
          const views = (this.view.views() || []).sort((a, b) => {
             if (!a?.field?.() || !b?.field?.()) return 0;
+
+            // NOTE: sort order of calculated fields.
+            // FORMULA field type should be calculated before CALCULATE field type
             if (a.field().key === "formula" && b.field().key === "calculate")
                return -1;
             if (a.field().key === "calculate" && b.field().key === "formula")
@@ -85,6 +95,7 @@ export default function FNAbviewdetailComponent({ ABViewContainerComponent }) {
                const field = f.field();
                if (!field) return;
 
+               // get value of relation when field is a connect field
                switch (field.key) {
                   case "connectObject":
                      val = field.pullRelationValues(rowData);
@@ -144,15 +155,31 @@ export default function FNAbviewdetailComponent({ ABViewContainerComponent }) {
                      break;
                   case "formula":
                      if (rowData) {
-                        val = field.format(rowData, false);
+                        // NOTE: Could not to re-calculate because `__relation` data is extracted from full data at the moment
+                        // rowData.__relation format
+                        // {
+                        //    id: "string"
+                        //    text: "string"
+                        //    translations: []
+                        //    uuid:  "0cb52669-d626-4c9d-85ea-2d931751d0ce"
+                        //    value: "LABEL"
+                        // }
+                        const needRecalculate = false;
+
+                        val = field.format(rowData, needRecalculate);
                      }
                      break;
                   default:
                      val = field.format(rowData);
+                     // break;
                }
             }
 
+            // set value to each components
             const vComponent = f.component(this.idBase);
+
+            // vComponent?.onShow();
+
             vComponent?.setValue?.(val);
             vComponent?.displayText?.(rowData);
          });
