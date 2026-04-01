@@ -43,6 +43,15 @@ module.exports = {
          },
       ],
 
+      "sort-imports": ["error", {
+         "ignoreCase": true,
+         "ignoreDeclarationSort": false,
+         "ignoreMemberSort": false,
+         "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
+         "allowSeparatedGroups": false
+      }],
+
+
       // eslint rule customization here:
       "no-console": 0, // allow console.log() in our services
       "no-unused-vars": 0, // allow unused variables (webpack will remove them)
