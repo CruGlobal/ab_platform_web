@@ -623,8 +623,7 @@ export default function FNAbviewform(API) {
       }
    }
 
-   ABViewForm.getPluginKey = () => ABViewForm.common().key;
-   ABViewForm.getPluginType = () => "view";
+
 
    // Store ABViewForm for'instanceof' checks in other plugins
    if (AB && AB.Class) {

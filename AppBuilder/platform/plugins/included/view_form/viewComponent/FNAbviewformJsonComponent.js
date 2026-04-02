@@ -21,7 +21,7 @@ export default function FNAbviewformJsonComponent({ ABViewFormItemComponent }) {
             instance?.view?.parent?.viewComponents
          ) {
             let filterField = "";
-            for (const [key, value] of Object.entries(
+            for (const value of Object.values(
                instance.view.parent.viewComponents
             )) {
                if (value.settings.fieldId == instance.settings.filterField) {
