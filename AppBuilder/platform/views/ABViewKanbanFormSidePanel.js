@@ -6,8 +6,6 @@
  */
 
 const ABViewComponent = require("./viewComponent/ABViewComponent").default;
-const ABViewForm = require("./ABViewForm");
-const ABViewFormButton = require("./ABViewFormButton");
 
 var L = null;
 // multilingual Label fn()
@@ -131,7 +129,7 @@ module.exports = class ABWorkObjectKanBan extends ABViewComponent {
 
       let formAttrs = {
          id: `${this.ids.component}_sideform`,
-         key: ABViewForm.common().key,
+         key: "form",
          settings: {
             columns: 1,
             labelPosition: "top",
@@ -157,22 +155,17 @@ module.exports = class ABWorkObjectKanBan extends ABViewComponent {
       });
 
       // add default button (Save button)
-      form._views.push(
-         new ABViewFormButton(
-            {
-               settings: {
-                  includeSave: true,
-                  includeCancel: false,
-                  includeReset: false,
-               },
-               position: {
-                  y: CurrentObject.fields().length, // yPosition
-               },
-            },
-            this._mockApp,
-            form
-         )
-      );
+      form.viewNew({
+         key: "button",
+         settings: {
+            includeSave: true,
+            includeCancel: false,
+            includeReset: false,
+         },
+         position: {
+            y: CurrentObject.fields().length, // yPosition
+         },
+      });
 
       // add temp id to views
       form._views.forEach(

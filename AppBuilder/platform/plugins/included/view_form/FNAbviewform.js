@@ -1,285 +1,241 @@
 import FNAbviewformComponent from "./FNAbviewformComponent.js";
+import FNAbviewformButton from "./FNAbviewformButton.js";
+import FNAbviewformCheckbox from "./FNAbviewformCheckbox.js";
+import FNAbviewformConnect from "./FNAbviewformConnect.js";
+import FNAbviewformCustom from "./FNAbviewformCustom.js";
+import FNAbviewformDatepicker from "./FNAbviewformDatepicker.js";
+import FNAbviewformItem from "./FNAbviewformItem.js";
+import FNAbviewformJson from "./FNAbviewformJson.js";
+import FNAbviewformNumber from "./FNAbviewformNumber.js";
+import FNAbviewformReadonly from "./FNAbviewformReadonly.js";
+import FNAbviewformSelectMultiple from "./FNAbviewformSelectMultiple.js";
+import FNAbviewformSelectSingle from "./FNAbviewformSelectSingle.js";
+import FNAbviewformTree from "./FNAbviewformTree.js";
+import FNAbviewformTextbox from "./FNAbviewformTextbox.js";
+import FNAbviewformURL from "./FNAbviewformURL.js";
 
+// Internalized Core Factories
+import FNAbviewformCore from "./core/ABViewFormCore.js";
+import FNAbviewformItemCore from "./core/ABViewFormItemCore.js";
+import FNAbviewformButtonCore from "./core/ABViewFormButtonCore.js";
+import FNAbviewformCheckboxCore from "./core/ABViewFormCheckboxCore.js";
+import FNAbviewformConnectCore from "./core/ABViewFormConnectCore.js";
+import FNAbviewformCustomCore from "./core/ABViewFormCustomCore.js";
+import FNAbviewformDatepickerCore from "./core/ABViewFormDatepickerCore.js";
+import FNAbviewformJsonCore from "./core/ABViewFormJsonCore.js";
+import FNAbviewformNumberCore from "./core/ABViewFormNumberCore.js";
+import FNAbviewformReadonlyCore from "./core/ABViewFormReadonlyCore.js";
+import FNAbviewformSelectMultipleCore from "./core/ABViewFormSelectMultipleCore.js";
+import FNAbviewformSelectSingleCore from "./core/ABViewFormSelectSingleCore.js";
+import FNAbviewformTreeCore from "./core/ABViewFormTreeCore.js";
+import FNAbviewformTextboxCore from "./core/ABViewFormTextboxCore.js";
+import FNAbviewformURLCore from "./core/ABViewFormURLCore.js";
 
-// FNAbviewform Web
-// A web side import for an ABView.
-//
-export default function FNAbviewform({
-   AB,
-   ABViewPlugin,
-   ABViewComponentPlugin,
-   ABViewContainer,
-   ABViewRuleListFormRecordRules,
-   ABViewRuleListFormSubmitRules,
-   ABViewFormButton,
-   ABViewFormConnect,
-   ABViewFormCustom,
-   ABViewFormDatepicker,
-   ABViewFormItem,
-   ABViewFormJson,
-   ABViewFormSelectMultiple,
-   ABViewFormTextbox,
-}) {
+/**
+ * FNAbviewform
+ * A web side import for an ABViewForm.
+ */
+export default function FNAbviewform(API) {
+   const {
+      ABViewComponentPlugin,
+      ABViewPlugin,
+      ABViewContainer,
+      ABViewRuleListFormRecordRules,
+      ABViewRuleListFormSubmitRules,
+      ABViewPropertyAddPage,
+      ABViewPropertyEditPage,
+      ABFieldImage,
+      FocusableTemplate,
+      AB,
+   } = API;
+
+   // Initialize Core Classes from Factories
+   const ABViewFormItemCore = FNAbviewformItemCore(ABViewPlugin);
+
+   const ABViewFormItem = FNAbviewformItem({
+      ABViewComponentPlugin,
+      ABViewFormItemCore,
+   });
+
+   // Store ABViewFormItem for'instanceof' checks in other plugins
+   if (AB && AB.Class) {
+      AB.Class.ABViewFormItem = ABViewFormItem;
+   }
+
+   const ABViewFormItemComponent = ABViewFormItem.ABViewFormItemComponent;
+   if (!ABViewFormItemComponent) {
+      const error = new Error(
+         "FNAbviewform: ABViewFormItem.ABViewFormItemComponent is undefined"
+      );
+      console.error(error);
+      // Fallback or more descriptive error could go here if needed
+   }
+
+   const ABViewFormButtonCore = FNAbviewformButtonCore(ABViewPlugin);
+   const ABViewFormButton = FNAbviewformButton({
+      ABViewComponentPlugin,
+      ABViewFormItemComponent,
+      ABViewFormButtonCore,
+   });
+
+   const ABViewFormCheckboxCore = FNAbviewformCheckboxCore(ABViewFormItemCore);
+   const ABViewFormCheckbox = FNAbviewformCheckbox({
+      ABViewComponentPlugin,
+      ABViewFormItemComponent,
+      ABViewFormCheckboxCore,
+   });
+
+   const ABViewFormConnectCore = FNAbviewformConnectCore(ABViewFormItemCore);
+   const ABViewFormConnect = FNAbviewformConnect({
+      ABViewComponentPlugin,
+      ABViewFormItemComponent,
+      ABViewFormConnectCore,
+      ABViewPropertyAddPage,
+      ABViewPropertyEditPage,
+   });
+
+   const ABViewFormCustomCore = FNAbviewformCustomCore(ABViewFormItemCore);
+   const ABViewFormCustom = FNAbviewformCustom({
+      ABViewComponentPlugin,
+      ABViewFormItemComponent,
+      ABViewFormCustomCore,
+      ABFieldImage,
+      FocusableTemplate,
+   });
+
+   const ABViewFormDatepickerCore =
+      FNAbviewformDatepickerCore(ABViewFormItemCore);
+   const ABViewFormDatepicker = FNAbviewformDatepicker({
+      ABViewComponentPlugin,
+      ABViewFormItemComponent,
+      ABViewFormDatepickerCore,
+   });
+
+   const ABViewFormJsonCore = FNAbviewformJsonCore(ABViewFormItemCore);
+   const ABViewFormJson = FNAbviewformJson({
+      ABViewComponentPlugin,
+      ABViewFormItemComponent,
+      ABViewFormJsonCore,
+   });
+
+   const ABViewFormNumberCore = FNAbviewformNumberCore(ABViewFormItemCore);
+   const ABViewFormNumber = FNAbviewformNumber({
+      ABViewComponentPlugin,
+      ABViewFormItemComponent,
+      ABViewFormNumberCore,
+   });
+
+   const ABViewFormReadonlyCore =
+      FNAbviewformReadonlyCore(ABViewFormCustomCore);
+   const ABViewFormReadonly = FNAbviewformReadonly({
+      ABViewComponentPlugin,
+      ABViewFormItemComponent,
+      ABViewFormReadonlyCore,
+      ABFieldImage,
+      FocusableTemplate,
+   });
+
+   const ABViewFormSelectMultipleCore =
+      FNAbviewformSelectMultipleCore(ABViewFormItemCore);
+   const ABViewFormSelectMultiple = FNAbviewformSelectMultiple({
+      ABViewComponentPlugin,
+      ABViewFormItemComponent,
+      ABViewFormSelectMultipleCore,
+   });
+
+   const ABViewFormSelectSingleCore =
+      FNAbviewformSelectSingleCore(ABViewFormItemCore);
+   const ABViewFormSelectSingle = FNAbviewformSelectSingle({
+      ABViewComponentPlugin,
+      ABViewFormItemComponent,
+      ABViewFormSelectSingleCore,
+   });
+
+   const ABViewFormTreeCore = FNAbviewformTreeCore(ABViewFormCustomCore);
+   const ABViewFormTree = FNAbviewformTree({
+      ABViewComponentPlugin,
+      ABViewFormItemComponent,
+      ABViewFormTreeCore,
+      ABFieldImage,
+      FocusableTemplate,
+   });
+
+   const ABViewFormTextboxCore = FNAbviewformTextboxCore(ABViewFormItemCore);
+   const ABViewFormTextbox = FNAbviewformTextbox({
+      ABViewComponentPlugin,
+      ABViewFormItemComponent,
+      ABViewFormTextboxCore,
+   });
+
    const ABAbviewformComponent = FNAbviewformComponent({
       ABViewComponentPlugin,
       ABViewFormButton,
+      ABViewFormCheckbox,
       ABViewFormConnect,
       ABViewFormCustom,
       ABViewFormDatepicker,
       ABViewFormItem,
       ABViewFormJson,
+      ABViewFormNumber,
+      ABViewFormReadonly,
       ABViewFormSelectMultiple,
+      ABViewFormSelectSingle,
+      ABViewFormTree,
       ABViewFormTextbox,
    });
 
    const ABRecordRule = ABViewRuleListFormRecordRules;
    const ABSubmitRule = ABViewRuleListFormSubmitRules;
 
-const ABViewFormDefaults = {
-   key: "form", // unique key identifier for this ABViewForm
-   icon: "list-alt", // icon reference: (without 'fa-' )
-   labelKey: "Form", // {string} the multilingual label key for the class label
-};
+   const ABViewFormBase = FNAbviewformCore(
+      ABViewContainer,
+      ABViewFormItem,
+      ABRecordRule,
+      ABSubmitRule
+   );
 
-const ABViewFormPropertyComponentDefaults = {
-   dataviewID: null,
-   showLabel: true,
-   labelPosition: "left",
-   labelWidth: 120,
-   height: 200,
-   clearOnLoad: false,
-   clearOnSave: false,
-   displayRules: [],
-   editForm: "none", // The url pointer of ABViewForm
-
-   //	[{
-   //		action: {string},
-   //		when: [
-   //			{
-   //				fieldId: {UUID},
-   //				comparer: {string},
-   //				value: {string}
-   //			}
-   //		],
-   //		values: [
-   //			{
-   //				fieldId: {UUID},
-   //				value: {object}
-   //			}
-   //		]
-   //	}]
-   recordRules: [],
-
-   //	[{
-   //		action: {string},
-   //		when: [
-   //			{
-   //				fieldId: {UUID},
-   //				comparer: {string},
-   //				value: {string}
-   //			}
-   //		],
-   //		value: {string}
-   //	}]
-   submitRules: [],
-};
-
-class ABViewFormCore extends ABViewContainer {
-   constructor(values, application, parent, defaultValues) {
-      super(values, application, parent, defaultValues || ABViewFormDefaults);
-      this.isForm = true;
-   }
-
-   static common() {
-      return ABViewFormDefaults;
-   }
-
-   static defaultValues() {
-      return ABViewFormPropertyComponentDefaults;
-   }
-
-   ///
-   /// Instance Methods
-   ///
-
-   /**
-    * @method fromValues()
-    *
-    * initialze this object with the given set of values.
-    * @param {obj} values
-    */
-   fromValues(values) {
-      super.fromValues(values);
-
-      this.settings.labelPosition =
-         this.settings.labelPosition ||
-         ABViewFormPropertyComponentDefaults.labelPosition;
-
-      // convert from "0" => true/false
-      this.settings.showLabel = JSON.parse(
-         this.settings.showLabel != null
-            ? this.settings.showLabel
-            : ABViewFormPropertyComponentDefaults.showLabel
-      );
-      this.settings.clearOnLoad = JSON.parse(
-         this.settings.clearOnLoad != null
-            ? this.settings.clearOnLoad
-            : ABViewFormPropertyComponentDefaults.clearOnLoad
-      );
-      this.settings.clearOnSave = JSON.parse(
-         this.settings.clearOnSave != null
-            ? this.settings.clearOnSave
-            : ABViewFormPropertyComponentDefaults.clearOnSave
-      );
-
-      // convert from "0" => 0
-      this.settings.labelWidth = parseInt(
-         this.settings.labelWidth == null
-            ? ABViewFormPropertyComponentDefaults.labelWidth
-            : this.settings.labelWidth
-      );
-      this.settings.height = parseInt(
-         this.settings.height == null
-            ? ABViewFormPropertyComponentDefaults.height
-            : this.settings.height
-      );
-   }
-
-   // Use this function in kanban
-   objectLoad(object) {
-      this._currentObject = object;
-   }
-
-   /**
-    * @method componentList
-    * return the list of components available on this view to display in the editor.
-    */
-   componentList() {
-      var viewsToAllow = ["label", "layout", "button", "text"],
-         allComponents = this.application.viewAll();
-
-      return allComponents.filter((c) => {
-         return viewsToAllow.indexOf(c.common().key) > -1;
-      });
-   }
-
-   /**
-    * @method fieldComponents()
-    *
-    * return an array of all the ABViewFormField children
-    *
-    * @param {fn} filter  	a filter fn to return a set of ABViewFormField that this fn
-    *						returns true for.
-    * @return {array} 	array of ABViewFormField
-    */
-   fieldComponents(filter) {
-      const flattenComponents = (views) => {
-         let components = [];
-
-         views.forEach((v) => {
-            if (v == null) return;
-
-            components.push(v);
-
-            if (v._views?.length) {
-               components = components.concat(flattenComponents(v._views));
-            }
-         });
-
-         return components;
-      };
-
-      if (this._views?.length) {
-         const allComponents = flattenComponents(this._views);
-
-         if (filter == null) {
-            filter = (comp) => comp instanceof ABViewFormItem;
-         }
-
-         return allComponents.filter(filter);
-      } else {
-         return [];
+   ABViewFormBase.prototype.superComponent = function () {
+      if (this._superComponent == null) {
+         this._superComponent = ABViewContainer.prototype.component.call(this);
       }
-   }
+      return this._superComponent;
+   };
 
-   addFieldToForm(field, yPosition) {
-      if (field == null) return;
+   const ABViewFormURLCore = FNAbviewformURLCore(ABViewFormBase);
+   const ABViewFormURL = FNAbviewformURL({
+      ABAbviewformComponent,
+      ABViewFormURLCore,
+   });
 
-      var fieldComponent = field.formComponent();
-      if (fieldComponent == null) return;
+   const views = [
+      ABViewFormButton,
+      ABViewFormCheckbox,
+      ABViewFormConnect,
+      ABViewFormCustom,
+      ABViewFormDatepicker,
+      ABViewFormJson,
+      ABViewFormNumber,
+      ABViewFormReadonly,
+      ABViewFormSelectMultiple,
+      ABViewFormSelectSingle,
+      ABViewFormTree,
+      ABViewFormTextbox,
+      ABViewFormURL,
+   ];
 
-      var newView = fieldComponent.newInstance(this.application, this);
-      if (newView == null) return;
+   views.forEach((v) => {
+      v.getPluginKey = () => v.common().key;
+      v.getPluginType = () => "view";
+   });
 
-      // set settings to component
-      newView.settings = newView.settings || {};
-      newView.settings.fieldId = field.id;
-      // TODO : Default settings
-
-      if (yPosition != null) newView.position.y = yPosition;
-
-      // add a new component
-      this._views.push(newView);
-
-      return newView;
-   }
-
-   get RecordRule() {
-      let object = this.datacollection.datasource;
-
-      if (this._recordRule == null) {
-         this._recordRule = new ABRecordRule();
+   class ABViewForm extends ABViewFormBase {
+      constructor(values, application, parent, defaultValues) {
+         super(values, application, parent, defaultValues);
+         this._callbacks = {
+            onBeforeSaveData: () => true,
+         };
       }
 
-      this._recordRule.formLoad(this);
-      this._recordRule.fromSettings(this.settings.recordRules);
-      this._recordRule.objectLoad(object);
-
-      return this._recordRule;
-   }
-
-   doRecordRulesPre(rowData) {
-      return this.RecordRule.processPre({ data: rowData, form: this });
-   }
-
-   doRecordRules(rowData) {
-      // validate for record rules
-      if (rowData) {
-         let object = this.datacollection.datasource;
-         let ruleValidator = object.isValidData(rowData);
-         let isUpdatedDataValid = ruleValidator.pass();
-         if (!isUpdatedDataValid) {
-            console.error("Updated data is invalid.", { rowData: rowData });
-            return Promise.reject(new Error("Updated data is invalid."));
-         }
-      }
-
-      return this.RecordRule.process({ data: rowData, form: this });
-   }
-
-   doSubmitRules(rowData) {
-      var object = this.datacollection.datasource;
-
-      var SubmitRules = new ABSubmitRule();
-      SubmitRules.formLoad(this);
-      SubmitRules.fromSettings(this.settings.submitRules);
-      SubmitRules.objectLoad(object);
-
-      return SubmitRules.process({ data: rowData, form: this });
-   }
-};
-
-const L = (...params) => AB.Multilingual.label(...params);
-
-// const ABViewFormPropertyComponentDefaults = ABViewFormCore.defaultValues();
-
-return class ABViewForm extends ABViewFormCore {
-
-/**
-       * @method getPluginKey
-       * return the plugin key for this view.
-       * @return {string} plugin key
-       */
       static getPluginKey() {
          return this.common().key;
       }
@@ -289,7 +245,6 @@ return class ABViewForm extends ABViewFormCore {
       }
 
       static newInstance(application, parent) {
-         // return a new instance from ABViewManager:
          return application.viewNew(
             { key: this.common().key, plugin_key: this.getPluginKey() },
             parent
@@ -302,572 +257,379 @@ return class ABViewForm extends ABViewFormCore {
          return result;
       }
 
-/**
-       * @method component()
-       * return a UI component based upon this view.
-       * @return {obj} UI component
-       */
       component(parentId) {
          return new ABAbviewformComponent(this, parentId);
       }
 
-
-   constructor(values, application, parent, defaultValues) {
-      super(values, application, parent, defaultValues);
-
-      this._callbacks = {
-         onBeforeSaveData: () => true,
-      };
-   }
-
-   superComponent() {
-      if (this._superComponent == null)
-         this._superComponent = super.component();
-
-      return this._superComponent;
-   }
-
-   
-
-   refreshDefaultButton(ids) {
-      // If default button is not exists, then skip this
-      let defaultButton = this.views(
-         (v) => v instanceof ABViewFormButton && v.settings.isDefault
-      )[0];
-
-      // Add a default button
-      if (defaultButton == null) {
-         defaultButton = ABViewFormButton.newInstance(this.application, this);
-         defaultButton.settings.isDefault = true;
-      }
-      // Remove default button from array, then we will add it to be the last item later (.push)
-      else {
-         this._views = this.views((v) => v.id != defaultButton.id);
-      }
-
-      // Calculate position Y of the default button
-      let yList = this.views().map((v) => (v.position.y || 0) + 1);
-      yList.push(this._views.length || 0);
-      yList.push($$(ids.fields).length || 0);
-      let posY = Math.max(...yList);
-
-      // Update to be the last item
-      defaultButton.position.y = posY;
-
-      // Keep the default button is always the last item of array
-      this._views.push(defaultButton);
-
-      return defaultButton;
-   }
-
-   /**
-    * @method getFormValues
-    *
-    * @param {webix form} formView
-    * @param {ABObject} obj
-    * @param {ABDatacollection} dc
-    * @param {ABDatacollection} dcLink [optional]
-    */
-   getFormValues(formView, obj, dc, dcLink) {
-      // get the fields that are on this form
-      const visibleFields = ["id"]; // we always want the id so we can udpate records
-      formView.getValues(function (obj) {
-         visibleFields.push(obj.config.name);
-      });
-
-      // only get data passed from form
-      const allVals = formView.getValues();
-      const formVals = {};
-      visibleFields.forEach((val) => {
-         formVals[val] = allVals[val];
-      });
-
-      // get custom values
-      this.fieldComponents(
-         (comp) =>
-            comp instanceof ABViewFormCustom ||
-            comp instanceof ABViewFormConnect ||
-            comp instanceof ABViewFormDatepicker ||
-            comp instanceof ABViewFormSelectMultiple ||
-            (comp instanceof ABViewFormJson && comp.settings.type == "filter")
-      ).forEach((f) => {
-         const vComponent = this.viewComponents[f.id];
-         if (vComponent == null) return;
-
-         const field = f.field();
-         if (field) {
-            const getValue = vComponent.getValue ?? vComponent.logic.getValue;
-            if (getValue)
-               formVals[field.columnName] = getValue.call(vComponent, formVals);
-         }
-      });
-
-      // remove connected fields if they were not on the form and they are present in the formVals because it is a datacollection
-      obj.connectFields().forEach((f) => {
-         if (
-            visibleFields.indexOf(f.columnName) == -1 &&
-            formVals[f.columnName]
-         ) {
-            delete formVals[f.columnName];
-            delete formVals[f.relationName()];
-         }
-      });
-
-      // clear undefined values or empty arrays
-      for (const prop in formVals) {
-         if (formVals[prop] == null || formVals[prop].length == 0)
-            formVals[prop] = "";
-      }
-
-      // Add parent's data collection cursor when a connect field does not show
-      let linkValues;
-
-      if (dcLink) {
-         linkValues = dcLink.getCursor();
-      }
-
-      if (linkValues) {
-         const objectLink = dcLink.datasource;
-
-         const connectFields = obj.connectFields();
-         connectFields.forEach((f) => {
-            const formFieldCom = this.fieldComponents(
-               (fComp) => fComp?.field?.()?.id === f?.id
-            );
-
-            if (
-               objectLink.id == f.settings.linkObject &&
-               formFieldCom.length < 1 && // check field does not show
-               formVals[f.columnName] === undefined
-            ) {
-               const linkColName = f.indexField
-                  ? f.indexField.columnName
-                  : objectLink.PK();
-
-               formVals[f.columnName] = {};
-               formVals[f.columnName][linkColName] =
-                  linkValues[linkColName] ?? linkValues.id;
-            }
-         });
-      }
-
-      // NOTE: need to pull data of current cursor to calculate Calculate & Formula fields
-      // .formVals variable does not include data that does not display in the Form widget
-      const cursorFormVals = Object.assign(dc.getCursor() ?? {}, formVals);
-
-      // Set value of calculate or formula fields to use in record rule
-      obj.fields((f) => f.key == "calculate" || f.key == "formula").forEach(
-         (f) => {
-            if (formVals[f.columnName] == null) {
-               let reCalculate = true;
-
-               // WORKAROUND: If "Formula" field will have Filter conditions,
-               // Then it is not able to re-calculate on client side
-               // because relational data is not full data so FilterComplex will not have data to check
-               if (f.key == "formula" && f.settings?.where?.rules?.length > 0) {
-                  reCalculate = false;
-               }
-
-               formVals[f.columnName] = f.format(cursorFormVals, reCalculate);
-            }
-         }
-      );
-
-      if (allVals.translations?.length > 0)
-         formVals.translations = allVals.translations;
-
-      // give the Object a final chance to review the data being handled.
-      obj.formCleanValues(formVals);
-
-      return formVals;
-   }
-
-   /**
-    * @method validateData
-    *
-    * @param {webix form} formView
-    * @param {ABObject} object
-    * @param {object} formVals
-    *
-    * @return {boolean} isValid
-    */
-   validateData($formView, object, formVals) {
-      let list = "";
-
-      // validate required fields
-      const requiredFields = this.fieldComponents(
-         (fComp) =>
-            fComp?.field?.().settings?.required == true ||
-            fComp?.settings?.required == true
-      ).map((fComp) => fComp.field());
-
-      // validate data
-      const validator = object.isValidData(formVals);
-      let isValid = validator.pass();
-
-      // $$($formView).validate();
-      $formView.validate();
-      /**
-       * helper function to fix the webix ui after adding an validation error
-       * message.
-       * @param {string} col - field.columnName
-       */
-      const fixInvalidMessageUI = (col) => {
-         const $forminput = $formView.elements[col];
-         if (!$forminput) return;
-         // Y position
-         const height = $forminput.$height;
-         if (height < 56) {
-            $forminput.define("height", 60);
-            $forminput.resize();
-         }
-
-         // X position
-         const domInvalidMessage = $forminput.$view.getElementsByClassName(
-            "webix_inp_bottom_label"
+      refreshDefaultButton(ids) {
+         let defaultButton = this.views(
+            (v) => v instanceof ABViewFormButton && v.settings.isDefault
          )[0];
-         if (!domInvalidMessage?.style["margin-left"]) {
-            domInvalidMessage.style.marginLeft = `${
-               this.settings.labelWidth ??
-               ABViewFormPropertyComponentDefaults.labelWidth
-            }px`;
-         }
-      };
-
-      // Display required messages
-      requiredFields.forEach((f) => {
-         if (!f) return;
-
-         const fieldVal = formVals[f.columnName];
-         if (fieldVal == "" || fieldVal == null || fieldVal.length < 1) {
-            $formView.markInvalid(f.columnName, L("This is a required field."));
-            list += `<li>${L("Missing Required Field")} ${f.columnName}</li>`;
-            isValid = false;
-
-            // Fix position of invalid message
-            fixInvalidMessageUI(f.columnName);
-         }
-      });
-
-      // if data is invalid
-      if (!isValid) {
-         const saveButton = $formView.queryView({
-            view: "button",
-            type: "form",
-         });
-
-         // error message
-         if (validator?.errors?.length) {
-            validator.errors.forEach((err) => {
-               $formView.markInvalid(err.name, err.message);
-               list += `<li>${err.name}: ${err.message}</li>`;
-               fixInvalidMessageUI(err.name);
-            });
-
-            saveButton?.disable();
+         if (defaultButton == null) {
+            defaultButton = ABViewFormButton.newInstance(
+               this.application,
+               this
+            );
+            defaultButton.settings.isDefault = true;
          } else {
-            saveButton?.enable();
+            this._views = this.views((v) => v.id != defaultButton.id);
          }
+         let yList = this.views().map((v) => (v.position.y || 0) + 1);
+         yList.push(this._views.length || 0);
+         yList.push($$(ids.fields).length || 0);
+         let posY = Math.max(...yList);
+         defaultButton.position.y = posY;
+         this._views.push(defaultButton);
+         return defaultButton;
       }
-      if (list) {
-         AB.Webix.alert({
-            type: "alert-error",
-            title: L("Problems Saving"),
-            width: 400,
-            text: `<ul style='text-align:left'>${list}</ul>`,
+
+      getFormValues(formView, obj, dc, dcLink) {
+         const visibleFields = ["id"];
+         formView.getValues(function (obj) {
+            visibleFields.push(obj.config.name);
          });
-      }
-
-      return isValid;
-   }
-
-   /**
-    * @method recordRulesReady()
-    * This returns a Promise that gets resolved when all record rules report
-    * that they are ready.
-    * @return {Promise}
-    */
-   async recordRulesReady() {
-      return this.RecordRule.rulesReady();
-   }
-
-   /**
-    * @method saveData
-    * save data in to database
-    * @param $formView - webix's form element
-    *
-    * @return {Promise}
-    */
-   async saveData($formView) {
-      // call .onBeforeSaveData event
-      // if this function returns false, then it will not go on.
-      if (!this._callbacks?.onBeforeSaveData?.()) return;
-
-      $formView.clearValidation();
-
-      // get ABDatacollection
-      const dv = this.datacollection;
-      if (dv == null) return;
-
-      // get ABObject
-      const obj = dv.datasource;
-      if (obj == null) return;
-
-      // show progress icon
-      $formView.showProgress?.({ type: "icon" });
-
-      // get update data
-      const formVals = this.getFormValues(
-         $formView,
-         obj,
-         dv,
-         dv.datacollectionLink
-      );
-
-      // form ready function
-      const formReady = (newFormVals) => {
-         // clear cursor after saving.
-         if (dv) {
-            if (this.settings.clearOnSave) {
-               dv.setCursor(null);
-               $formView.clear();
-            } else {
-               if (newFormVals && newFormVals.id) dv.setCursor(newFormVals.id);
+         const allVals = formView.getValues();
+         const formVals = {};
+         visibleFields.forEach((val) => {
+            formVals[val] = allVals[val];
+         });
+         this.fieldComponents(
+            (comp) =>
+               comp instanceof ABViewFormCustom ||
+               comp instanceof ABViewFormConnect ||
+               comp instanceof ABViewFormDatepicker ||
+               comp instanceof ABViewFormSelectMultiple ||
+               (comp instanceof ABViewFormJson &&
+                  comp.settings.type == "filter")
+         ).forEach((f) => {
+            const vComponent = this.viewComponents[f.id];
+            if (vComponent == null) return;
+            const field = f.field();
+            if (field) {
+               const getValue =
+                  vComponent.getValue ?? vComponent.logic.getValue;
+               if (getValue)
+                  formVals[field.columnName] = getValue.call(
+                     vComponent,
+                     formVals
+                  );
             }
-         }
-
-         $formView.hideProgress?.();
-
-         // if there was saved data pass it up to the onSaveData callback
-         // if (newFormVals) this._logic.callbacks.onSaveData(newFormVals);
-         if (newFormVals) this.emit("saved", newFormVals); // Q? is this the right upgrade?
-      };
-
-      const formError = (err) => {
-         const $saveButton = $formView.queryView({
-            view: "button",
-            type: "form",
          });
-
-         // mark error
-         if (err) {
-            if (err.invalidAttributes) {
-               for (const attr in err.invalidAttributes) {
-                  let invalidAttrs = err.invalidAttributes[attr];
-                  if (invalidAttrs && invalidAttrs[0])
-                     invalidAttrs = invalidAttrs[0];
-
-                  $formView.markInvalid(attr, invalidAttrs.message);
+         obj.connectFields().forEach((f) => {
+            if (
+               visibleFields.indexOf(f.columnName) == -1 &&
+               formVals[f.columnName]
+            ) {
+               delete formVals[f.columnName];
+               delete formVals[f.relationName()];
+            }
+         });
+         for (const prop in formVals) {
+            if (formVals[prop] == null || formVals[prop].length == 0)
+               formVals[prop] = "";
+         }
+         let linkValues;
+         if (dcLink) {
+            linkValues = dcLink.getCursor();
+         }
+         if (linkValues) {
+            const objectLink = dcLink.datasource;
+            const connectFields = obj.connectFields();
+            connectFields.forEach((f) => {
+               const formFieldCom = this.fieldComponents(
+                  (fComp) => fComp?.field?.()?.id === f?.id
+               );
+               if (
+                  objectLink.id == f.settings.linkObject &&
+                  formFieldCom.length < 1 &&
+                  formVals[f.columnName] === undefined
+               ) {
+                  const linkColName = f.indexField
+                     ? f.indexField.columnName
+                     : objectLink.PK();
+                  formVals[f.columnName] = {};
+                  formVals[f.columnName][linkColName] =
+                     linkValues[linkColName] ?? linkValues.id;
                }
-            } else if (err.sqlMessage) {
-               AB.Webix.message({
-                  text: err.sqlMessage,
-                  type: "error",
+            });
+         }
+         const cursorFormVals = Object.assign(dc.getCursor() ?? {}, formVals);
+         obj.fields((f) => f.key == "calculate" || f.key == "formula").forEach(
+            (f) => {
+               if (formVals[f.columnName] == null) {
+                  let reCalculate = true;
+                  if (
+                     f.key == "formula" &&
+                     f.settings?.where?.rules?.length > 0
+                  ) {
+                     reCalculate = false;
+                  }
+                  formVals[f.columnName] = f.format(
+                     cursorFormVals,
+                     reCalculate
+                  );
+               }
+            }
+         );
+         if (allVals.translations?.length > 0)
+            formVals.translations = allVals.translations;
+         obj.formCleanValues(formVals);
+         return formVals;
+      }
+
+      validateData($formView, object, formVals) {
+         let list = "";
+         const requiredFields = this.fieldComponents(
+            (fComp) =>
+               fComp?.field?.().settings?.required == true ||
+               fComp?.settings?.required == true
+         ).map((fComp) => fComp.field());
+         const validator = object.isValidData(formVals);
+         let isValid = validator.pass();
+         $formView.validate();
+         const fixInvalidMessageUI = (col) => {
+            const $forminput = $formView.elements[col];
+            if (!$forminput) return;
+            const height = $forminput.$height;
+            if (height < 56) {
+               $forminput.define("height", 60);
+               $forminput.resize();
+            }
+            const domInvalidMessage = $forminput.$view.getElementsByClassName(
+               "webix_inp_bottom_label"
+            )[0];
+            if (!domInvalidMessage?.style["margin-left"]) {
+               domInvalidMessage.style.marginLeft = `${
+                  this.settings.labelWidth ??
+                  ABViewFormPropertyComponentDefaults.labelWidth
+               }px`;
+            }
+         };
+         requiredFields.forEach((f) => {
+            if (!f) return;
+            const fieldVal = formVals[f.columnName];
+            if (fieldVal == "" || fieldVal == null || fieldVal.length < 1) {
+               $formView.markInvalid(
+                  f.columnName,
+                  this.AB.Label()("This is a required field.")
+               );
+               list += `<li>${this.AB.Label()("Missing Required Field")} ${
+                  f.columnName
+               }</li>`;
+               isValid = false;
+               fixInvalidMessageUI(f.columnName);
+            }
+         });
+         if (!isValid) {
+            const saveButton = $formView.queryView({
+               view: "button",
+               type: "form",
+            });
+            if (validator?.errors?.length) {
+               validator.errors.forEach((err) => {
+                  $formView.markInvalid(err.name, err.message);
+                  list += `<li>${err.name}: ${err.message}</li>`;
+                  fixInvalidMessageUI(err.name);
                });
+               saveButton?.disable();
             } else {
-               AB.Webix.message({
-                  text: L("System could not save your data"),
-                  type: "error",
-               });
-               this.AB.notify.developer(err, {
-                  message: "Could not save your data",
-                  view: this.toObj(),
-               });
+               saveButton?.enable();
             }
          }
-
-         $saveButton?.enable();
-
-         $formView?.hideProgress?.();
-      };
-
-      // Load data of DCs that use in record rules
-      await this.loadDcDataOfRecordRules();
-
-      // wait for our Record Rules to be ready before we continue.
-      await this.recordRulesReady();
-
-      // update value from the record rule (pre-update)
-      this.doRecordRulesPre(formVals);
-
-      // validate data
-      if (!this.validateData($formView, obj, formVals)) {
-         // console.warn("Data is invalid.");
-         $formView.hideProgress?.();
-         return;
+         if (list) {
+            this.AB.Webix.alert({
+               type: "alert-error",
+               title: this.AB.Label()("Problems Saving"),
+               width: 400,
+               text: `<ul style='text-align:left'>${list}</ul>`,
+            });
+         }
+         return isValid;
       }
-      let newFormVals;
-      try {
-         newFormVals = await this.submitValues(formVals);
-      } catch (err) {
-         formError(err.data);
-         return;
-      }
-      // {obj}
-      // The fully populated values returned back from service call
-      // We use this in our post processing Rules
 
-      /*
-      // OLD CODE:
-      try {
-         await this.doRecordRules(newFormVals);
-         // make sure any updates from RecordRules get passed along here.
-         this.doSubmitRules(newFormVals);
+      async recordRulesReady() {
+         return this.RecordRule.rulesReady();
+      }
+
+      async saveData($formView) {
+         if (!this._callbacks?.onBeforeSaveData?.()) return;
+         $formView.clearValidation();
+         const dv = this.datacollection;
+         if (dv == null) return;
+         const obj = dv.datasource;
+         if (obj == null) return;
+         $formView.showProgress?.({ type: "icon" });
+         const formVals = this.getFormValues(
+            $formView,
+            obj,
+            dv,
+            dv.datacollectionLink
+         );
+         const formReady = (newFormVals) => {
+            if (dv) {
+               if (this.settings.clearOnSave) {
+                  dv.setCursor(null);
+                  $formView.clear();
+               } else {
+                  if (newFormVals && newFormVals.id)
+                     dv.setCursor(newFormVals.id);
+               }
+            }
+            $formView.hideProgress?.();
+            if (newFormVals) this.emit("saved", newFormVals);
+         };
+         const formError = (err) => {
+            const $saveButton = $formView.queryView({
+               view: "button",
+               type: "form",
+            });
+            if (err) {
+               if (err.invalidAttributes) {
+                  for (const attr in err.invalidAttributes) {
+                     let invalidAttrs = err.invalidAttributes[attr];
+                     if (invalidAttrs && invalidAttrs[0])
+                        invalidAttrs = invalidAttrs[0];
+                     $formView.markInvalid(attr, invalidAttrs.message);
+                  }
+               } else if (err.sqlMessage) {
+                  this.AB.Webix.message({
+                     text: err.sqlMessage,
+                     type: "error",
+                  });
+               } else {
+                  this.AB.Webix.message({
+                     text: this.AB.Label()("System could not save your data"),
+                     type: "error",
+                  });
+                  this.AB.notify.developer(err, {
+                     message: "Could not save your data",
+                     view: this.toObj(),
+                  });
+               }
+            }
+            $saveButton?.enable();
+            $formView?.hideProgress?.();
+         };
+         await this.loadDcDataOfRecordRules();
+         await this.recordRulesReady();
+         this.doRecordRulesPre(formVals);
+         if (!this.validateData($formView, obj, formVals)) {
+            $formView.hideProgress?.();
+            return;
+         }
+         let newFormVals;
+         try {
+            newFormVals = await this.submitValues(formVals);
+         } catch (err) {
+            formError(err.data);
+            return;
+         }
+         try {
+            await this.doRecordRules(newFormVals);
+         } catch (err) {
+            this.AB.notify.developer(err, {
+               message: "Error processing Record Rules.",
+               view: this.toObj(),
+               newFormVals: newFormVals,
+            });
+         }
+         try {
+            this.doSubmitRules(newFormVals);
+         } catch (errs) {
+            this.AB.notify.developer(errs, {
+               message: "Error processing Submit Rules.",
+               view: this.toObj(),
+               newFormVals: newFormVals,
+            });
+         }
          formReady(newFormVals);
          return newFormVals;
-      } catch (err) {
-         this.AB.notify.developer(err, {
-            message: "Error processing Record Rules.",
-            view: this.toObj(),
-            newFormVals: newFormVals,
-         });
-         // Question:  how do we respond to an error?
-         // ?? just keep going ??
-         this.doSubmitRules(newFormVals);
-         formReady(newFormVals);
-         return;
-      }
-      */
-
-      try {
-         await this.doRecordRules(newFormVals);
-      } catch (err) {
-         this.AB.notify.developer(err, {
-            message: "Error processing Record Rules.",
-            view: this.toObj(),
-            newFormVals: newFormVals,
-         });
       }
 
-      // make sure any updates from RecordRules get passed along here.
-      try {
-         this.doSubmitRules(newFormVals);
-      } catch (errs) {
-         this.AB.notify.developer(errs, {
-            message: "Error processing Submit Rules.",
-            view: this.toObj(),
-            newFormVals: newFormVals,
-         });
-      }
-
-      formReady(newFormVals);
-      return newFormVals;
-   }
-
-   focusOnFirst() {
-      let topPosition = 0;
-      let topPositionId = "";
-      this.views().forEach((item) => {
-         if (item.key == "textbox" || item.key == "numberbox") {
-            if (item.position.y == topPosition) {
-               // topPosition = item.position.y;
-               topPositionId = item.id;
+      focusOnFirst() {
+         let topPosition = 0;
+         let topPositionId = "";
+         this.views().forEach((item) => {
+            if (item.key == "textbox" || item.key == "numberbox") {
+               if (item.position.y == topPosition) {
+                  topPositionId = item.id;
+               }
             }
+         });
+         let childComponent = this.viewComponents[topPositionId];
+         if (childComponent && $$(childComponent.ui.id)) {
+            $$(childComponent.ui.id).focus();
          }
-      });
-      let childComponent = this.viewComponents[topPositionId];
-      if (childComponent && $$(childComponent.ui.id)) {
-         $$(childComponent.ui.id).focus();
       }
-   }
 
-   async loadDcDataOfRecordRules() {
-      const tasks = [];
+      async loadDcDataOfRecordRules() {
+         const tasks = [];
+         (this.settings?.recordRules ?? []).forEach((rule) => {
+            (rule?.actionSettings?.valueRules?.fieldOperations ?? []).forEach(
+               (op) => {
+                  if (op.valueType !== "exist") return;
+                  const pullDataDC = this.AB.datacollectionByID(op.value);
+                  if (
+                     pullDataDC?.dataStatus ===
+                     pullDataDC.dataStatusFlag.notInitial
+                  )
+                     tasks.push(pullDataDC.loadData());
+               }
+            );
+         });
+         await Promise.all(tasks);
+         return true;
+      }
 
-      (this.settings?.recordRules ?? []).forEach((rule) => {
-         (rule?.actionSettings?.valueRules?.fieldOperations ?? []).forEach(
-            (op) => {
-               if (op.valueType !== "exist") return;
+      get viewComponents() {
+         const superComponent = this.superComponent();
+         return superComponent.viewComponents;
+      }
 
-               const pullDataDC = this.AB.datacollectionByID(op.value);
+      warningsEval() {
+         super.warningsEval();
+         let DC = this.datacollection;
+         if (!DC) {
+            this.warningsMessage(
+               `can't resolve it's datacollection[${this.settings.dataviewID}]`
+            );
+         }
+      }
 
-               if (
-                  pullDataDC?.dataStatus ===
-                  pullDataDC.dataStatusFlag.notInitial
-               )
-                  tasks.push(pullDataDC.loadData());
+      async submitValues(formVals) {
+         const model = this.datacollection?.model;
+         if (model == null) return;
+         if (formVals.id) {
+            return await model.update(formVals.id, formVals);
+         } else {
+            return await model.create(formVals);
+         }
+      }
+
+      async deleteData($formView) {
+         const dc = this.datacollection;
+         if (dc == null) return;
+         const model = dc.model;
+         if (model == null) return;
+         const formVals = $formView.getValues();
+         if (formVals?.id) {
+            const result = await model.delete(formVals.id);
+            if (result) {
+               dc.setCursor(null);
+               $formView.clear();
             }
-         );
-      });
-
-      await Promise.all(tasks);
-
-      return true;
-   }
-
-   get viewComponents() {
-      const superComponent = this.superComponent();
-      return superComponent.viewComponents;
-   }
-
-   warningsEval() {
-      super.warningsEval();
-
-      let DC = this.datacollection;
-      if (!DC) {
-         this.warningsMessage(
-            `can't resolve it's datacollection[${this.settings.dataviewID}]`
-         );
-      }
-
-      if (this.settings.recordRules) {
-         // TODO: scan recordRules for warnings
-      }
-
-      if (this.settings.submitRules) {
-         // TODO: scan submitRules for warnings.
-      }
-   }
-
-   async submitValues(formVals) {
-      // get ABModel
-      const model = this.datacollection.model;
-      if (model == null) return;
-
-      // is this an update or create?
-      if (formVals.id) {
-         return await model.update(formVals.id, formVals);
-      } else {
-         return await model.create(formVals);
-      }
-   }
-
-   /**
-    * @method deleteData
-    * delete data in to database
-    * @param $formView - webix's form element
-    *
-    * @return {Promise}
-    */
-   async deleteData($formView) {
-      // get ABDatacollection
-      const dc = this.datacollection;
-      if (dc == null) return;
-
-      // get ABObject
-      const obj = dc.datasource;
-      if (obj == null) return;
-
-      // get ABModel
-      const model = dc.model;
-      if (model == null) return;
-
-      // get update data
-      const formVals = $formView.getValues();
-
-      if (formVals?.id) {
-         const result = await model.delete(formVals.id);
-
-         // clear form
-         if (result) {
-            dc.setCursor(null);
-            $formView.clear();
+            return result;
          }
-
-         return result;
       }
    }
-};
 
+   ABViewForm.getPluginKey = () => ABViewForm.common().key;
+   ABViewForm.getPluginType = () => "view";
+
+   // Store ABViewForm for'instanceof' checks in other plugins
+   if (AB && AB.Class) {
+      AB.Class.ABViewForm = ABViewForm;
+   }
+
+   return [ABViewForm, ...views];
 }
-

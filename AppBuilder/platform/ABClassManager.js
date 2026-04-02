@@ -17,16 +17,10 @@ import ABViewPropertyFilterData from "./views/viewProperties/ABViewPropertyFilte
 import ABViewPropertyLinkPage from "./views/viewProperties/ABViewPropertyLinkPage";
 import ABViewRuleListFormRecordRules from "../rules/ABViewRuleListFormRecordRules";
 import ABViewRuleListFormSubmitRules from "../rules/ABViewRuleListFormSubmitRules";
-
-import ABViewForm from "./views/ABViewForm";
-import ABViewFormButton from "./views/ABViewFormButton";
-import ABViewFormConnect from "./views/ABViewFormConnect";
-import ABViewFormCustom from "./views/ABViewFormCustom";
-import ABViewFormDatepicker from "./views/ABViewFormDatepicker";
-import ABViewFormItem from "./views/ABViewFormItem";
-import ABViewFormJson from "./views/ABViewFormJson";
-import ABViewFormSelectMultiple from "./views/ABViewFormSelectMultiple";
-import ABViewFormTextbox from "./views/ABViewFormTextbox";
+import ABViewPropertyAddPage from "./views/viewProperties/ABViewPropertyAddPage";
+import ABViewPropertyEditPage from "./views/viewProperties/ABViewPropertyEditPage";
+import ABFieldImage from "./dataFields/ABFieldImage";
+import FocusableTemplate from "../../webix_custom_components/focusableTemplate";
 
 // MIGRATION: ABViewManager is depreciated.  Use ABClassManager instead.
 import ABViewManager from "./ABViewManager.js";
@@ -84,15 +78,10 @@ export function getPluginAPI() {
       ABViewPropertyLinkPage,
       ABViewRuleListFormRecordRules,
       ABViewRuleListFormSubmitRules,
-      ABViewForm,
-      ABViewFormButton,
-      ABViewFormConnect,
-      ABViewFormCustom,
-      ABViewFormDatepicker,
-      ABViewFormItem,
-      ABViewFormJson,
-      ABViewFormSelectMultiple,
-      ABViewFormTextbox,
+      ABViewPropertyAddPage,
+      ABViewPropertyEditPage,
+      ABFieldImage,
+      FocusableTemplate,
       //  ABFieldPlugin,
       //  ABViewPlugin,
    };

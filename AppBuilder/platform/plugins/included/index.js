@@ -28,7 +28,8 @@ const AllPlugins = [
    viewPdfImporter,
    viewTab,
    viewText,
-, viewForm];
+   viewForm,
+];
 
 export default {
    load: (AB) => {
