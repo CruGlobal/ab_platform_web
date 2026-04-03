@@ -1,12 +1,14 @@
 import FNAbviewformTreeComponent from "./viewComponent/FNAbviewformTreeComponent.js";
+import FNAbviewformTreeCoreFactory from "./core/ABViewFormTreeCore.js";
 
 export default function FNAbviewformTree({
    ABViewComponentPlugin,
    ABViewFormItemComponent,
-   ABViewFormTreeCore,
+   ABViewFormCustom,
    ABFieldImage,
    FocusableTemplate,
 }) {
+   const ABViewFormTreeCore = FNAbviewformTreeCoreFactory(ABViewFormCustom);
    const ABAbviewformTreeComponent = FNAbviewformTreeComponent({
       ABViewFormItemComponent,
       ABFieldImage,

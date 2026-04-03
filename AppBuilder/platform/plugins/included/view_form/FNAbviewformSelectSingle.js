@@ -1,10 +1,12 @@
 import FNAbviewformSelectSingleComponent from "./viewComponent/FNAbviewformSelectSingleComponent.js";
+import FNAbviewformSelectSingleCoreFactory from "./core/ABViewFormSelectSingleCore.js";
 
 export default function FNAbviewformSelectSingle({
    ABViewComponentPlugin,
    ABViewFormItemComponent,
-   ABViewFormSelectSingleCore,
+   ABViewFormItem,
 }) {
+   const ABViewFormSelectSingleCore = FNAbviewformSelectSingleCoreFactory(ABViewFormItem);
    const ABAbviewformSelectSingleComponent = FNAbviewformSelectSingleComponent({
       ABViewFormItemComponent,
    });

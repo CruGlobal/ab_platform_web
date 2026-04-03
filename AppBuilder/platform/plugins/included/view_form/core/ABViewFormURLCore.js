@@ -1,11 +1,11 @@
-export default function (ABViewFormCore) {
+export default function (ABViewForm) {
    const ABViewFormURLDefaults = {
       key: "form-url", // unique key identifier for this ABViewForm
       icon: "list-alt", // icon reference: (without 'fa-' )
       labelKey: "FormUrl", // {string} the multilingual label key for the class label
    };
 
-   return class ABViewFormURLCore extends ABViewFormCore {
+   return class ABViewFormURLCore extends ABViewForm {
       static common() {
          return ABViewFormURLDefaults;
       }

@@ -1,4 +1,4 @@
-export default function (ABViewFormItemCore) {
+export default function (ABViewFormItem) {
    const ABViewFormCheckboxPropertyComponentDefaults = {};
 
    const ABViewFormCheckboxDefaults = {
@@ -7,7 +7,7 @@ export default function (ABViewFormItemCore) {
       labelKey: "ab.components.checkbox", // {string} the multilingual label key for the class label
    };
 
-   return class ABViewFormCheckboxCore extends ABViewFormItemCore {
+   return class ABViewFormCheckboxCore extends ABViewFormItem {
       constructor(values, application, parent, defaultValues) {
          super(
             values,
@@ -23,14 +23,6 @@ export default function (ABViewFormItemCore) {
 
       static defaultValues() {
          return ABViewFormCheckboxPropertyComponentDefaults;
-      }
-
-      /**
-       * @method componentList
-       * return the list of components available on this view to display in the editor.
-       */
-      componentList() {
-         return [];
       }
    };
 }

@@ -1,4 +1,4 @@
-export default function (ABViewFormItemCore) {
+export default function (ABViewFormItem) {
    const ABViewFormDatepickerPropertyComponentDefaults = {
       timepicker: false,
    };
@@ -9,7 +9,7 @@ export default function (ABViewFormItemCore) {
       labelKey: "ab.components.datepicker", // {string} the multilingual label key for the class label
    };
 
-   return class ABViewFormDatepickerCore extends ABViewFormItemCore {
+   return class ABViewFormDatepickerCore extends ABViewFormItem {
       constructor(values, application, parent, defaultValues) {
          super(
             values,
@@ -25,18 +25,6 @@ export default function (ABViewFormItemCore) {
 
       static defaultValues() {
          return ABViewFormDatepickerPropertyComponentDefaults;
-      }
-
-      ///
-      /// Instance Methods
-      ///
-
-      /**
-       * @method componentList
-       * return the list of components available on this view to display in the editor.
-       */
-      componentList() {
-         return [];
       }
    };
 }

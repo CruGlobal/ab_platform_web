@@ -1,35 +1,10 @@
 import FNAbviewformComponent from "./FNAbviewformComponent.js";
-import FNAbviewformButton from "./FNAbviewformButton.js";
-import FNAbviewformCheckbox from "./FNAbviewformCheckbox.js";
-import FNAbviewformConnect from "./FNAbviewformConnect.js";
-import FNAbviewformCustom from "./FNAbviewformCustom.js";
-import FNAbviewformDatepicker from "./FNAbviewformDatepicker.js";
-import FNAbviewformItem from "./FNAbviewformItem.js";
-import FNAbviewformJson from "./FNAbviewformJson.js";
-import FNAbviewformNumber from "./FNAbviewformNumber.js";
-import FNAbviewformReadonly from "./FNAbviewformReadonly.js";
-import FNAbviewformSelectMultiple from "./FNAbviewformSelectMultiple.js";
-import FNAbviewformSelectSingle from "./FNAbviewformSelectSingle.js";
-import FNAbviewformTree from "./FNAbviewformTree.js";
-import FNAbviewformTextbox from "./FNAbviewformTextbox.js";
-import FNAbviewformURL from "./FNAbviewformURL.js";
+import * as fComponents from "./FormComponents.js";
 
 // Internalized Core Factories
 import FNAbviewformCore from "./core/ABViewFormCore.js";
 import FNAbviewformItemCore from "./core/ABViewFormItemCore.js";
-import FNAbviewformButtonCore from "./core/ABViewFormButtonCore.js";
-import FNAbviewformCheckboxCore from "./core/ABViewFormCheckboxCore.js";
-import FNAbviewformConnectCore from "./core/ABViewFormConnectCore.js";
 import FNAbviewformCustomCore from "./core/ABViewFormCustomCore.js";
-import FNAbviewformDatepickerCore from "./core/ABViewFormDatepickerCore.js";
-import FNAbviewformJsonCore from "./core/ABViewFormJsonCore.js";
-import FNAbviewformNumberCore from "./core/ABViewFormNumberCore.js";
-import FNAbviewformReadonlyCore from "./core/ABViewFormReadonlyCore.js";
-import FNAbviewformSelectMultipleCore from "./core/ABViewFormSelectMultipleCore.js";
-import FNAbviewformSelectSingleCore from "./core/ABViewFormSelectSingleCore.js";
-import FNAbviewformTreeCore from "./core/ABViewFormTreeCore.js";
-import FNAbviewformTextboxCore from "./core/ABViewFormTextboxCore.js";
-import FNAbviewformURLCore from "./core/ABViewFormURLCore.js";
 
 /**
  * FNAbviewform
@@ -49,141 +24,53 @@ export default function FNAbviewform(API) {
       AB,
    } = API;
 
-   // Initialize Core Classes from Factories
-   const ABViewFormItemCore = FNAbviewformItemCore(ABViewPlugin);
-
-   const ABViewFormItem = FNAbviewformItem({
+   let FormAPI = {
+      AB,
       ABViewComponentPlugin,
-      ABViewFormItemCore,
-   });
-
-   // Store ABViewFormItem for'instanceof' checks in other plugins
-   if (AB && AB.Class) {
-      AB.Class.ABViewFormItem = ABViewFormItem;
-   }
-
-   const ABViewFormItemComponent = ABViewFormItem.ABViewFormItemComponent;
-   if (!ABViewFormItemComponent) {
-      const error = new Error(
-         "FNAbviewform: ABViewFormItem.ABViewFormItemComponent is undefined"
-      );
-      console.error(error);
-      // Fallback or more descriptive error could go here if needed
-   }
-
-   const ABViewFormButtonCore = FNAbviewformButtonCore(ABViewPlugin);
-   const ABViewFormButton = FNAbviewformButton({
-      ABViewComponentPlugin,
-      ABViewFormItemComponent,
-      ABViewFormButtonCore,
-   });
-
-   const ABViewFormCheckboxCore = FNAbviewformCheckboxCore(ABViewFormItemCore);
-   const ABViewFormCheckbox = FNAbviewformCheckbox({
-      ABViewComponentPlugin,
-      ABViewFormItemComponent,
-      ABViewFormCheckboxCore,
-   });
-
-   const ABViewFormConnectCore = FNAbviewformConnectCore(ABViewFormItemCore);
-   const ABViewFormConnect = FNAbviewformConnect({
-      ABViewComponentPlugin,
-      ABViewFormItemComponent,
-      ABViewFormConnectCore,
+      ABViewPlugin,
       ABViewPropertyAddPage,
       ABViewPropertyEditPage,
-   });
-
-   const ABViewFormCustomCore = FNAbviewformCustomCore(ABViewFormItemCore);
-   const ABViewFormCustom = FNAbviewformCustom({
-      ABViewComponentPlugin,
-      ABViewFormItemComponent,
-      ABViewFormCustomCore,
       ABFieldImage,
       FocusableTemplate,
-   });
+   };
 
-   const ABViewFormDatepickerCore =
-      FNAbviewformDatepickerCore(ABViewFormItemCore);
-   const ABViewFormDatepicker = FNAbviewformDatepicker({
-      ABViewComponentPlugin,
-      ABViewFormItemComponent,
-      ABViewFormDatepickerCore,
-   });
+   // 1. Initialize Base Item
+   const { FNAbviewformItem, FNAbviewformCustom, FNAbviewformURL, ...otherFComponents } = fComponents;
 
-   const ABViewFormJsonCore = FNAbviewformJsonCore(ABViewFormItemCore);
-   const ABViewFormJson = FNAbviewformJson({
-      ABViewComponentPlugin,
-      ABViewFormItemComponent,
-      ABViewFormJsonCore,
-   });
+   FormAPI.ABViewFormItem = FNAbviewformItem(FormAPI);
 
-   const ABViewFormNumberCore = FNAbviewformNumberCore(ABViewFormItemCore);
-   const ABViewFormNumber = FNAbviewformNumber({
-      ABViewComponentPlugin,
-      ABViewFormItemComponent,
-      ABViewFormNumberCore,
-   });
+   // Store ABViewFormItem for 'instanceof' checks in other plugins
+   if (AB && AB.Class) {
+      AB.Class.ABViewFormItem = FormAPI.ABViewFormItem;
+   }
 
-   const ABViewFormReadonlyCore =
-      FNAbviewformReadonlyCore(ABViewFormCustomCore);
-   const ABViewFormReadonly = FNAbviewformReadonly({
-      ABViewComponentPlugin,
-      ABViewFormItemComponent,
-      ABViewFormReadonlyCore,
-      ABFieldImage,
-      FocusableTemplate,
-   });
+   FormAPI.ABViewFormItemComponent = FormAPI.ABViewFormItem.ABViewFormItemComponent;
+   FormAPI.ABViewFormItemCore = FNAbviewformItemCore(ABViewPlugin);
 
-   const ABViewFormSelectMultipleCore =
-      FNAbviewformSelectMultipleCore(ABViewFormItemCore);
-   const ABViewFormSelectMultiple = FNAbviewformSelectMultiple({
-      ABViewComponentPlugin,
-      ABViewFormItemComponent,
-      ABViewFormSelectMultipleCore,
-   });
+   // 2. Initialize Custom (base for others)
+   FormAPI.ABViewFormCustom = FNAbviewformCustom(FormAPI);
+   FormAPI.ABViewFormCustomCore = FNAbviewformCustomCore(FormAPI.ABViewFormItemCore);
 
-   const ABViewFormSelectSingleCore =
-      FNAbviewformSelectSingleCore(ABViewFormItemCore);
-   const ABViewFormSelectSingle = FNAbviewformSelectSingle({
-      ABViewComponentPlugin,
-      ABViewFormItemComponent,
-      ABViewFormSelectSingleCore,
-   });
+   // 3. Initialize common views
+   const views = Object.values(otherFComponents).map((FNv) => FNv(FormAPI));
+   views.push(FormAPI.ABViewFormItem);
+   views.push(FormAPI.ABViewFormCustom);
 
-   const ABViewFormTreeCore = FNAbviewformTreeCore(ABViewFormCustomCore);
-   const ABViewFormTree = FNAbviewformTree({
-      ABViewComponentPlugin,
-      ABViewFormItemComponent,
-      ABViewFormTreeCore,
-      ABFieldImage,
-      FocusableTemplate,
-   });
+   const ABViewFormButton = views.find(v => v.common().key === "button");
+   const ABViewFormCheckbox = views.find(v => v.common().key === "checkbox");
+   const ABViewFormConnect = views.find(v => v.common().key === "connect");
+   const ABViewFormCustom = FormAPI.ABViewFormCustom;
+   const ABViewFormDatepicker = views.find(v => v.common().key === "datepicker");
+   const ABViewFormItem = FormAPI.ABViewFormItem;
+   const ABViewFormJson = views.find(v => v.common().key === "json");
+   const ABViewFormNumber = views.find(v => v.common().key === "numberbox");
+   const ABViewFormReadonly = views.find(v => v.common().key === "readonly");
+   const ABViewFormSelectMultiple = views.find(v => v.common().key === "selectmultiple");
+   const ABViewFormSelectSingle = views.find(v => v.common().key === "selectsingle");
+   const ABViewFormTree = views.find(v => v.common().key === "tree");
+   const ABViewFormTextbox = views.find(v => v.common().key === "textbox");
 
-   const ABViewFormTextboxCore = FNAbviewformTextboxCore(ABViewFormItemCore);
-   const ABViewFormTextbox = FNAbviewformTextbox({
-      ABViewComponentPlugin,
-      ABViewFormItemComponent,
-      ABViewFormTextboxCore,
-   });
-
-   const ABAbviewformComponent = FNAbviewformComponent({
-      ABViewComponentPlugin,
-      ABViewFormButton,
-      ABViewFormCheckbox,
-      ABViewFormConnect,
-      ABViewFormCustom,
-      ABViewFormDatepicker,
-      ABViewFormItem,
-      ABViewFormJson,
-      ABViewFormNumber,
-      ABViewFormReadonly,
-      ABViewFormSelectMultiple,
-      ABViewFormSelectSingle,
-      ABViewFormTree,
-      ABViewFormTextbox,
-   });
-
+   // 4. Initialize Form Base and URL view
    const ABRecordRule = ABViewRuleListFormRecordRules;
    const ABSubmitRule = ABViewRuleListFormSubmitRules;
 
@@ -201,18 +88,16 @@ export default function FNAbviewform(API) {
       return this._superComponent;
    };
 
-   const ABViewFormURLCore = FNAbviewformURLCore(ABViewFormBase);
-   const ABViewFormURL = FNAbviewformURL({
-      ABAbviewformComponent,
-      ABViewFormURLCore,
-   });
-
-   const views = [
+   FormAPI.ABViewFormBase = ABViewFormBase;
+   
+   const ABAbviewformComponent = FNAbviewformComponent({
+      ABViewComponentPlugin,
       ABViewFormButton,
       ABViewFormCheckbox,
       ABViewFormConnect,
       ABViewFormCustom,
       ABViewFormDatepicker,
+      ABViewFormItem,
       ABViewFormJson,
       ABViewFormNumber,
       ABViewFormReadonly,
@@ -220,8 +105,9 @@ export default function FNAbviewform(API) {
       ABViewFormSelectSingle,
       ABViewFormTree,
       ABViewFormTextbox,
-      ABViewFormURL,
-   ];
+   });
+
+
 
    views.forEach((v) => {
       v.getPluginKey = () => v.common().key;
@@ -625,10 +511,17 @@ export default function FNAbviewform(API) {
 
 
 
-   // Store ABViewForm for'instanceof' checks in other plugins
    if (AB && AB.Class) {
       AB.Class.ABViewForm = ABViewForm;
    }
 
-   return [ABViewForm, ...views];
+   const ABViewFormURL = FNAbviewformURL({
+      ABAbviewformComponent,
+      ABViewForm,
+   });
+   // Ensure ABViewFormURL has the necessary plugin methods
+   ABViewFormURL.getPluginKey = () => ABViewFormURL.common().key;
+   ABViewFormURL.getPluginType = () => "view";
+
+   return [ABViewForm, ABViewFormURL, ...views];
 }

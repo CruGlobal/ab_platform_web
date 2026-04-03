@@ -1,10 +1,13 @@
 import FNAbviewformButtonComponent from "./viewComponent/FNAbviewformButtonComponent.js";
+import FNAbviewformButtonCoreFactory from "./core/ABViewFormButtonCore.js";
 
 export default function FNAbviewformButton({
    ABViewComponentPlugin,
+   ABViewPlugin,
    ABViewFormItemComponent,
-   ABViewFormButtonCore,
 }) {
+   const ABViewFormButtonCore = FNAbviewformButtonCoreFactory(ABViewPlugin);
+
    if (!ABViewFormItemComponent) {
       const error = new Error(
          "ABViewFormButton: ABViewFormItemComponent is undefined"

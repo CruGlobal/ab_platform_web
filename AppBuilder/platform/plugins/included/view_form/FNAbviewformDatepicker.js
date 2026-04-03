@@ -1,10 +1,12 @@
 import FNAbviewformDatepickerComponent from "./viewComponent/FNAbviewformDatepickerComponent.js";
+import FNAbviewformDatepickerCoreFactory from "./core/ABViewFormDatepickerCore.js";
 
 export default function FNAbviewformDatepicker({
    ABViewComponentPlugin,
    ABViewFormItemComponent,
-   ABViewFormDatepickerCore,
+   ABViewFormItem,
 }) {
+   const ABViewFormDatepickerCore = FNAbviewformDatepickerCoreFactory(ABViewFormItem);
    const ABAbviewformDatepickerComponent = FNAbviewformDatepickerComponent({
       ABViewFormItemComponent,
    });

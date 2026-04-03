@@ -1,4 +1,4 @@
-export default function (ABViewFormCustomCore) {
+export default function (ABViewFormCustom) {
    const ABViewFormReadonlyPropertyComponentDefaults = {};
 
    const ABViewFormReadonlyDefaults = {
@@ -7,7 +7,7 @@ export default function (ABViewFormCustomCore) {
       labelKey: "ab.components.readonly", // {string} the multilingual label key for the class label
    };
 
-   return class ABViewFormReadonly extends ABViewFormCustomCore {
+   return class ABViewFormReadonly extends ABViewFormCustom {
       constructor(values, application, parent, defaultValues) {
          super(
             values,
@@ -23,14 +23,6 @@ export default function (ABViewFormCustomCore) {
 
       static defaultValues() {
          return ABViewFormReadonlyPropertyComponentDefaults;
-      }
-
-      /**
-       * @method componentList
-       * return the list of components available on this view to display in the editor.
-       */
-      componentList() {
-         return [];
       }
    };
 }

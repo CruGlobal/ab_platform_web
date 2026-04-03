@@ -1,22 +1,16 @@
 import FNAbviewformItemComponent from "./viewComponent/FNAbviewformItemComponent.js";
+import FNAbviewformItemCoreFactory from "./core/ABViewFormItemCore.js";
 
 export default function FNAbviewformItem({
    ABViewComponentPlugin,
-   ABViewFormItemCore,
+   ABViewPlugin,
 }) {
+   const ABViewFormItemCore = FNAbviewformItemCoreFactory(ABViewPlugin);
    const ABAbviewformItemComponent = FNAbviewformItemComponent({
       ABViewComponentPlugin,
    });
 
    const ABViewFormItem = class ABViewFormItem extends ABViewFormItemCore {
-      // constructor(values, application, parent, defaultValues) {
-      //    super(values, application, parent, defaultValues);
-      // }
-
-      // static get ABViewFormItemComponent() {
-      //    return ABAbviewformItemComponent;
-      // }
-
       /**
        * @method component()
        * return a UI component based upon this view.

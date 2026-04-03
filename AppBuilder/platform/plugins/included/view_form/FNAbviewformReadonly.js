@@ -1,12 +1,14 @@
 import FNAbviewformReadonlyComponent from "./viewComponent/FNAbviewformReadonlyComponent.js";
+import FNAbviewformReadonlyCoreFactory from "./core/ABViewFormReadonlyCore.js";
 
 export default function FNAbviewformReadonly({
    ABViewComponentPlugin,
    ABViewFormItemComponent,
-   ABViewFormReadonlyCore,
+   ABViewFormCustom,
    ABFieldImage,
    FocusableTemplate,
 }) {
+   const ABViewFormReadonlyCore = FNAbviewformReadonlyCoreFactory(ABViewFormCustom);
    const ABAbviewformReadonlyComponent = FNAbviewformReadonlyComponent({
       ABViewFormItemComponent,
       ABFieldImage,

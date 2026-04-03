@@ -1,10 +1,12 @@
 import FNAbviewformJsonComponent from "./viewComponent/FNAbviewformJsonComponent.js";
+import FNAbviewformJsonCoreFactory from "./core/ABViewFormJsonCore.js";
 
 export default function FNAbviewformJson({
    ABViewComponentPlugin,
    ABViewFormItemComponent,
-   ABViewFormJsonCore,
+   ABViewFormItem,
 }) {
+   const ABViewFormJsonCore = FNAbviewformJsonCoreFactory(ABViewFormItem);
    const ABAbviewformJsonComponent = FNAbviewformJsonComponent({
       ABViewFormItemComponent,
    });

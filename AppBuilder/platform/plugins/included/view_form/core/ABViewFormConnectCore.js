@@ -1,4 +1,4 @@
-export default function (ABViewFormItemCore) {
+export default function (ABViewFormItem) {
    const ABViewFormConnectPropertyComponentDefaults = {
       formView: "", // id of form to add new data
       filterConditions: {
@@ -24,7 +24,7 @@ export default function (ABViewFormItemCore) {
       labelKey: "Connect", // {string} the multilingual label key for the class label
    };
 
-   return class ABViewFormConnectCore extends ABViewFormItemCore {
+   return class ABViewFormConnectCore extends ABViewFormItem {
       constructor(values, application, parent, defaultValues) {
          super(
             values,
@@ -58,14 +58,6 @@ export default function (ABViewFormItemCore) {
          this.settings.filterConditions =
             this.settings.filterConditions ||
             ABViewFormConnectPropertyComponentDefaults.filterConditions;
-      }
-
-      /**
-       * @method componentList
-       * return the list of components available on this view to display in the editor.
-       */
-      componentList() {
-         return [];
       }
    };
 }

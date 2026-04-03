@@ -1,17 +1,12 @@
 import FNAbviewformSelectMultipleComponent from "./viewComponent/FNAbviewformSelectMultipleComponent.js";
+import FNAbviewformSelectMultipleCoreFactory from "./core/ABViewFormSelectMultipleCore.js";
 
 export default function FNAbviewformSelectMultiple({
    ABViewComponentPlugin,
    ABViewFormItemComponent,
-   ABViewFormSelectMultipleCore,
+   ABViewFormItem,
 }) {
-   if (!ABViewFormItemComponent) {
-      const error = new Error(
-         "ABViewFormSelectMultiple: ABViewFormItemComponent is undefined"
-      );
-      console.error(error);
-      return null;
-   }
+   const ABViewFormSelectMultipleCore = FNAbviewformSelectMultipleCoreFactory(ABViewFormItem);
 
    const ABAbviewformSelectMultipleComponent =
       FNAbviewformSelectMultipleComponent({

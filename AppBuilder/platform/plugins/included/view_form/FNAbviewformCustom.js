@@ -1,12 +1,14 @@
 import FNAbviewformCustomComponent from "./viewComponent/FNAbviewformCustomComponent.js";
+import FNAbviewformCustomCoreFactory from "./core/ABViewFormCustomCore.js";
 
 export default function FNAbviewformCustom({
    ABViewComponentPlugin,
    ABViewFormItemComponent,
-   ABViewFormCustomCore,
+   ABViewFormItem,
    ABFieldImage,
    FocusableTemplate,
 }) {
+   const ABViewFormCustomCore = FNAbviewformCustomCoreFactory(ABViewFormItem);
    const ABAbviewformCustomComponent = FNAbviewformCustomComponent({
       ABViewFormItemComponent,
       ABFieldImage,

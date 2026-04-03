@@ -1,10 +1,12 @@
 import FNAbviewformTextboxComponent from "./viewComponent/FNAbviewformTextboxComponent.js";
+import FNAbviewformTextboxCoreFactory from "./core/ABViewFormTextboxCore.js";
 
 export default function FNAbviewformTextbox({
    ABViewComponentPlugin,
    ABViewFormItemComponent,
-   ABViewFormTextboxCore,
+   ABViewFormItem,
 }) {
+   const ABViewFormTextboxCore = FNAbviewformTextboxCoreFactory(ABViewFormItem);
    const ABAbviewformTextboxComponent = FNAbviewformTextboxComponent({
       ABViewFormItemComponent,
    });

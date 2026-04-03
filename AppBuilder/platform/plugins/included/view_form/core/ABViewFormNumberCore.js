@@ -1,4 +1,4 @@
-export default function (ABViewFormItemCore) {
+export default function (ABViewFormItem) {
    const ABViewFormNumberPropertyComponentDefaults = {
       isStepper: 0,
    };
@@ -9,7 +9,7 @@ export default function (ABViewFormItemCore) {
       labelKey: "ab.components.number", // {string} the multilingual label key for the class label
    };
 
-   return class ABViewFormNumberCore extends ABViewFormItemCore {
+   return class ABViewFormNumberCore extends ABViewFormItem {
       constructor(values, application, parent, defaultValues) {
          super(
             values,
@@ -63,14 +63,6 @@ export default function (ABViewFormItemCore) {
 
          // convert from "0" => 0
          this.settings.isStepper = parseInt(this.settings.isStepper);
-      }
-
-      /**
-       * @method componentList
-       * return the list of components available on this view to display in the editor.
-       */
-      componentList() {
-         return [];
       }
    };
 }

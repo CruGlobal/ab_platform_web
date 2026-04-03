@@ -1,4 +1,4 @@
-export default function (ABViewFormCustomCore) {
+export default function (ABViewFormCustom) {
    const ABViewFormTreePropertyComponentDefaults = {};
 
    const ABTreeDefaults = {
@@ -7,7 +7,7 @@ export default function (ABViewFormCustomCore) {
       labelKey: "ab.components.tree", // {string} the multilingual label key for the class label
    };
 
-   return class ABViewFormTreeCore extends ABViewFormCustomCore {
+   return class ABViewFormTreeCore extends ABViewFormCustom {
       constructor(values, application, parent, defaultValues) {
          super(values, application, parent, defaultValues || ABTreeDefaults);
       }
@@ -18,14 +18,6 @@ export default function (ABViewFormCustomCore) {
 
       static defaultValues() {
          return ABViewFormTreePropertyComponentDefaults;
-      }
-
-      /**
-       * @method componentList
-       * return the list of components available on this view to display in the editor.
-       */
-      componentList() {
-         return [];
       }
    };
 }

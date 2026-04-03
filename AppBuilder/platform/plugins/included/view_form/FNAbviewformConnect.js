@@ -1,14 +1,18 @@
 import FNAbviewformConnectComponent from "./viewComponent/FNAbviewformConnectComponent.js";
+import FNAbviewformConnectCoreFactory from "./core/ABViewFormConnectCore.js";
 
 export default function FNAbviewformConnect({
    ABViewComponentPlugin,
    ABViewFormItemComponent,
-   ABViewFormConnectCore,
+   ABViewFormItem,
    ABViewPropertyAddPage,
    ABViewPropertyEditPage,
 }) {
+   const ABViewFormConnectCore = FNAbviewformConnectCoreFactory(ABViewFormItem);
    const ABAbviewformConnectComponent = FNAbviewformConnectComponent({
       ABViewFormItemComponent,
+      ABViewPropertyAddPage,
+      ABViewPropertyEditPage,
    });
 
    return class ABViewFormConnect extends ABViewFormConnectCore {

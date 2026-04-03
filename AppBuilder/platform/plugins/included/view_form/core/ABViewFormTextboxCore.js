@@ -1,4 +1,4 @@
-export default function (ABViewFormItemCore) {
+export default function (ABViewFormItem) {
    const ABViewFormTextboxPropertyComponentDefaults = {
       type: "single", // 'single', 'multiple' or 'rich'
    };
@@ -9,7 +9,7 @@ export default function (ABViewFormItemCore) {
       labelKey: "ab.components.textbox", // {string} the multilingual label key for the class label
    };
 
-   return class ABViewFormTextboxCore extends ABViewFormItemCore {
+   return class ABViewFormTextboxCore extends ABViewFormItem {
       constructor(values, application, parent, defaultValues) {
          super(
             values,
@@ -25,14 +25,6 @@ export default function (ABViewFormItemCore) {
 
       static defaultValues() {
          return ABViewFormTextboxPropertyComponentDefaults;
-      }
-
-      /**
-       * @method componentList
-       * return the list of components available on this view to display in the editor.
-       */
-      componentList() {
-         return [];
       }
    };
 }

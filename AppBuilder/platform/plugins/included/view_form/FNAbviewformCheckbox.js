@@ -1,10 +1,12 @@
 import FNAbviewformCheckboxComponent from "./viewComponent/FNAbviewformCheckboxComponent.js";
+import FNAbviewformCheckboxCoreFactory from "./core/ABViewFormCheckboxCore.js";
 
 export default function FNAbviewformCheckbox({
    ABViewComponentPlugin,
    ABViewFormItemComponent,
-   ABViewFormCheckboxCore,
+   ABViewFormItem,
 }) {
+   const ABViewFormCheckboxCore = FNAbviewformCheckboxCoreFactory(ABViewFormItem);
    const ABAbviewformCheckboxComponent = FNAbviewformCheckboxComponent({
       ABViewFormItemComponent,
    });

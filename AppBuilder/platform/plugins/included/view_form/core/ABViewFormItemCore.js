@@ -4,7 +4,7 @@ export default function (ABView) {
       disable: 0,
    };
 
-   return class ABViewFormComponentCore extends ABView {
+   return class ABViewFormItemCore extends ABView {
       constructor(values, application, parent, defaultValues) {
          super(values, application, parent, defaultValues);
          this.isFormField = true;
@@ -55,6 +55,14 @@ export default function (ABView) {
             let field = object.fieldByID(this.settings.fieldId);
             return field;
          }
+      }
+
+      /**
+       * @method componentList
+       * return the list of components available on this view to display in the editor.
+       */
+      componentList() {
+         return [];
       }
    };
 }

@@ -1,4 +1,4 @@
-export default function (ABViewFormItemCore) {
+export default function (ABViewFormItem) {
    const ABViewFormSelectMultiplePropertyComponentDefaults = {
       type: "multicombo", // 'richselect' or 'radio'
    };
@@ -9,7 +9,7 @@ export default function (ABViewFormItemCore) {
       labelKey: "ab.components.selectmultiple", // {string} the multilingual label key for the class label
    };
 
-   return class ABViewFormSelectMultipleCore extends ABViewFormItemCore {
+   return class ABViewFormSelectMultipleCore extends ABViewFormItem {
       constructor(values, application, parent, defaultValues) {
          super(
             values,
@@ -25,14 +25,6 @@ export default function (ABViewFormItemCore) {
 
       static defaultValues() {
          return ABViewFormSelectMultiplePropertyComponentDefaults;
-      }
-
-      /**
-       * @method componentList
-       * return the list of components available on this view to display in the editor.
-       */
-      componentList() {
-         return [];
       }
    };
 }

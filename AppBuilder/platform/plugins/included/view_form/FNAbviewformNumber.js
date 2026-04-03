@@ -1,10 +1,12 @@
 import FNAbviewformNumberComponent from "./viewComponent/FNAbviewformNumberComponent.js";
+import FNAbviewformNumberCoreFactory from "./core/ABViewFormNumberCore.js";
 
 export default function FNAbviewformNumber({
    ABViewComponentPlugin,
    ABViewFormItemComponent,
-   ABViewFormNumberCore,
+   ABViewFormItem,
 }) {
+   const ABViewFormNumberCore = FNAbviewformNumberCoreFactory(ABViewFormItem);
    const ABAbviewformNumberComponent = FNAbviewformNumberComponent({
       ABViewFormItemComponent,
    });

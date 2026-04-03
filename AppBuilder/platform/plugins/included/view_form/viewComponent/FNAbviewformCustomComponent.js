@@ -164,7 +164,9 @@ export default function FNAbviewformCustomComponent({
             node = $formItem.$view;
 
          // Add data-cy attributes
-         const dataCy = `${baseView.key} ${field.key} ${field.columnName} ${baseView.id} ${baseView.parent.id}`;
+         const dataCy = `${baseView.key} ${field?.key ?? ""} ${
+            field?.columnName ?? ""
+         } ${baseView.id} ${baseView.parent?.id ?? ""}`;
          node.setAttribute("data-cy", dataCy);
 
          const options = {
@@ -181,7 +183,7 @@ export default function FNAbviewformCustomComponent({
                : 0;
          }
 
-         field.customDisplay(rowData, this.AB._App, node, options);
+         field?.customDisplay(rowData, this.AB._App, node, options);
       }
 
       getValue(rowData) {

@@ -1,4 +1,4 @@
-export default function (ABViewFormItemCore) {
+export default function (ABViewFormItem) {
    const ABViewFormSelectSinglePropertyComponentDefaults = {
       type: "richselect", // 'richselect' or 'radio'
    };
@@ -9,7 +9,7 @@ export default function (ABViewFormItemCore) {
       labelKey: "ab.components.selectsingle", // {string} the multilingual label key for the class label
    };
 
-   return class ABViewFormSelectSingleCore extends ABViewFormItemCore {
+   return class ABViewFormSelectSingleCore extends ABViewFormItem {
       constructor(values, application, parent, defaultValues) {
          super(
             values,
@@ -25,14 +25,6 @@ export default function (ABViewFormItemCore) {
 
       static defaultValues() {
          return ABViewFormSelectSinglePropertyComponentDefaults;
-      }
-
-      /**
-       * @method componentList
-       * return the list of components available on this view to display in the editor.
-       */
-      componentList() {
-         return [];
       }
    };
 }
