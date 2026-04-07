@@ -1,7 +1,9 @@
-import viewArea from "./view_chart/area/FNAbviewchartarea.js";
-import viewBar from "./view_chart/bar/FNAbviewchartbar.js";
 import viewCarousel from "./view_carousel/FNAbviewcarousel.js";
 import viewChart from "./view_chart/chart/FNAbviewchart.js";
+import viewChartArea from "./view_chart/area/FNAbviewchartarea.js";
+import viewChartBar from "./view_chart/bar/FNAbviewchartbar.js";
+import viewChartLine from "./view_chart/line/FNAbviewchartline.js";
+import viewChartPie from "./view_chart/pie/FNAbviewchartpie.js";
 import viewComment from "./view_comment/FNAbviewcomment.js";
 import viewCsvExporter from "./view_csvExporter/FNAbviewcsvexporter.js";
 import viewCsvImporter from "./view_csvImporter/FNAbviewcsvimporter.js";
@@ -13,7 +15,6 @@ import viewImage from "./view_image/FNAbviewimage.js";
 import viewKanban from "./view_kanban/FNABViewKanban.js";
 import viewLabel from "./view_label/FNAbviewlabel.js";
 import viewLayout from "./view_layout/FNAbviewlayout.js";
-import viewLine from "./view_chart/line/FNAbviewchartline.js";
 import viewList from "./view_list/FNAbviewlist.js";
 import viewPdfImporter from "./view_pdfImporter/FNAbviewpdfimporter.js";
 import viewPivot from "./view_pivot/FNABViewPivot.js";
@@ -22,10 +23,12 @@ import viewTab from "./view_tab/FNAbviewtab.js";
 import viewText from "./view_text/FNAbviewtext.js";
 
 const AllPlugins = [
-   viewArea,
-   viewBar,
    viewCarousel,
    viewChart,
+   viewChartArea,
+   viewChartBar,
+   viewChartLine,
+   viewChartPie,
    viewComment,
    viewCsvExporter,
    viewCsvImporter,
@@ -37,7 +40,6 @@ const AllPlugins = [
    viewKanban,
    viewLabel,
    viewLayout,
-   viewLine,
    viewList,
    viewPdfImporter,
    viewPivot,

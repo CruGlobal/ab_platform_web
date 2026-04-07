@@ -1,29 +1,26 @@
 import FNAbviewchartareaComponent from "./FNAbviewchartareaComponent.js";
-import FNAbviewchartcontainer from "../container/FNAbviewchartcontainer.js";
+import { FNABViewChartCore } from "../chartBindings.js";
 
 // FNAbviewchartarea Web
 // A web side import for an ABView.
 //
 export default function FNAbviewchartarea({
-   /*AB,*/
+   AB,
    ABViewPlugin,
    ABViewComponentPlugin,
    ABViewContainer,
    ABViewWidgetPlugin,
 }) {
-   const ABViewChartContainer = FNAbviewchartcontainer({
-      ABViewComponentPlugin,
-      ABViewWidgetPlugin,
-   });
-
+   const ABViewChartCore = FNABViewChartCore({ ABViewWidgetPlugin });
    const ABAbviewchartareaComponent = FNAbviewchartareaComponent({
+      AB,
       ABViewComponentPlugin,
    });
 
    const ABViewChartAreaPropertyComponentDefaults = {
       areaType: "area",
       isLegend: 1,
-      // chartWidth: 600,
+      chartWidth: 600,
       chartHeight: 200,
       labelFontSize: 12,
       stepValue: 20,
@@ -36,7 +33,7 @@ export default function FNAbviewchartarea({
       labelKey: "Area", // {string} the multilingual label key for the class label
    };
 
-   class ABViewChartAreaCore extends ABViewChartContainer {
+   class ABViewChartAreaCore extends ABViewChartCore {
       constructor(values, application, parent, defaultValues) {
          super(values, application, parent, defaultValues || ABViewDefaults);
       }
@@ -117,8 +114,8 @@ export default function FNAbviewchartarea({
        * return a UI component based upon this view.
        * @return {obj} UI component
        */
-      component(parentId) {
-         return new ABAbviewchartareaComponent(this, parentId);
+      component() {
+         return new ABAbviewchartareaComponent(this);
       }
 
       // constructor(values, application, parent, defaultValues) {

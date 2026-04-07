@@ -1,6 +1,5 @@
-import FNAbviewchartcontainer from "../container/FNAbviewchartcontainer.js";
+import { FNABViewChartCore } from "../chartBindings.js";
 import FNAbviewchartlineComponent from "./FNAbviewchartlineComponent.js";
-
 
 // FNAbviewchartline Web
 // A web side import for an ABView.
@@ -10,13 +9,13 @@ export default function FNAbviewchartline({
    ABViewPlugin,
    ABViewComponentPlugin,
    ABViewContainer,
-   ABViewWidgetPlugin
+   ABViewWidgetPlugin,
 }) {
-   const ABViewChartContainer = FNAbviewchartcontainer({
+   const ABViewChartCore = FNABViewChartCore({ ABViewWidgetPlugin });
+
+   const ABAbviewchartlineComponent = FNAbviewchartlineComponent({
       ABViewComponentPlugin,
-      ABViewWidgetPlugin,
    });
-   const ABAbviewchartlineComponent = FNAbviewchartlineComponent({ ABViewComponentPlugin });
 
    const ABViewChartLinePropertyComponentDefaults = {
       lineType: "line",
@@ -35,7 +34,7 @@ export default function FNAbviewchartline({
       labelKey: "Line", // {string} the multilingual label key for the class label
    };
 
-   class ABViewChartLineCore extends ABViewChartContainer {
+   class ABViewChartLineCore extends ABViewChartCore {
       constructor(values, application, parent, defaultValues) {
          super(values, application, parent, defaultValues || ABViewDefaults);
       }
@@ -103,35 +102,29 @@ export default function FNAbviewchartline({
       componentList() {
          return [];
       }
-   };
+   }
 
    return class ABViewChartLine extends ABViewChartLineCore {
-
       /**
-             * @method getPluginKey
-             * return the plugin key for this view.
-             * @return {string} plugin key
-             */
+       * @method getPluginKey
+       * return the plugin key for this view.
+       * @return {string} plugin key
+       */
       static getPluginKey() {
          return this.common().key;
       }
 
       /**
-             * @method component()
-             * return a UI component based upon this view.
-             * @return {obj} UI component
-             */
-      component(parentId) {
-         return new ABAbviewchartlineComponent(this, parentId);
+       * @method component()
+       * return a UI component based upon this view.
+       * @return {obj} UI component
+       */
+      component() {
+         return new ABAbviewchartlineComponent(this);
       }
-
 
       // constructor(values, application, parent, defaultValues) {
       //    super(values, application, parent, defaultValues);
       // }
-
-
    };
-
 }
-

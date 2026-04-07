@@ -1,5 +1,13 @@
+function findAncestorWithGetDCChart(view) {
+   let cur = view && view.parent;
+   while (cur) {
+      if (typeof cur.getDCChart === "function") return cur;
+      cur = cur.parent;
+   }
+   return null;
+}
+
 export default function FNAbviewchartcontainerComponent({
-   /*AB,*/
    ABViewComponentPlugin,
 }) {
    return class ABviewchartcontainerComponent extends ABViewComponentPlugin {
@@ -35,23 +43,33 @@ export default function FNAbviewchartcontainerComponent({
 
       onShow() {
          super.onShow();
-         // if (!this._isShow) {
-
-         // Mark this widget is showing
          const baseView = this.view;
 
          baseView._isShow = true;
 
-         this.refreshData(baseView.settings.dataviewID);
-         // this.refreshData(baseView.parent.getDCChart());
-         // }
+         const chartAncestor = findAncestorWithGetDCChart(baseView);
+         let dcChart = null;
+         if (chartAncestor) {
+            if (typeof chartAncestor.refreshData === "function") {
+               chartAncestor.refreshData();
+            }
+            dcChart = chartAncestor.getDCChart();
+         } else if (typeof baseView.getDCChart === "function") {
+            if (typeof baseView.refreshData === "function") {
+               baseView.refreshData();
+            }
+            dcChart = baseView.getDCChart();
+         }
+         this.refreshData(dcChart);
       }
 
       refreshData(dcChart) {
          const $chartContainer = $$(this.ids.chartContainer);
          const $chartComponent = $$(this.ids.component);
 
-         if ($chartContainer?.data) $chartContainer.data.sync(dcChart);
+         if (dcChart && $chartContainer?.data) {
+            $chartContainer.data.sync(dcChart);
+         }
 
          setTimeout(() => {
             $chartComponent?.adjust();

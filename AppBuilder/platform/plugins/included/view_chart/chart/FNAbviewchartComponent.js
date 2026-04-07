@@ -1,28 +1,38 @@
-import FNAbviewchartcontainerComponent from "../container/FNAbviewchartcontainerComponent.js";
-
 export default function FNAbviewchartComponent({
-   /*AB,*/
-   ABViewComponentPlugin,
+   AB,
+   ABViewContainerComponent,
 }) {
-   const ChartContainerComponent = FNAbviewchartcontainerComponent({
-      ABViewComponentPlugin,
-   });
-
-   return class FNAbviewchartComponent extends ChartContainerComponent {
+   return class FNAbviewchartComponent extends ABViewContainerComponent {
       constructor(baseView, idBase, ids) {
          super(baseView, idBase || `ABViewChart_${baseView.id}`, ids);
       }
 
-      async init(AB, accessLevel) {
-         await super.init(AB, accessLevel);
+      async init(ABParam, accessLevel) {
+         await super.init(ABParam, accessLevel);
 
          const $component = $$(this.ids.component);
-         const abWebix = this.AB.Webix;
+         const abWebix = AB.Webix;
 
          if ($component) abWebix.extend($component, abWebix.ProgressBar);
 
          const baseView = this.view;
-         const dc = this.datacollection;
+         const dc = baseView.datacollections || baseView.datacollection;
+
+         const ensureDcLoaded = async (d) => {
+            if (!d || typeof d.init !== "function") return;
+            d.init();
+            if (d.dataStatus === d.dataStatusFlag.notInitial) {
+               await d.loadData();
+            }
+         };
+
+         if (Array.isArray(dc)) {
+            for (const d of dc) {
+               await ensureDcLoaded(d);
+            }
+         } else if (dc) {
+            await ensureDcLoaded(dc);
+         }
 
          if (dc) {
             const eventNames = [
@@ -35,8 +45,6 @@ export default function FNAbviewchartComponent({
             ];
 
             ["changeCursor", "cursorStale"].forEach((key) => {
-               // QUESTION: is this a problem if the check !(key in (...)) finds
-               // an event that some OTHER widget has added and not this one?
                if (
                   dc.datacollectionLink &&
                   !(key in (dc.datacollectionLink._events ?? []))

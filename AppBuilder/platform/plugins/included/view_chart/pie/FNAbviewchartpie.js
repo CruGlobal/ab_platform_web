@@ -1,4 +1,4 @@
-import FNAbviewchartcontainer from "../container/FNAbviewchartcontainer.js";
+import { FNABViewChartCore } from "../chartBindings.js";
 import FNAbviewchartpieComponent from "./FNAbviewchartpieComponent.js";
 
 // FNAbviewchartpie Web
@@ -9,13 +9,12 @@ export default function FNAbviewchartpie({
    ABViewPlugin,
    ABViewComponentPlugin,
    ABViewContainer,
-   ABViewWidgetPlugin
+   ABViewWidgetPlugin,
 }) {
-   const ABViewChartContainer = FNAbviewchartcontainer({
+   const ABViewChartCore = FNABViewChartCore({ ABViewWidgetPlugin });
+   const ABAbviewchartpieComponent = FNAbviewchartpieComponent({
       ABViewComponentPlugin,
-      ABViewWidgetPlugin,
    });
-   const ABAbviewchartpieComponent = FNAbviewchartpieComponent({ ABViewComponentPlugin });
 
    const ABViewChartPiePropertyComponentDefaults = {
       pieType: "pie",
@@ -32,7 +31,7 @@ export default function FNAbviewchartpie({
       labelKey: "Pie", // {string} the multilingual label key for the class label
    };
 
-   class ABViewChartPieCore extends ABViewChartContainer {
+   class ABViewChartPieCore extends ABViewChartCore {
       constructor(values, application, parent, defaultValues) {
          super(values, application, parent, defaultValues || ABViewDefaults);
       }
@@ -69,7 +68,8 @@ export default function FNAbviewchartpie({
 
          // this.settings.chartWidth = parseInt(this.settings.chartWidth || ABViewChartPiePropertyComponentDefaults.chartWidth);
          this.settings.height = parseInt(
-            this.settings.height ?? ABViewChartPiePropertyComponentDefaults.height
+            this.settings.height ??
+            ABViewChartPiePropertyComponentDefaults.height
          );
 
          this.settings.innerFontSize = parseInt(
@@ -91,35 +91,29 @@ export default function FNAbviewchartpie({
       componentList() {
          return [];
       }
-   };
+   }
 
    return class ABViewChartPie extends ABViewChartPieCore {
-
       /**
-             * @method getPluginKey
-             * return the plugin key for this view.
-             * @return {string} plugin key
-             */
+       * @method getPluginKey
+       * return the plugin key for this view.
+       * @return {string} plugin key
+       */
       static getPluginKey() {
          return this.common().key;
       }
 
       /**
-             * @method component()
-             * return a UI component based upon this view.
-             * @return {obj} UI component
-             */
-      component(parentId) {
-         return new ABAbviewchartpieComponent(this, parentId);
+       * @method component()
+       * return a UI component based upon this view.
+       * @return {obj} UI component
+       */
+      component() {
+         return new ABAbviewchartpieComponent(this);
       }
-
 
       // constructor(values, application, parent, defaultValues) {
       //    super(values, application, parent, defaultValues);
       // }
-
-
    };
-
 }
-

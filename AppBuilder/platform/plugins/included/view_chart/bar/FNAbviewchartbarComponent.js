@@ -1,4 +1,4 @@
-import FNAbviewchartcontainerComponent from "../container/FNAbviewchartcontainerComponent.js";
+import { FNAbviewchartcontainerComponent } from "../chartBindings.js";
 
 export default function FNAbviewchartbarComponent({
    /*AB,*/

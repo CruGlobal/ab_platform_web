@@ -1,10 +1,6 @@
 import ABviewchartcontainerComponent from "./FNAbviewchartcontainerComponent.js";
 
-// FNAbviewchartcontainer Web
-// A web side import for an ABView.
-//
 export default function FNAbviewchartcontainer({
-   /*AB,*/
    ABViewComponentPlugin,
    ABViewWidgetPlugin,
 }) {
@@ -24,10 +20,6 @@ export default function FNAbviewchartcontainer({
 
       get datacollection() {
          return this.parent.datacollection;
-      }
-
-      static getPluginType() {
-         return "view";
       }
    };
 }
