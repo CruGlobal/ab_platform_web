@@ -19,7 +19,9 @@ import ABViewRuleListFormRecordRules from "../rules/ABViewRuleListFormRecordRule
 import ABViewRuleListFormSubmitRules from "../rules/ABViewRuleListFormSubmitRules";
 
 // MIGRATION: ABViewManager is depreciated.  Use ABClassManager instead.
-import ABViewManager from "./ABViewManager.js";
+// Resolve legacy-only views via core AllViews hash (not platform ABViewManager,
+// which would recurse back into ClassManager.viewClass).
+import ABViewManagerCore from "../core/ABViewManagerCore.js";
 
 const classRegistry = {
    ObjectTypes: new Map(),
@@ -108,13 +110,14 @@ export function allObjectProperties() {
 
 export function viewClass(type) {
    var ViewClass = classRegistry.ViewTypes.get(type);
-   if (!ViewClass) {
-      ViewClass = ABViewManager.viewClass(type, false);
-      if (!ViewClass) {
-         throw new Error(`Unknown View type: ${type}`);
-      }
+   if (ViewClass) {
+      return ViewClass;
    }
-   return ViewClass;
+   ViewClass = ABViewManagerCore.viewClass(type);
+   if (ViewClass) {
+      return ViewClass;
+   }
+   throw new Error(`Unknown View type: ${type}`);
 }
 
 export function viewCreate(type, config, application, parent) {

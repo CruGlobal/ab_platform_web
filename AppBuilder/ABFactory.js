@@ -32,7 +32,9 @@ import Network from "../resources/Network.js";
 import Storage from "../resources/Storage.js";
 // Storage: manages our interface for local storage
 
-import ABViewManager from "./core/ABViewManagerCore";
+// Use platform ABViewManager so Class.ABViewManager.viewClass() resolves
+// plugin-registered views (e.g. dataview) via ClassManager, not only core AllViews.
+import ABViewManager from "./platform/ABViewManager.js";
 
 import Tenant from "../resources/Tenant.js";
 // Tenant: manages the Tenant information of the current instance
