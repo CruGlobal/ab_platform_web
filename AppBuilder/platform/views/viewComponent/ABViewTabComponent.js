@@ -198,7 +198,7 @@ module.exports = class ABViewTabComponent extends ABViewComponent {
                   }),
                   on: {
                      onViewChange: (prevId, nextId) => {
-                        this.onShow(nextId);
+                        void this.onShow(nextId);
                      },
                   },
                };
@@ -340,7 +340,7 @@ module.exports = class ABViewTabComponent extends ABViewComponent {
                         multiview: {
                            on: {
                               onViewChange: (prevId, nextId) => {
-                                 this.onShow(nextId);
+                                 void this.onShow(nextId);
                               },
                            },
                         },
@@ -474,7 +474,7 @@ module.exports = class ABViewTabComponent extends ABViewComponent {
       }
    }
 
-   onShow(viewId) {
+   async onShow(viewId) {
       const ids = this.ids;
 
       let defaultViewIsSet = false;
@@ -487,8 +487,9 @@ module.exports = class ABViewTabComponent extends ABViewComponent {
 
       const baseView = this.view;
       const viewComponents = this.viewComponents;
+      const settings = this.settings;
 
-      viewComponents.forEach((vc) => {
+      for (const vc of viewComponents) {
          // set default view id
          const currView = baseView.views((view) => {
             return view.id === vc.view.id;
@@ -507,7 +508,6 @@ module.exports = class ABViewTabComponent extends ABViewComponent {
 
          // create view's component once
          const $tab = $$(ids.tab);
-         const settings = this.settings;
 
          if (!vc?.component && vc?.view?.id === viewId) {
             // show loading cursor
@@ -548,7 +548,10 @@ module.exports = class ABViewTabComponent extends ABViewComponent {
             // for tabs we need to look at the view's accessLevels
             accessLevel = vc.view.getUserAccess();
 
-            vc.component.init(ab, accessLevel);
+            const initP = vc.component.init(ab, accessLevel);
+            if (initP && typeof initP.then === "function") {
+               await initP;
+            }
 
             // done
             setTimeout(() => {
@@ -564,14 +567,18 @@ module.exports = class ABViewTabComponent extends ABViewComponent {
             }, 10);
          }
 
-         // show UI
-         if (vc?.view?.id === viewId && vc?.component?.onShow)
-            vc.component.onShow();
+         // show UI only after init has completed (above) for newly created components
+         if (vc?.view?.id === viewId && vc?.component?.onShow) {
+            const showP = vc.component.onShow();
+            if (showP && typeof showP.then === "function") {
+               await showP;
+            }
+         }
 
          if (settings.stackTabs && vc?.view?.id === viewId) {
             $$(viewId)?.show(false, false);
             $sidebar?.select(`${viewId}_menu`);
          }
-      });
+      }
    }
 };

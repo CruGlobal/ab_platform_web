@@ -202,7 +202,7 @@ export default function FNAbviewtabComponent({
                      }),
                      on: {
                         onViewChange: (prevId, nextId) => {
-                           this.onShow(nextId);
+                           void this.onShow(nextId);
                         },
                      },
                   };
@@ -344,7 +344,7 @@ export default function FNAbviewtabComponent({
                            multiview: {
                               on: {
                                  onViewChange: (prevId, nextId) => {
-                                    this.onShow(nextId);
+                                    void this.onShow(nextId);
                                  },
                               },
                            },
@@ -478,7 +478,7 @@ export default function FNAbviewtabComponent({
          }
       }
 
-      onShow(viewId) {
+      async onShow(viewId) {
          const ids = this.ids;
 
          let defaultViewIsSet = false;
@@ -491,8 +491,9 @@ export default function FNAbviewtabComponent({
 
          const baseView = this.view;
          const viewComponents = this.viewComponents;
+         const settings = this.settings;
 
-         viewComponents.forEach((vc) => {
+         for (const vc of viewComponents) {
             // set default view id
             const currView = baseView.views((view) => {
                return view.id === vc.view.id;
@@ -511,7 +512,6 @@ export default function FNAbviewtabComponent({
 
             // create view's component once
             const $tab = $$(ids.tab);
-            const settings = this.settings;
 
             if (!vc?.component && vc?.view?.id === viewId) {
                // show loading cursor
@@ -552,7 +552,10 @@ export default function FNAbviewtabComponent({
                // for tabs we need to look at the view's accessLevels
                accessLevel = vc.view.getUserAccess();
 
-               vc.component.init(ab, accessLevel);
+               const initP = vc.component.init(ab, accessLevel);
+               if (initP && typeof initP.then === "function") {
+                  await initP;
+               }
 
                // done
                setTimeout(() => {
@@ -568,15 +571,19 @@ export default function FNAbviewtabComponent({
                }, 10);
             }
 
-            // show UI
-            if (vc?.view?.id === viewId && vc?.component?.onShow)
-               vc.component.onShow();
+            // show UI only after init has completed (above) for newly created components
+            if (vc?.view?.id === viewId && vc?.component?.onShow) {
+               const showP = vc.component.onShow();
+               if (showP && typeof showP.then === "function") {
+                  await showP;
+               }
+            }
 
             if (settings.stackTabs && vc?.view?.id === viewId) {
                $$(viewId)?.show(false, false);
                $sidebar?.select(`${viewId}_menu`);
             }
-         });
+         }
       }
    };
 }
