@@ -160,6 +160,12 @@ export default function FNAbviewdataviewComponent({
                      height: this.settings.height,
                      template: (item) => this.itemTemplate(item),
                      on: {
+                        // Tab/multiview can show the dataview after init; re-apply cy + handlers.
+                        onViewShow: () => {
+                           this.addCyAttribute();
+                           this.applyClickEvent();
+                           this.resize();
+                        },
                         onAfterRender: () => {
                            this.applyClickEvent();
                            this.addCyAttribute();
@@ -174,7 +180,24 @@ export default function FNAbviewdataviewComponent({
       async init(AB) {
          await super.init(AB);
 
+         const $dataView = $$(this.ids.dataview);
+         // data-cy on the container must not wait for DC bind or onAfterRender;
+         // slow CI can otherwise race Cypress before the first dataview paint.
+         if ($dataView) {
+            this.addCyAttribute();
+            AB.Webix.extend($dataView, AB.Webix.ProgressBar);
+         }
+
          const dc = this.datacollection;
+         if (!$dataView) return;
+
+         // Card field components need AB + full async init before the first bind-driven
+         // template pass (init(null, 2) from ui() is too early). Single init here, after AB exists.
+         const detailInit = this.detailComponent.init(AB, 2);
+         if (detailInit && typeof detailInit.then === "function") {
+            await detailInit;
+         }
+
          if (!dc) return;
 
          this.linkPage = this.linkPageHelper.component();
@@ -183,8 +206,6 @@ export default function FNAbviewdataviewComponent({
             datacollection: dc,
          });
 
-         const $dataView = $$(this.ids.dataview);
-         AB.Webix.extend($dataView, AB.Webix.ProgressBar);
          dc.bind($dataView);
 
          this.initRefreshWarning();
@@ -192,7 +213,8 @@ export default function FNAbviewdataviewComponent({
          window.addEventListener("resize", () => {
             clearTimeout(this._resizeEvent);
             this._resizeEvent = setTimeout(() => {
-               this.resize($dataView.getParentView());
+               const $dv = $$(this.ids.dataview);
+               if ($dv) this.resize($dv.getParentView());
                delete this._resizeEvent;
             }, 20);
          });
@@ -257,8 +279,9 @@ export default function FNAbviewdataviewComponent({
       }
 
       initDetailComponent() {
+         // Build the detached card UI only; field inits run in init(AB) with a real AB
+         // and complete before datacollection.bind so itemTemplate sees ready sub-widgets.
          this._detail_ui = this.AB.Webix.ui(this.getDetailUI());
-         this.detailComponent.init(null, 2);
       }
 
       getDetailUI() {
@@ -283,7 +306,11 @@ export default function FNAbviewdataviewComponent({
 
          // Mock data ensures card template has dimensions before data exists.
          if (!item || !Object.keys(item).length) {
-            item = item ?? {};
+            item = {
+               id: "__ab_dataview_sizing__",
+               uuid: "__ab_dataview_sizing__",
+               ...(item ?? {}),
+            };
             this.datacollection?.datasource?.fields().forEach((f) => {
                switch (f.key) {
                   case "string":
@@ -322,7 +349,8 @@ export default function FNAbviewdataviewComponent({
          $detailItem.adjust();
 
          this.addCyItemAttributes(tmpDom, item);
-         return tmpDom.innerHTML.replace(/#itemId#/g, item.id);
+         const rowId = item?.id ?? item?.uuid ?? "";
+         return tmpDom.innerHTML.replace(/#itemId#/g, rowId);
       }
 
       getItemWidth(baseElement) {
@@ -417,6 +445,7 @@ export default function FNAbviewdataviewComponent({
       addCyAttribute() {
          const baseView = this.view;
          const $dataview = $$(this.ids.dataview);
+         if (!$dataview?.$view) return;
          const name = (baseView.name ?? "").replace(".dataview", "");
          $dataview.$view.setAttribute(
             "data-cy",
@@ -426,7 +455,7 @@ export default function FNAbviewdataviewComponent({
 
       addCyItemAttributes(dom, item) {
          const baseView = this.view;
-         const uuid = item.uuid;
+         const uuid = item?.uuid ?? item?.id ?? "";
          const name = (baseView.name ?? "").replace(".dataview", "");
          dom.querySelector(".webix_accordionitem_body")?.setAttribute(
             "data-cy",
