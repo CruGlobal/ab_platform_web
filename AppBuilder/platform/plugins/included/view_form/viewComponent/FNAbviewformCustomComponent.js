@@ -59,7 +59,7 @@ export default function FNAbviewformCustomComponent({
             );
          }
 
-         if (field instanceof ABFieldImage) {
+         if (field.key === "image" || field.key === "file") {
             if (settings.useHeight) {
                if (formSettings.labelPosition === "top") {
                   height = parseInt(settings.imageHeight) || DEFAULT_HEIGHT;
@@ -174,7 +174,7 @@ export default function FNAbviewformCustomComponent({
             editable: baseView.settings.disable === 1 ? false : true,
          };
 
-         if (field instanceof ABFieldImage) {
+         if (field.key === "image" || field.key === "file") {
             options.height = field.settings.useHeight
                ? parseInt(field.settings.imageHeight) || DEFAULT_HEIGHT
                : DEFAULT_HEIGHT;

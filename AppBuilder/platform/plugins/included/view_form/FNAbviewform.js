@@ -64,7 +64,7 @@ export default function FNAbviewform(API) {
    const ABViewFormItem = FormAPI.ABViewFormItem;
    const ABViewFormJson = views.find(v => v.common().key === "json");
    const ABViewFormNumber = views.find(v => v.common().key === "numberbox");
-   const ABViewFormReadonly = views.find(v => v.common().key === "readonly");
+   const ABViewFormReadonly = views.find(v => v.common().key === "fieldreadonly");
    const ABViewFormSelectMultiple = views.find(v => v.common().key === "selectmultiple");
    const ABViewFormSelectSingle = views.find(v => v.common().key === "selectsingle");
    const ABViewFormTree = views.find(v => v.common().key === "tree");
