@@ -20,7 +20,6 @@ export default function FNAbviewchartarea({
    const ABViewChartAreaPropertyComponentDefaults = {
       areaType: "area",
       isLegend: 1,
-      chartWidth: 600,
       chartHeight: 200,
       labelFontSize: 12,
       stepValue: 20,
