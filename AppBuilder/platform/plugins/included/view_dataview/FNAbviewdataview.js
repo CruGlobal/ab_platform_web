@@ -4,11 +4,9 @@ import FNAbviewdataviewComponent from "./FNAbviewdataviewComponent.js";
 // All runtime logic is kept in this plugin module.
 export default function FNAbviewdataview({
    ABViewContainer,
-   ABViewContainerComponent,
    ABViewComponentPlugin,
 }) {
    const ABAbviewdataviewComponent = FNAbviewdataviewComponent({
-      ABViewContainerComponent,
       ABViewComponentPlugin,
    });
 
