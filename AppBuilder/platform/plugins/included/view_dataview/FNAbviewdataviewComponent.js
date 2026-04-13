@@ -419,10 +419,7 @@ export default function FNAbviewdataviewComponent({ ABViewComponentPlugin }) {
 
          // Card field components need AB + full async init before the first bind-driven
          // template pass (init(null, 2) from ui() is too early). Single init here, after AB exists.
-         const detailInit = this.detailComponent.init(AB, 2);
-         if (detailInit && typeof detailInit.then === "function") {
-            await detailInit;
-         }
+         await this.detailComponent.init(AB, 2);
 
          if (!dc) return;
 
