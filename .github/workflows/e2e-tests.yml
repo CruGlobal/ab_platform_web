@@ -34,6 +34,10 @@ jobs:
               token: ${{ secrets.GITHUB_TOKEN }}
               ref: ${{ matrix.branch }}
 
+         - run: npm config set ignore-scripts true
+         - run: npm config set allow-git none
+         - run: npm config set min-release-age=7
+
          - run: npm i
            working-directory: ./ab_platform_web
 
