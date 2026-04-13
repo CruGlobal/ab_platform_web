@@ -9,13 +9,13 @@ jobs:
       runs-on: ubuntu-latest
       steps:
          - name: Checkout Platform Web
-           uses: actions/checkout@v3
+           uses: actions/checkout@v6
            with:
               path: ab_platform_web
               submodules: true
 
          - name: Checkout Web Service
-           uses: actions/checkout@v3
+           uses: actions/checkout@v6
            with:
               path: web
               repository: CruGlobal/ab_service_web
@@ -121,7 +121,7 @@ jobs:
          # NejcZdovc/comment-pr@v2 needs a checkout to the base path
          - name: Fix for NejcZdovc/comment-pr
            if: ${{ github.event_name == 'pull_request' }}
-           uses: actions/checkout@v3
+           uses: actions/checkout@v6
 
          - name: Add Lighthouse Results to PR Commnet
            if: ${{ github.event_name == 'pull_request' }}

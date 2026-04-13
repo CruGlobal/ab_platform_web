@@ -1,92 +1,88 @@
 name: E2E Tests
 on:
-   workflow_call:
+  workflow_call:
     inputs:
       ref:
         type: string
         default: ${{ github.ref }}
 jobs:
-   e2e-tests:
-      name: E2E Tests
-      runs-on: ubuntu-latest
-      env:
-         CYPRESS_RESPONSE_TIMEOUT: 200000
-         CYPRESS_DEFAULT_COMMAND_TIMEOUT: 30000
-         CYPRESS_RETRIES: 2
-      strategy:
-         fail-fast: true
-         matrix:
-            include:
-               - branch: develop
-                 webpack: dev
-               - branch: master
-                 webpack: update
-      steps:
-         - uses: actions/checkout@v4
-           with:
-              path: ab_platform_web
-              submodules: true
-              ref: ${{ inputs.ref }}
-         - uses: actions/checkout@v4
-           with:
-              path: web
-              repository: CruGlobal/ab_service_web
-              token: ${{ secrets.GITHUB_TOKEN }}
-              ref: ${{ matrix.branch }}
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    env:
+      CYPRESS_RESPONSE_TIMEOUT: 200000
+      CYPRESS_DEFAULT_COMMAND_TIMEOUT: 30000
+      CYPRESS_RETRIES: 2
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - branch: develop
+            webpack: dev
+          - branch: master
+            webpack: update
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: ab_platform_web
+          submodules: true
+          ref: ${{ inputs.ref }}
+      - uses: actions/checkout@v4
+        with:
+          path: web
+          repository: CruGlobal/ab_service_web
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ matrix.branch }}
 
-         - run: npm config set ignore-scripts true
-         - run: npm config set allow-git none
-         - run: npm config set min-release-age=7
+      - run: npm i
+        working-directory: ./ab_platform_web
 
-         - run: npm i
-           working-directory: ./ab_platform_web
+      - name: Webpack
+        run: npm run build:${{ matrix.webpack }}
+        working-directory: ./ab_platform_web
 
-         - name: Webpack
-           run: npm run build:${{ matrix.webpack }}
-           working-directory: ./ab_platform_web
+      # webpack expects the folder to be called "web" ab-install action expects "ab_service_web"
+      - run: mv web ab_service_web
 
-         # webpack expects the folder to be called "web" ab-install action expects "ab_service_web"
-         - run: mv web ab_service_web
+      - uses: CruGlobal/ab-install-action@main
+        with:
+          port: 8080
+          folder: ab
+          repository: CruGlobal/ab_service_web
 
-         - uses: CruGlobal/ab-install-action@v1
-           with:
-              port: 8080
-              folder: ab
-              repository: CruGlobal/ab_service_web
+      - name: Check out kitchen-sink tests
+        uses: actions/checkout@v4
+        with:
+          repository: CruGlobal/kitchensink_app
+          path: ab/test/e2e/cypress/e2e/kitchensink_app
 
-         - name: Check out kitchen-sink tests
-           uses: actions/checkout@v4
-           with:
-              repository: CruGlobal/kitchensink_app
-              path: ab/test/e2e/cypress/e2e/kitchensink_app
+      # These next steps are to save our ablogs to file
+      - run: npm install pm2@latest -g
+      - name: Save Logs
+        run: pm2 start ./logs.js -- --toFile logs/ABServices.log
+        working-directory: ./ab
 
-         # These next steps are to save our ablogs to file
-         - run: npm install pm2@latest -g
-         - name: Save Logs
-           run: pm2 start ./logs.js -- --toFile logs/ABServices.log
-           working-directory: ./ab
+      #Run test
+      - name: Wait for AB
+        # Skipping the wait step. Cypress has a bit of wait time built in. It might be enough.
+        if: false
+        uses: ifaxity/wait-on-action@v1.1.0
+        with:
+          resource: http://localhost:8080
+          timeout: 300000
 
-         #Run test
-         - name: Wait for AB
-           # Skipping the wait step. Cypress has a bit of wait time built in. It might be enough.
-           if: false
-           uses: ifaxity/wait-on-action@v1.1.0
-           with:
-              resource: http://localhost:8080
-              timeout: 300000
+      - name: Run Cypress Tests
+        run: npm run test:e2e:app -- --browser chrome
+        working-directory: ./ab
 
-         - name: Run Cypress Tests
-           run: npm run test:e2e:app -- --browser chrome
-           working-directory: ./ab
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: ./ab/test/e2e/cypress/screenshots
 
-         - uses: actions/upload-artifact@v4
-           if: failure()
-           with:
-              name: cypress-screenshots
-              path: ./ab/test/e2e/cypress/screenshots
-
-         - uses: actions/upload-artifact@v4
-           if: failure()
-           with:
-              name: ABServices.log
-              path: ./ab/logs/ABServices.log
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: ABServices.log
+          path: ./ab/logs/ABServices.log
