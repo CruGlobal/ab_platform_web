@@ -1,4 +1,8 @@
 import ABViewPropertyLinkPageLocal from "./ABViewPropertyLinkPageLocal.js";
+import ABViewDetailComponentImport from "../../../views/viewComponent/ABViewDetailComponent.js";
+
+const ABViewDetailComponent =
+   ABViewDetailComponentImport.default ?? ABViewDetailComponentImport;
 
 function FNAbviewdataviewDetailComponent({ ABViewComponentPlugin }) {
    return class ABAbviewdataviewDetailComponent extends ABViewComponentPlugin {
@@ -9,326 +13,27 @@ function FNAbviewdataviewDetailComponent({ ABViewComponentPlugin }) {
             Object.assign({ detail: "" }, ids)
          );
          this.idBase = idBase || `ABViewDetail_${baseView.id}`;
-         this.options = null;
-
-         this.viewComponents = {
-            /* view.id : {viewComponent} */
-         };
-         // {hash}
-         // a reference of all our child views that we manage
-
-         this.viewComponentIDs = {
-            /* view.id : {viewComponent} */
-         };
-         // {hash}
-         // a reference of all our child.ui().ids of the views we manage
-
-         this._handlerChangePage = (pageId) => {
-            baseView.changePage(pageId);
-         };
+         this._detail = new ABViewDetailComponent(
+            baseView,
+            this.idBase,
+            Object.assign({ detail: "" }, ids)
+         );
       }
 
       ui() {
-         const views = this.view.viewsSortByPosition();
-         const rowViews = this.getElements(views);
-         const _ui = super.ui(rowViews);
-
-         delete _ui.type;
-
-         // this wrapper allows the detail view to have a
-         // card appearance as well as enables the edit and
-         // details functions to work when clicked
-         return {
-            type: "form",
-            id: this.ids.component,
-            borderless: true,
-            rows: [
-               {
-                  body: _ui,
-               },
-            ],
-         };
+         return this._detail.ui();
       }
 
-      getElements(views) {
-         const rows = [];
-         const componentMap = {};
-
-         let curRowIndex;
-         let curColIndex;
-
-         const settings = this.settings;
-         const defaultSettings = this.view.constructor.defaultValues();
-
-         views.forEach((v) => {
-            // let component = v.component(/* App, idPrefix */);
-            // NOTE: PONG - Just temporary to be compatible old & new versions
-            let component;
-
-            try {
-               component = v.component(this.idBase);
-               // make sure any existing handlers for changePage are removed.
-               v.removeAllListeners("changePage");
-            } catch (err) {
-               component = v.component(this.idBase);
-
-               const ui = component.ui;
-
-               component.ui = (() => ui).bind(component);
-            }
-
-            this.viewComponents[v.id] = component;
-
-            ////
-            //// TODO: figure out the embedded Callbacks => emit()
-            ////
-            // if key == "form" or "button" register the callbacks to the parent
-            // NOTE this will only work on the last form of a page!
-            // if (v.key == "form" && v._logic.callbacks) {
-            //    _logic.callbacks = v._logic.callbacks;
-            // }
-
-            // Create a new row
-            if (v.position.y == null || v.position.y !== curRowIndex) {
-               curRowIndex = v.position.y || rows.length;
-               curColIndex = 0;
-
-               const rowNew = {
-                  cols: [],
-               };
-
-               // Create columns following setting value
-               const colNumber = settings.columns || defaultSettings.columns;
-
-               for (let i = 0; i < colNumber; i++)
-                  rowNew.cols.push({
-                     gravity: settings.gravity?.[i]
-                        ? parseInt(settings.gravity[i])
-                        : defaultSettings.gravity,
-                  });
-
-               rows.push(rowNew);
-            }
-
-            // Get the last row
-            const rowIndx = rows.length - 1;
-            const curRow = rows[rowIndx];
-            const newPos = v.position.x ?? 0;
-            const mapKey = `${rowIndx}-${newPos}`;
-
-            let getGrav = 1;
-
-            if (componentMap[mapKey])
-               console.error(
-                  `Component[${component?.ids?.component}] is overwriting component[${componentMap[mapKey].ids?.component}]. <-- Reorder them to fix.`
-               );
-
-            componentMap[mapKey] = component;
-
-            if (curRow.cols[newPos]?.gravity)
-               getGrav = curRow.cols[newPos].gravity;
-
-            const _ui = component.ui();
-
-            this.viewComponentIDs[v.id] = _ui.id;
-            _ui.gravity = getGrav;
-
-            // Add ui of sub-view to column
-            curRow.cols[newPos] = _ui;
-
-            // Trigger 'changePage' event to parent
-            this.eventAdd({
-               emitter: v,
-               eventName: "changePage",
-               listener: this._handlerChangePage,
-            });
-
-            curColIndex++;
-         });
-
-         return rows;
-      }
-
-      async init(AB, accessLevel = 0, options = {}) {
-         await super.init(AB);
-
-         this.options = options;
-
-         const allInits = [];
-
-         // // register our callbacks:
-         // if (options) {
-         //    for (var c in _logic.callbacks) {
-         //       _logic.callbacks[c] = options[c] || _logic.callbacks[c];
-         //    }
-         // }
-
-         // see access by CSS class
-         $$(this.ids.component)?.define("css", `accessLevel-${accessLevel}`);
-
-         const viewComponents = this.viewComponents;
-
-         // attach all the .UI views:
-         for (const key in viewComponents) {
-            // skip when the view is removed.
-            if (
-               !viewComponents[key] ??
-               !this.view.views((v) => v.id === key).length
-            )
-               continue;
-
-            // Initial component along with options in case there are callbacks we need to listen for
-            if (accessLevel) {
-               allInits.push(viewComponents[key].init(AB, accessLevel, options));
-
-               continue;
-            }
-
-            $$(this.viewComponentIDs[key])?.hide();
-         }
-
-         await Promise.all(allInits);
+      init(AB, accessLevel = 0, options = {}) {
+         return this._detail.init(AB, accessLevel, options);
       }
 
       onShow() {
-         const baseView = this.view;
-
-         try {
-            const dataCy = `Detail ${baseView.name?.split(".")[0]} ${baseView.id}`;
-
-            $$(this.ids.component)?.$view.setAttribute("data-cy", dataCy);
-         } catch (e) {
-            console.warn("Problem setting data-cy", e);
-         }
-
-         // listen DC events
-         const dv = this.datacollection;
-
-         if (dv) {
-            const currData = dv.getCursor();
-
-            if (currData) this.displayData(currData);
-
-            ["changeCursor", "cursorStale", "collectionEmpty"].forEach((key) => {
-               this.eventAdd({
-                  emitter: dv,
-                  eventName: key,
-                  listener: (...p) => this.displayData(...p),
-               });
-            });
-
-            this.eventAdd({
-               emitter: dv,
-               eventName: "create",
-               listener: (createdRow) => {
-                  const currCursor = dv.getCursor();
-
-                  if (currCursor?.id === createdRow.id)
-                     this.displayData(createdRow);
-               },
-            });
-
-            this.eventAdd({
-               emitter: dv,
-               eventName: "update",
-               listener: (updatedRow) => {
-                  const currCursor = dv.getCursor();
-
-                  if (currCursor?.id === updatedRow.id)
-                     this.displayData(updatedRow);
-               },
-            });
-         }
-
-         super.onShow();
-
-         // calll .onShow in child components
-         Object.values(this.viewComponents).forEach((val) => {
-            val.onShow?.();
-         });
+         return this._detail.onShow();
       }
 
       displayData(rowData = {}) {
-         const views = (this.view.views() || []).sort((a, b) => {
-            if (!a?.field?.() || !b?.field?.()) return 0;
-            if (a.field().key === "formula" && b.field().key === "calculate")
-               return -1;
-            if (a.field().key === "calculate" && b.field().key === "formula")
-               return 1;
-            return 0;
-         });
-
-         views.forEach((f) => {
-            let val;
-
-            if (f.field) {
-               const field = f.field();
-               if (!field) return;
-
-               switch (field.key) {
-                  case "connectObject":
-                     val = field.pullRelationValues(rowData);
-                     break;
-                  case "list":
-                     val = rowData?.[field.columnName];
-                     if (!val || (Array.isArray(val) && val.length === 0)) {
-                        val = "";
-                        break;
-                     }
-                     if (field.settings.isMultiple === 0) {
-                        let myVal = "";
-                        (field.settings.options || []).forEach((opt) => {
-                           if (opt.id === val) myVal = opt.text;
-                        });
-                        if (field.settings.hasColors) {
-                           let hasCustomColor = "";
-                           (field.settings.options || []).forEach((h) => {
-                              if (h.text === myVal) hasCustomColor = "hascustomcolor";
-                           });
-                           const hex = (field.settings.options || []).find(
-                              (o) => o.text === myVal
-                           )?.hex;
-                           myVal = `<span class="webix_multicombo_value ${hasCustomColor}" style="background-color: ${hex || "#66666"} !important;"><span>${myVal}</span></span>`;
-                        }
-                        val = myVal;
-                     } else {
-                        const items = val.map((value) => {
-                           let myVal = "";
-                           (field.settings.options || []).forEach((opt) => {
-                              if (opt.id === value.id) myVal = opt.text;
-                           });
-                           const optionHex =
-                              field.settings.hasColors && value.hex
-                                 ? `background: ${value.hex};`
-                                 : "";
-                           const hasCustomColor =
-                              field.settings.hasColors && value.hex
-                                 ? "hascustomcolor"
-                                 : "";
-                           return `<span class="webix_multicombo_value ${hasCustomColor}" style="${optionHex}" optvalue="${value.id}"><span>${myVal}</span></span>`;
-                        });
-                        val = items.join("");
-                     }
-                     break;
-                  case "user":
-                     val = field.pullRelationValues(rowData);
-                     break;
-                  case "file":
-                     val = rowData?.[field.columnName] ?? "";
-                     break;
-                  case "formula":
-                     val = rowData ? field.format(rowData, false) : "";
-                     break;
-                  default:
-                     val = field.format(rowData);
-               }
-            }
-
-            const vComponent =
-               this.viewComponents?.[f.id] ?? f.component(this.idBase);
-            vComponent?.setValue?.(val);
-            vComponent?.displayText?.(rowData);
-         });
+         return this._detail.displayData(rowData);
       }
    };
 }
