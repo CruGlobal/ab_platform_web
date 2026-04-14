@@ -1,7 +1,7 @@
-const ABViewDetailCheckboxCore = require("../../core/views/ABViewDetailCheckboxCore");
-const ABViewDetailCheckboxComponent = require("./viewComponent/ABViewDetailCheckboxComponent");
+import ABViewDetailCheckboxCore from "../../core/views/ABViewDetailCheckboxCore";
+import ABViewDetailCheckboxComponent from "./viewComponent/ABViewDetailCheckboxComponent";
 
-module.exports = class ABViewDetailCheckbox extends ABViewDetailCheckboxCore {
+export default class ABViewDetailCheckbox extends ABViewDetailCheckboxCore {
    /**
     * @method component()
     * return a UI component based upon this view.

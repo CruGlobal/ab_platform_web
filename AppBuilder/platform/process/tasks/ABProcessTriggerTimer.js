@@ -1,11 +1,11 @@
-const ABProcessTriggerTimerCore = require("../../../core/process/tasks/ABProcessTriggerTimerCore.js");
+import ABProcessTriggerTimerCore from "../../../core/process/tasks/ABProcessTriggerTimerCore.js";
 
 const START_URL = "/process/timer/#id#/start";
 const STOP_URL = "/process/timer/#id#/stop";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABProcessTriggerTimer extends ABProcessTriggerTimerCore {
+export default class ABProcessTriggerTimer extends ABProcessTriggerTimerCore {
    /**
     * @method save()
     * persist this instance of ABObject with it's parent ABApplication

@@ -1,16 +1,24 @@
-const path = require("path");
-const APP = path.resolve(__dirname);
-const { merge } = require("webpack-merge");
-const common = require("./webpack.common.js");
-const CompressionPlugin = require("compression-webpack-plugin");
-const Critters = require("critters-webpack-plugin");
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { sentryWebpackPlugin } = require("@sentry/webpack-plugin");
-const webpack = require("webpack");
+import path from "node:path";
+import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
+import { merge } from "webpack-merge";
+import CompressionPlugin from "compression-webpack-plugin";
+import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 
-module.exports = merge(common, {
+/** Critters ships ESM that pulls minimatch default; load via CJS for Node interop. */
+const require = createRequire(import.meta.url);
+const Critters = require("critters-webpack-plugin");
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import { sentryWebpackPlugin } from "@sentry/webpack-plugin";
+import webpack from "webpack";
+import common from "./webpack.common.mjs";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const APP = path.resolve(__dirname);
+
+export default merge(common, {
    mode: "production",
    module: {
       rules: [

@@ -3,7 +3,7 @@
  * manage our multilingual Translations/Labels/etc.
  */
 
-var MLClass = require("../AppBuilder/platform/ABMLClass");
+import MLClass from "../AppBuilder/platform/ABMLClass.js";
 
 class Multilingual extends MLClass {
    constructor() {

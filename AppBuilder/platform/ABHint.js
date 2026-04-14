@@ -1,8 +1,8 @@
-const ABHintCore = require("../core/ABHintCore");
+import ABHintCore from "../core/ABHintCore";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABHint extends ABHintCore {
+export default class ABHint extends ABHintCore {
    constructor(attributes, AB) {
       super(attributes, AB);
 

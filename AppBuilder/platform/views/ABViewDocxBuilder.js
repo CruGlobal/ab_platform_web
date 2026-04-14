@@ -1,7 +1,7 @@
-const ABViewDocxBuilderCore = require("../../core/views/ABViewDocxBuilderCore");
-const ABViewDocxBuilderComponent = require("./viewComponent/ABViewDocxBuilderComponent");
+import ABViewDocxBuilderCore from "../../core/views/ABViewDocxBuilderCore";
+import ABViewDocxBuilderComponent from "./viewComponent/ABViewDocxBuilderComponent";
 
-module.exports = class ABViewDocxBuilder extends ABViewDocxBuilderCore {
+export default class ABViewDocxBuilder extends ABViewDocxBuilderCore {
    /**
     * @function component()
     * return a UI component based upon this view.

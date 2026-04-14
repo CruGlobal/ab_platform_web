@@ -1,12 +1,12 @@
-const ABViewFormCore = require("../../core/views/ABViewFormCore");
-const ABViewFormComponent = require("./viewComponent/ABViewFormComponent");
-const ABViewFormButton = require("./ABViewFormButton");
-const ABViewFormCustom = require("./ABViewFormCustom");
-const ABViewFormConnect = require("./ABViewFormConnect");
-const ABViewFormDatepicker = require("./ABViewFormDatepicker");
-const ABViewFormSelectMultiple = require("./ABViewFormSelectMultiple");
-const ABViewFormTextbox = require("./ABViewFormTextbox");
-const ABViewFormJson = require("./ABViewFormJson");
+import ABViewFormCore from "../../core/views/ABViewFormCore";
+import ABViewFormComponent from "./viewComponent/ABViewFormComponent";
+import ABViewFormButton from "./ABViewFormButton";
+import ABViewFormCustom from "./ABViewFormCustom";
+import ABViewFormConnect from "./ABViewFormConnect";
+import ABViewFormDatepicker from "./ABViewFormDatepicker";
+import ABViewFormSelectMultiple from "./ABViewFormSelectMultiple";
+import ABViewFormTextbox from "./ABViewFormTextbox";
+import ABViewFormJson from "./ABViewFormJson";
 
 const L = (...params) => AB.Multilingual.label(...params);
 
@@ -18,7 +18,7 @@ const L = (...params) => AB.Multilingual.label(...params);
 
 const ABViewFormPropertyComponentDefaults = ABViewFormCore.defaultValues();
 
-module.exports = class ABViewForm extends ABViewFormCore {
+export default class ABViewForm extends ABViewFormCore {
    constructor(values, application, parent, defaultValues) {
       super(values, application, parent, defaultValues);
 

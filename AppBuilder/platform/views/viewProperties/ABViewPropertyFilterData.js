@@ -14,7 +14,8 @@
  *                (this is used for the parent component to indicate how
  *                many rules are currently applied to the data being displayed)
  */
-const ABMLClass = require("../../ABMLClass");
+import ABMLClass from "../../ABMLClass";
+
 import ABViewProperty from "./ABViewProperty";
 import ABViewComponent from "../viewComponent/ABViewComponent";
 

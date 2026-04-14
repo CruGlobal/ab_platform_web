@@ -1,7 +1,7 @@
-const ABObjectQuery = require("./ABObjectQuery");
-const ABDataCollectionCore = require("../core/ABDataCollectionCore");
+import ABObjectQuery from "./ABObjectQuery";
+import ABDataCollectionCore from "../core/ABDataCollectionCore";
 
-module.exports = class ABDataCollection extends ABDataCollectionCore {
+export default class ABDataCollection extends ABDataCollectionCore {
    constructor(attributes, AB) {
       super(attributes, AB);
       this.setMaxListeners(0);

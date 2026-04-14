@@ -1,14 +1,12 @@
-const ABViewFormConnectCore = require("../../core/views/ABViewFormConnectCore");
-const ABViewFormConnectComponent = require("./viewComponent/ABViewFormConnectComponent");
-const ABViewPropertyAddPage =
-   require("./viewProperties/ABViewPropertyAddPage").default;
-const ABViewPropertyEditPage =
-   require("./viewProperties/ABViewPropertyEditPage").default;
+import ABViewFormConnectCore from "../../core/views/ABViewFormConnectCore";
+import ABViewFormConnectComponent from "./viewComponent/ABViewFormConnectComponent";
+import ABViewPropertyAddPage from "./viewProperties/ABViewPropertyAddPage";
+import ABViewPropertyEditPage from "./viewProperties/ABViewPropertyEditPage";
 
 const ABViewFormConnectPropertyComponentDefaults =
    ABViewFormConnectCore.defaultValues();
 
-module.exports = class ABViewFormConnect extends ABViewFormConnectCore {
+export default class ABViewFormConnect extends ABViewFormConnectCore {
    /**
     * @param {obj} values  key=>value hash of ABView values
     * @param {ABApplication} application the application object this view is under

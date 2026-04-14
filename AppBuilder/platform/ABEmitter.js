@@ -5,9 +5,9 @@
  *
  */
 
-var EventEmitter = require("events").EventEmitter;
+import {EventEmitter} from "events";
 
-module.exports = class ABEmitter extends EventEmitter {
+export default class ABEmitter extends EventEmitter {
    constructor() {
       super(/*{ maxListeners: 0 }*/);
    }

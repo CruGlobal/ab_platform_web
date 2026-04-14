@@ -1,11 +1,15 @@
-const path = require("path");
-const APP = path.resolve(__dirname);
-const { merge } = require("webpack-merge");
-const common = require("./webpack.common.js");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const webpack = require("webpack");
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { merge } from "webpack-merge";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import webpack from "webpack";
+import common from "./webpack.common.mjs";
 
-module.exports = merge(common, {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const APP = path.resolve(__dirname);
+
+export default merge(common, {
    mode: "development",
    // Use 'eval-source-map' for faster builds, or 'source-map' for better quality
    // 'source-map' provides the best debugging experience for library code

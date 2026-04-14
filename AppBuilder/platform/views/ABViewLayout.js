@@ -1,7 +1,7 @@
-const ABViewLayoutCore = require("../../core/views/ABViewLayoutCore");
-const ABViewLayoutComponent = require("./viewComponent/ABViewLayoutComponent");
+import ABViewLayoutCore from "../../core/views/ABViewLayoutCore";
+import ABViewLayoutComponent from "./viewComponent/ABViewLayoutComponent";
 
-module.exports = class ABViewLayout extends ABViewLayoutCore {
+export default class ABViewLayout extends ABViewLayoutCore {
    /**
     * @function component()
     * return a UI component based upon this view.

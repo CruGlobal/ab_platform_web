@@ -1,7 +1,7 @@
-const ABViewFormButtonCore = require("../../core/views/ABViewFormButtonCore");
-const ABViewFormButtonComponent = require("./viewComponent/ABViewFormButtonComponent");
+import ABViewFormButtonCore from "../../core/views/ABViewFormButtonCore";
+import ABViewFormButtonComponent from "./viewComponent/ABViewFormButtonComponent";
 
-module.exports = class ABViewFormButton extends ABViewFormButtonCore {
+export default class ABViewFormButton extends ABViewFormButtonCore {
    /**
     * @method component()
     * return a UI component based upon this view.

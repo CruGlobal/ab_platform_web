@@ -1,8 +1,8 @@
-const CalculateTaskCore = require("../../../core/process/tasks/ABProcessTaskServiceCalculateCore.js");
+import CalculateTaskCore from "../../../core/process/tasks/ABProcessTaskServiceCalculateCore.js";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class CalculateTask extends CalculateTaskCore {
+export default class CalculateTask extends CalculateTaskCore {
    ////
    //// Process Instance Methods
    ////

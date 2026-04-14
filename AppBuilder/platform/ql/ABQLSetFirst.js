@@ -6,7 +6,7 @@
  *
  */
 
-const ABQLSetFirstCore = require("../../core/ql/ABQLSetFirstCore.js");
+import ABQLSetFirstCore from "../../core/ql/ABQLSetFirstCore.js";
 
 class ABQLSetFirst extends ABQLSetFirstCore {
    // constructor(attributes, prevOP, task, application) {
@@ -17,4 +17,4 @@ class ABQLSetFirst extends ABQLSetFirstCore {
    ///
 }
 
-module.exports = ABQLSetFirst;
+export default ABQLSetFirst;

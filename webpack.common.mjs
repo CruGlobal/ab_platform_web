@@ -1,9 +1,13 @@
-const path = require("path");
-const APP = path.resolve(__dirname);
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import CopyPlugin from "copy-webpack-plugin";
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const APP = path.resolve(__dirname);
+
+export default {
    context: APP,
    entry: {
       app: path.join(APP, "index.js"),
@@ -39,7 +43,14 @@ module.exports = {
       new CopyPlugin({
          patterns: [
             {
-               from: path.join(APP, "node_modules", "tinymce", "models", "dom", "model.js"),
+               from: path.join(
+                  APP,
+                  "node_modules",
+                  "tinymce",
+                  "models",
+                  "dom",
+                  "model.js"
+               ),
                to: "models/dom/model.js",
                noErrorOnMissing: true,
             },
@@ -58,9 +69,9 @@ module.exports = {
          cacheGroups: {
             vendors: false,
             default: false,
-             pdfjs: {
-                test: /[\\/]node_modules[\\/]pdfjs-dist|[\\/]AppBuilder[\\/]platform[\\/]plugins[\\/]included[\\/]view_pdfImporter[\\/]pdfjs/,
-                filename: "pdfjs.[name].[contenthash].mjs",
+            pdfjs: {
+               test: /[\\/]node_modules[\\/]pdfjs-dist|[\\/]AppBuilder[\\/]platform[\\/]plugins[\\/]included[\\/]view_pdfImporter[\\/]pdfjs/,
+               filename: "pdfjs.[name].[contenthash].mjs",
                chunks: "all",
                reuseExistingChunk: true,
                priority: 10,

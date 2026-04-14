@@ -8,7 +8,7 @@
 // import Account from "./Account";
 // import analytics from "./Analytics";
 // import EventEmitter from "eventemitter2";
-var EventEmitter = require("events").EventEmitter;
+import { EventEmitter } from "events";
 // import Lock from "./Lock";
 
 // import { storage } from "./Storage";
@@ -19,7 +19,7 @@ var EventEmitter = require("events").EventEmitter;
 
 // End Temp
 
-const Atomic = require("atomicjs/dist/atomic.min.js");
+import Atomic from "atomicjs/dist/atomic.min.js";
 // Atomic : a small $.ajax() replacement
 
 var Config = null;

@@ -5,6 +5,6 @@
  *
  */
 
-const QLRootObject = require("./ABQLRootObject.js");
+import QLRootObject from "./ABQLRootObject.js";
 
-module.exports = [QLRootObject];
+export default [QLRootObject];

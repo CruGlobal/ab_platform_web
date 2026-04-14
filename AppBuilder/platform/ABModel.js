@@ -1,4 +1,4 @@
-const ABModelCore = require("../core/ABModelCore");
+import ABModelCore from "../core/ABModelCore";
 
 //
 // ABModel
@@ -57,7 +57,7 @@ function no_socket_trigger(model, key, data) {
    }
 }
 
-module.exports = class ABModel extends ABModelCore {
+export default class ABModel extends ABModelCore {
    constructor(object) {
       super(object);
 

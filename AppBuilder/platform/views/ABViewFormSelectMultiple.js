@@ -1,7 +1,7 @@
-const ABViewFormSelectMultipleCore = require("../../core/views/ABViewFormSelectMultipleCore");
-const ABViewFormSelectMultipleComponent = require("./viewComponent/ABViewFormSelectMultipleComponent");
+import ABViewFormSelectMultipleCore from "../../core/views/ABViewFormSelectMultipleCore";
+import ABViewFormSelectMultipleComponent from "./viewComponent/ABViewFormSelectMultipleComponent";
 
-module.exports = class ABViewFormSelectMultiple extends (
+export default class ABViewFormSelectMultiple extends (
    ABViewFormSelectMultipleCore
 ) {
    /**

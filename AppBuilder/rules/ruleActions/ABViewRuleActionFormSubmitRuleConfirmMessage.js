@@ -3,11 +3,11 @@
 //
 //
 //
-const ABViewRuleAction = require("../ABViewRuleAction");
+import ABViewRuleAction from "../ABViewRuleAction";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABViewRuleActionFormSubmitRuleConfirmMessage extends (
+export default class ABViewRuleActionFormSubmitRuleConfirmMessage extends (
    ABViewRuleAction
 ) {
    /**

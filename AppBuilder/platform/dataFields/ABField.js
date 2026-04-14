@@ -5,11 +5,11 @@
  *
  */
 
-const ABFieldCore = require("../../core/dataFields/ABFieldCore");
+import ABFieldCore from "../../core/dataFields/ABFieldCore";
 
 const L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABField extends ABFieldCore {
+export default class ABField extends ABFieldCore {
    constructor(values, object, fieldDefaults) {
       super(values, object, fieldDefaults);
 

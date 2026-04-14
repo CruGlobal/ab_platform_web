@@ -1,7 +1,7 @@
-const ABViewConditionalContainerCore = require("../../core/views/ABViewConditionalContainerCore");
-const ABViewConditionalContainerComponent = require("./viewComponent/ABViewConditionalContainerComponent");
+import ABViewConditionalContainerCore from "../../core/views/ABViewConditionalContainerCore";
+import ABViewConditionalContainerComponent from "./viewComponent/ABViewConditionalContainerComponent";
 
-module.exports = class ABViewConditionalContainer extends (
+export default class ABViewConditionalContainer extends (
    ABViewConditionalContainerCore
 ) {
    /**

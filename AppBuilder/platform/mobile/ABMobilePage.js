@@ -1,6 +1,6 @@
-const ABMobilePageCore = require("../../core/mobile/ABMobilePageCore");
+import ABMobilePageCore from "../../core/mobile/ABMobilePageCore";
 
-module.exports = class ABMobilePage extends ABMobilePageCore {
+export default class ABMobilePage extends ABMobilePageCore {
    constructor(values, application, parent, defaultValues) {
       super(values, application, parent, defaultValues);
 

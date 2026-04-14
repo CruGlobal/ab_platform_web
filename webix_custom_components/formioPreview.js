@@ -6,8 +6,8 @@
  * Note: This component is lazy loaded and requires calling .init() before using
  *
  */
-const ABLazyCustomComponent = require("./lazyComponent.js");
-module.exports = class ABCustomFormIOPreview extends ABLazyCustomComponent {
+import ABLazyCustomComponent from "./lazyComponent.js";
+export default class ABCustomFormIOPreview extends ABLazyCustomComponent {
    get key() {
       return "formiopreview";
    }

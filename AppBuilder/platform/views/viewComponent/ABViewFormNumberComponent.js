@@ -1,7 +1,7 @@
-const ABViewFormItemComponent = require("./ABViewFormItemComponent");
-const NumberTextInput = require("../../../../webix_custom_components/numbertext");
+import ABViewFormItemComponent from "./ABViewFormItemComponent";
+import NumberTextInput from "../../../../webix_custom_components/numbertext";
 
-module.exports = class ABViewFormNumberComponent extends (
+export default class ABViewFormNumberComponent extends (
    ABViewFormItemComponent
 ) {
    constructor(baseView, idBase, ids) {

@@ -5,11 +5,11 @@
 // Added/Updated.
 //
 //
-const ABViewRuleActionObjectUpdater = require("./ABViewRuleActionObjectUpdater");
+import ABViewRuleActionObjectUpdater from "./ABViewRuleActionObjectUpdater";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABViewRuleActionFormRecordRuleUpdate extends (
+export default class ABViewRuleActionFormRecordRuleUpdate extends (
    ABViewRuleActionObjectUpdater
 ) {
    /**

@@ -1,16 +1,14 @@
-const Docxtemplater = require("../../../../js/docxtemplater.v3.0.12.min.js");
-const ImageModule = require("../../../../js/docxtemplater-image-module.v3.0.2.min.js");
-const JSZipUtils = require("jszip-utils/dist/jszip-utils.min.js");
-const JSZip = require("../../../../js/jszip.min.js");
-const sizeOf = require("image-size");
+import Docxtemplater from "../../../../js/docxtemplater.v3.0.12.min.js";
+import ImageModule from "../../../../js/docxtemplater-image-module.v3.0.2.min.js";
+import JSZipUtils from "jszip-utils/dist/jszip-utils.min.js";
+import JSZip from "../../../../js/jszip.min.js";
+import sizeOf from "image-size";
+import ABFieldConnect from "../../dataFields/ABFieldConnect";
+import ABFieldImage from "../../dataFields/ABFieldImage";
+import ABObjectQuery from "../../ABObjectQuery";
+import ABViewComponent from "./ABViewComponent";
 
-const ABFieldConnect = require("../../dataFields/ABFieldConnect");
-const ABFieldImage = require("../../dataFields/ABFieldImage");
-const ABObjectQuery = require("../../ABObjectQuery");
-
-const ABViewComponent = require("./ABViewComponent").default;
-
-module.exports = class ABViewDocxBuilderComponent extends ABViewComponent {
+export default class ABViewDocxBuilderComponent extends ABViewComponent {
    constructor(baseView, idBase, ids) {
       super(
          baseView,

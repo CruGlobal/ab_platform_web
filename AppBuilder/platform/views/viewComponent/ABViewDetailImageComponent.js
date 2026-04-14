@@ -1,6 +1,6 @@
-const ABViewDetailItemComponent = require("./ABViewDetailItemComponent");
+import ABViewDetailItemComponent from "./ABViewDetailItemComponent";
 
-module.exports = class ABViewDetailImageComponent extends (
+export default class ABViewDetailImageComponent extends (
    ABViewDetailItemComponent
 ) {
    constructor(baseView, idBase, ids) {

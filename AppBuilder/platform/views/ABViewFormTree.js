@@ -1,7 +1,7 @@
-const ABViewFormTreeCore = require("../../core/views/ABViewFormTreeCore");
-const ABViewFormTreeComponent = require("./viewComponent/ABViewFormTreeComponent");
+import ABViewFormTreeCore from "../../core/views/ABViewFormTreeCore";
+import ABViewFormTreeComponent from "./viewComponent/ABViewFormTreeComponent";
 
-module.exports = class ABViewFormTree extends ABViewFormTreeCore {
+export default class ABViewFormTree extends ABViewFormTreeCore {
    /**
     * @method component()
     * return a UI component based upon this view.

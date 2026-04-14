@@ -1,7 +1,7 @@
-const ABViewFormReadonlyCore = require("../../core/views/ABViewFormReadonlyCore");
-const ABViewFormReadonlyComponent = require("./viewComponent/ABViewFormReadonlyComponent");
+import ABViewFormReadonlyCore from "../../core/views/ABViewFormReadonlyCore";
+import ABViewFormReadonlyComponent from "./viewComponent/ABViewFormReadonlyComponent";
 
-module.exports = class ABViewFormReadonly extends ABViewFormReadonlyCore {
+export default class ABViewFormReadonly extends ABViewFormReadonlyCore {
    /**
     * @method component()
     * return a UI component based upon this view.

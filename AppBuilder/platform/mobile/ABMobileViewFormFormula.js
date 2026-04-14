@@ -1,5 +1,5 @@
-const ABMobileViewFormFormulaCore = require("../../core/mobile/ABMobileViewFormFormulaCore");
+import ABMobileViewFormFormulaCore from "../../core/mobile/ABMobileViewFormFormulaCore";
 
-module.exports = class ABMobileViewFormFormula extends (
+export default class ABMobileViewFormFormula extends (
    ABMobileViewFormFormulaCore
 ) {};

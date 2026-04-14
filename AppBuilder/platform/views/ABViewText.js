@@ -1,8 +1,7 @@
-const ABViewTextCore = require("../../core/views/ABViewTextCore");
+import ABViewTextCore from "../../core/views/ABViewTextCore";
+import ABViewTextComponent from "./viewComponent/ABViewTextComponent";
 
-const ABViewTextComponent = require("./viewComponent/ABViewTextComponent");
-
-module.exports = class ABViewText extends ABViewTextCore {
+export default class ABViewText extends ABViewTextCore {
    /**
     * @method component()
     * return a UI component based upon this view.

@@ -1,7 +1,7 @@
-const ABViewDetailTreeCore = require("../../core/views/ABViewDetailTreeCore");
-const ABViewDetailTreeComponent = require("./viewComponent/ABViewDetailTreeComponent");
+import ABViewDetailTreeCore from "../../core/views/ABViewDetailTreeCore";
+import ABViewDetailTreeComponent from "./viewComponent/ABViewDetailTreeComponent";
 
-module.exports = class ABViewDetailTree extends ABViewDetailTreeCore {
+export default class ABViewDetailTree extends ABViewDetailTreeCore {
    /**
     * @param {obj} values  key=>value hash of ABView values
     * @param {ABApplication} application the application object this view is under

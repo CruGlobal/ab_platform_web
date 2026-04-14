@@ -1,7 +1,7 @@
-const ABViewSchedulerCore = require("../../core/views/ABViewSchedulerCore");
-const ABViewSchedulerComponent = require("./viewComponent/ABViewSchedulerComponent");
+import ABViewSchedulerCore from "../../core/views/ABViewSchedulerCore";
+import ABViewSchedulerComponent from "./viewComponent/ABViewSchedulerComponent";
 
-module.exports = class ABViewScheduler extends ABViewSchedulerCore {
+export default class ABViewScheduler extends ABViewSchedulerCore {
    // constructor(values, application, parent, defaultValues) {
    //    super(values, application, parent, defaultValues);
    // }

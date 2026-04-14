@@ -1,4 +1,4 @@
-const ABViewForm = require("./ABViewForm");
+import ABViewForm from "./ABViewForm";
 
 const ABViewFormURLDefaults = {
    key: "form-url", // unique key identifier for this ABViewForm
@@ -6,7 +6,7 @@ const ABViewFormURLDefaults = {
    labelKey: "FormUrl", // {string} the multilingual label key for the class label
 };
 
-module.exports = class ABViewFormURL extends ABViewForm {
+export default class ABViewFormURL extends ABViewForm {
    static common() {
       return ABViewFormURLDefaults;
    }

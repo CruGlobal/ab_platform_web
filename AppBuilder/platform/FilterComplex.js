@@ -1,4 +1,4 @@
-const FilterComplexCore = require("../core/FilterComplexCore");
+import FilterComplexCore from "../core/FilterComplexCore";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
@@ -152,7 +152,7 @@ function _uiFieldOptionId(fieldId) {
    return `byQueryField-field-option-${fieldId}`;
 }
 
-module.exports = class FilterComplex extends FilterComplexCore {
+export default class FilterComplex extends FilterComplexCore {
    constructor(idBase, AB, options = {}) {
       idBase = idBase ?? "ab_filterComplex";
 

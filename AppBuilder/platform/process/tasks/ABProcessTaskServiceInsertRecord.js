@@ -1,6 +1,6 @@
-const InsertRecordTaskCore = require("../../../core/process/tasks/ABProcessTaskServiceInsertRecordCore.js");
+import InsertRecordTaskCore from "../../../core/process/tasks/ABProcessTaskServiceInsertRecordCore.js";
 
-module.exports = class InsertRecordTask extends InsertRecordTaskCore {
+export default class InsertRecordTask extends InsertRecordTaskCore {
    warningsEval() {
       super.warningsEval();
 

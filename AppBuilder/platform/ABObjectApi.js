@@ -1,7 +1,7 @@
-const atomicjs = require("atomicjs");
-const ABObjectApiCore = require("../core/ABObjectApiCore");
+import atomicjs from "atomicjs";
+import ABObjectApiCore from "../core/ABObjectApiCore";
 
-module.exports = class ABObjectApi extends ABObjectApiCore {
+export default class ABObjectApi extends ABObjectApiCore {
    constructor(attributes, AB) {
       super(attributes, AB);
    }

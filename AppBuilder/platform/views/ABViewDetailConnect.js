@@ -1,10 +1,8 @@
-const ABViewDetailConnectCore = require("../../core/views/ABViewDetailConnectCore");
-const ABViewPropertyAddPage =
-   require("./viewProperties/ABViewPropertyAddPage").default;
+import ABViewDetailConnectCore from "../../core/views/ABViewDetailConnectCore";
+import ABViewPropertyAddPage from "./viewProperties/ABViewPropertyAddPage";
+import ABViewDetailConnectComponent from "./viewComponent/ABViewDetailConnectComponent";
 
-const ABViewDetailConnectComponent = require("./viewComponent/ABViewDetailConnectComponent");
-
-module.exports = class ABViewDetailConnect extends ABViewDetailConnectCore {
+export default class ABViewDetailConnect extends ABViewDetailConnectCore {
    ///
    /// Instance Methods
    ///

@@ -1,10 +1,10 @@
-const ABViewWidgetCore = require("../../core/views/ABViewWidgetCore");
+import ABViewWidgetCore from "../../core/views/ABViewWidgetCore";
 
 const ABPropertyComponentDefaults = ABViewWidgetCore.defaultValues();
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABViewWidget extends ABViewWidgetCore {
+export default class ABViewWidget extends ABViewWidgetCore {
    // constructor(values, application, parent, defaultValues) {
    //    super(values, application, parent, defaultValues);
    // }

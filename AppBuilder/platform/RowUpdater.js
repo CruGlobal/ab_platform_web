@@ -1,6 +1,6 @@
 // const ABComponent = require("./ABComponent");
 import ClassUI from "../../ui/ClassUI";
-const ABViewForm = require("../platform/views/ABViewForm");
+import ABViewForm from "../platform/views/ABViewForm";
 
 let L = null;
 

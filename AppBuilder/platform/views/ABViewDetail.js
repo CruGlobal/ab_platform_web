@@ -1,7 +1,7 @@
-const ABViewDetailCore = require("../../core/views/ABViewDetailCore");
-const ABViewDetailComponent = require("./viewComponent/ABViewDetailComponent");
+import ABViewDetailCore from "../../core/views/ABViewDetailCore";
+import ABViewDetailComponent from "./viewComponent/ABViewDetailComponent";
 
-module.exports = class ABViewDetail extends ABViewDetailCore {
+export default class ABViewDetail extends ABViewDetailCore {
    // constructor(values, application, parent, defaultValues) {
    //    super(values, application, parent, defaultValues);
    // }

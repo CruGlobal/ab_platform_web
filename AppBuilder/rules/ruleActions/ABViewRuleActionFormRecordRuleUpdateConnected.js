@@ -5,13 +5,14 @@
 // the current object we just Added/Updated
 //
 //
-const ABViewRuleActionObjectUpdater = require("./ABViewRuleActionObjectUpdater");
-const ABFieldConnect = require("../../platform/dataFields/ABFieldConnect");
-const ObjectQueryBuilder = require("../ABViewQueryBuilderObjectFieldConditions");
+import ABViewRuleActionObjectUpdater from "./ABViewRuleActionObjectUpdater";
+
+import ABFieldConnect from "../../platform/dataFields/ABFieldConnect";
+import ObjectQueryBuilder from "../ABViewQueryBuilderObjectFieldConditions";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABViewRuleActionFormRecordRuleUpdateConnected extends (
+export default class ABViewRuleActionFormRecordRuleUpdateConnected extends (
    ABViewRuleActionObjectUpdater
 ) {
    constructor(App, idBase, currentForm) {

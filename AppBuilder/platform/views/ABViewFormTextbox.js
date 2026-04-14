@@ -1,7 +1,7 @@
-const ABViewFormTextboxCore = require("../../core/views/ABViewFormTextboxCore");
-const ABViewFormTextboxComponent = require("./viewComponent/ABViewFormTextboxComponent");
+import ABViewFormTextboxCore from "../../core/views/ABViewFormTextboxCore";
+import ABViewFormTextboxComponent from "./viewComponent/ABViewFormTextboxComponent";
 
-module.exports = class ABViewFormTextbox extends ABViewFormTextboxCore {
+export default class ABViewFormTextbox extends ABViewFormTextboxCore {
    /**
     * @method component()
     * return a UI component based upon this view.

@@ -3,9 +3,9 @@
 //
 // Represents the Data interface for a connection to Netsuite.
 
-const ABModel = require("./ABModel");
+import ABModel from "./ABModel";
 
-module.exports = class ABModelAPINetsuite extends ABModel {
+export default class ABModelAPINetsuite extends ABModel {
    ///
    /// Instance Methods
    ///

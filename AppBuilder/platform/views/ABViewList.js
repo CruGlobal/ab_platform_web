@@ -1,9 +1,9 @@
-const ABViewListCore = require("../../core/views/ABViewListCore");
-const ABViewListComponent = require("./viewComponent/ABViewListComponent");
+import ABViewListCore from "../../core/views/ABViewListCore";
+import ABViewListComponent from "./viewComponent/ABViewListComponent";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABViewList extends ABViewListCore {
+export default class ABViewList extends ABViewListCore {
    // constructor(values, application, parent, defaultValues) {
    //    super(values, application, parent, defaultValues);
    // }

@@ -6,12 +6,12 @@
   "scripts": {
     "postinstall": "patch-package",
     "lint": "eslint AppBuilder/. init/. resources/. ui/. webix_custom_components/. --fix --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look good.'",
-    "test": "mocha -r esm --require @babel/register --config test/.mocharc.js test/**/*.test.js",
-    "build": "webpack-cli --config webpack.prod.js --progress",
-    "build:update": "webpack-cli --config webpack.prod.js",
-    "build:dev": "webpack-cli --config webpack.dev.js",
-    "watch": "webpack-cli --config webpack.dev.js --watch --progress",
-    "break": "node --inspect-brk=9229 ./node_modules/.bin/webpack-cli --watch --progress"
+    "test": "mocha -r esm --require @babel/register --config test/.mocharc.cjs test/**/*.test.js",
+    "build": "webpack-cli --config webpack.prod.mjs --progress",
+    "build:update": "webpack-cli --config webpack.prod.mjs",
+    "build:dev": "webpack-cli --config webpack.dev.mjs",
+    "watch": "webpack-cli --config webpack.dev.mjs --watch --progress",
+    "break": "node --inspect-brk=9229 ./node_modules/.bin/webpack-cli --config webpack.dev.mjs --watch --progress"
   },
   "author": "",
   "license": "ISC",

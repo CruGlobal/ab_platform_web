@@ -1,7 +1,7 @@
-const ABViewReportsManagerCore = require("../../core/views/ABViewReportsManagerCore");
-const ABViewReportsManagerComponent = require("./viewComponent/ABViewReportsManagerComponent");
+import ABViewReportsManagerCore from "../../core/views/ABViewReportsManagerCore";
+import ABViewReportsManagerComponent from "./viewComponent/ABViewReportsManagerComponent";
 
-module.exports = class ABViewReportsManager extends ABViewReportsManagerCore {
+export default class ABViewReportsManager extends ABViewReportsManagerCore {
    // constructor(values, application, parent, defaultValues) {
    //    super(values, application, parent, defaultValues);
    // }

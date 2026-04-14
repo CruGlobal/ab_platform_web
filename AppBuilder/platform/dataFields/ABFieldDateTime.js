@@ -1,6 +1,6 @@
-const ABFieldDateTimeCore = require("../../core/dataFields/ABFieldDateTimeCore");
+import ABFieldDateTimeCore from "../../core/dataFields/ABFieldDateTimeCore";
 
-module.exports = class ABFieldDateTime extends ABFieldDateTimeCore {
+export default class ABFieldDateTime extends ABFieldDateTimeCore {
    constructor(values, object) {
       super(values, object);
    }

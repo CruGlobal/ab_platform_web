@@ -1,10 +1,10 @@
-const ABViewFormItemComponent = require("./ABViewFormItemComponent");
-const ABFieldImage = require("../../dataFields/ABFieldImage");
-const FocusableTemplate = require("../../../../webix_custom_components/focusableTemplate");
+import ABViewFormItemComponent from "./ABViewFormItemComponent";
+import ABFieldImage from "../../dataFields/ABFieldImage";
+import FocusableTemplate from "../../../../webix_custom_components/focusableTemplate";
 
 const DEFAULT_HEIGHT = 80;
 
-module.exports = class ABViewFormCustomComponent extends (
+export default class ABViewFormCustomComponent extends (
    ABViewFormItemComponent
 ) {
    constructor(baseView, idBase, ids) {

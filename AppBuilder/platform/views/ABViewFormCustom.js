@@ -1,7 +1,7 @@
-const ABViewFormCustomCore = require("../../core/views/ABViewFormCustomCore");
-const ABViewFormCustomComponent = require("./viewComponent/ABViewFormCustomComponent");
+import ABViewFormCustomCore from "../../core/views/ABViewFormCustomCore";
+import ABViewFormCustomComponent from "./viewComponent/ABViewFormCustomComponent";
 
-module.exports = class ABViewFormCustom extends ABViewFormCustomCore {
+export default class ABViewFormCustom extends ABViewFormCustomCore {
    /**
     * @method component()
     * return a UI component based upon this view.

@@ -1,6 +1,6 @@
-const ABProcessEndCore = require("../../../core/process/tasks/ABProcessEndCore.js");
+import ABProcessEndCore from "../../../core/process/tasks/ABProcessEndCore.js";
 
-module.exports = class ABProcessEnd extends ABProcessEndCore {
+export default class ABProcessEnd extends ABProcessEndCore {
    /**
     * do()
     * this method actually performs the action for this task.

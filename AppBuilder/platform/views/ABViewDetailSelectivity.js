@@ -1,7 +1,7 @@
-const ABViewDetailSelectivityCore = require("../../core/views/ABViewDetailSelectivityCore");
-const ABViewDetailSelectivityComponent = require("./viewComponent/ABViewDetailSelectivityComponent");
+import ABViewDetailSelectivityCore from "../../core/views/ABViewDetailSelectivityCore";
+import ABViewDetailSelectivityComponent from "./viewComponent/ABViewDetailSelectivityComponent";
 
-module.exports = class ABViewDetailSelectivity extends (
+export default class ABViewDetailSelectivity extends (
    ABViewDetailSelectivityCore
 ) {
    /**

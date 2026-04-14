@@ -1,7 +1,7 @@
-const ABObjectQuery = require("../../ABObjectQuery");
-const ABViewContainerComponent = require("./ABViewContainerComponent");
+import ABObjectQuery from "../../ABObjectQuery";
+import ABViewContainerComponent from "./ABViewContainerComponent";
 
-module.exports = class ABViewDetailComponent extends ABViewContainerComponent {
+export default class ABViewDetailComponent extends ABViewContainerComponent {
    constructor(baseView, idBase, ids) {
       super(baseView, idBase || `ABViewDetail_${baseView.id}`, ids);
       this.idBase = idBase;

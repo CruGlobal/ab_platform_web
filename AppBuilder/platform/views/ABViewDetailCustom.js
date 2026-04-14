@@ -1,7 +1,7 @@
-const ABViewDetailCustomCore = require("../../core/views/ABViewDetailCustomCore");
-const ABViewDetailCustomComponent = require("./viewComponent/ABViewDetailCustomComponent");
+import ABViewDetailCustomCore from "../../core/views/ABViewDetailCustomCore";
+import ABViewDetailCustomComponent from "./viewComponent/ABViewDetailCustomComponent";
 
-module.exports = class ABViewDetailCustom extends ABViewDetailCustomCore {
+export default class ABViewDetailCustom extends ABViewDetailCustomCore {
    /**
     * @method component()
     * return a UI component based upon this view.

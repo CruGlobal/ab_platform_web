@@ -1,6 +1,6 @@
-const ABIndexCore = require("../core/ABIndexCore");
+import ABIndexCore from "../core/ABIndexCore";
 
-module.exports = class ABIndex extends ABIndexCore {
+export default class ABIndex extends ABIndexCore {
    // constructor(attributes, object) {
    //    super(attributes, object);
    // }

@@ -1,6 +1,6 @@
-const ABViewFormItemComponent = require("./ABViewFormItemComponent");
+import ABViewFormItemComponent from "./ABViewFormItemComponent";
 
-module.exports = class ABViewFormJsonComponent extends ABViewFormItemComponent {
+export default class ABViewFormJsonComponent extends ABViewFormItemComponent {
    constructor(baseView, idBase, ids) {
       super(baseView, idBase || `ABViewFormJson_${baseView.id}`, ids);
       if (this.settings.type == "filter") {

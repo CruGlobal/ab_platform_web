@@ -1,5 +1,5 @@
-const ABProcessTaskUserApprovalCore = require("../../../core/process/tasks/ABProcessTaskUserApprovalCore.js");
+import ABProcessTaskUserApprovalCore from "../../../core/process/tasks/ABProcessTaskUserApprovalCore.js";
 
-module.exports = class ABProcessTaskUserApproval extends (
+export default class ABProcessTaskUserApproval extends (
    ABProcessTaskUserApprovalCore
 ) {};

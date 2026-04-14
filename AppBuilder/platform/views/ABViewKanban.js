@@ -1,8 +1,6 @@
-const ABViewKanbanCore = require("../../core/views/ABViewKanbanCore");
-const ABViewKanbanComponent = require("./viewComponent/ABViewKanbanComponent");
-
-const ABViewPropertyLinkPage =
-   require("./viewProperties/ABViewPropertyLinkPage").default;
+import ABViewKanbanCore from "../../core/views/ABViewKanbanCore";
+import ABViewKanbanComponent from "./viewComponent/ABViewKanbanComponent";
+import ABViewPropertyLinkPage from "./viewProperties/ABViewPropertyLinkPage";
 
 export default class ABViewKanban extends ABViewKanbanCore {
    //

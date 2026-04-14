@@ -1,8 +1,8 @@
-const ABFieldListCore = require("../../core/dataFields/ABFieldListCore");
+import ABFieldListCore from "../../core/dataFields/ABFieldListCore";
 
 const L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABFieldList extends ABFieldListCore {
+export default class ABFieldList extends ABFieldListCore {
    constructor(values, object) {
       super(values, object);
 

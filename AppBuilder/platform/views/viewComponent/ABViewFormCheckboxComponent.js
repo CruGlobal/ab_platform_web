@@ -1,6 +1,6 @@
-const ABViewFormItemComponent = require("./ABViewFormItemComponent");
+import ABViewFormItemComponent from "./ABViewFormItemComponent";
 
-module.exports = class ABViewFormCheckboxComponent extends (
+export default class ABViewFormCheckboxComponent extends (
    ABViewFormItemComponent
 ) {
    constructor(baseView, idBase, ids) {

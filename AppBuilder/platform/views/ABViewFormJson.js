@@ -1,7 +1,7 @@
-const ABViewFormJsonCore = require("../../core/views/ABViewFormJsonCore");
-const ABViewFormJsonComponent = require("./viewComponent/ABViewFormJsonComponent");
+import ABViewFormJsonCore from "../../core/views/ABViewFormJsonCore";
+import ABViewFormJsonComponent from "./viewComponent/ABViewFormJsonComponent";
 
-module.exports = class ABViewFormJson extends ABViewFormJsonCore {
+export default class ABViewFormJson extends ABViewFormJsonCore {
    /**
     * @method component()
     * return a UI component based upon this view.

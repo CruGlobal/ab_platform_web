@@ -1,7 +1,7 @@
-const ABViewWidget = require("./ABViewWidget");
-const ABViewChartContainerComponent = require("./viewComponent/ABViewChartContainerComponent");
+import ABViewWidget from "./ABViewWidget";
+import ABViewChartContainerComponent from "./viewComponent/ABViewChartContainerComponent";
 
-module.exports = class ABViewChartContainer extends ABViewWidget {
+export default class ABViewChartContainer extends ABViewWidget {
    /**
     * @method component()
     * return a UI component based upon this view.

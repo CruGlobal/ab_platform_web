@@ -1,11 +1,11 @@
-const ABViewDataviewCore = require("../../core/views/ABViewDataviewCore");
-const ABViewDataviewComponent = require("./viewComponent/ABViewDataviewComponent");
+import ABViewDataviewCore from "../../core/views/ABViewDataviewCore";
+import ABViewDataviewComponent from "./viewComponent/ABViewDataviewComponent";
 
 const ABViewDataviewDefaults = ABViewDataviewCore.defaultValues();
 
 const L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABViewDataview extends ABViewDataviewCore {
+export default class ABViewDataview extends ABViewDataviewCore {
    // constructor(values, application, parent, defaultValues) {
    //    super(values, application, parent, defaultValues);
    // }

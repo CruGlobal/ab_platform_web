@@ -5,26 +5,42 @@
  */
 
 // Import our Custom Components here:
-var componentList = [
-   require("./activelist"),
-   require("./countfooter"),
-   require("./datetimepicker"),
-   require("./editlist"),
-   require("./edittree"),
-   require("./editunitlist"),
-   require("./focusableTemplate"),
-   require("./formioPreview"),
-   require("./formioBuilder").default,
-   require("./numbertext"),
-   require("./thaicalendar"),
-   require("./timepicker"),
-   require("./tinyMce").default,
-   require("./totalfooter"),
-   require("./treesuggest"),
-   // require('./savablelayout')
+import ABCustomActiveList from "./activelist.js";
+import ABCustomCountFooter from "./countfooter.js";
+import ABCustomDatetimePicker from "./datetimepicker.js";
+import ABCustomEditList from "./editlist.js";
+import ABCustomEditTree from "./edittree.js";
+import ABCustomEditUnitList from "./editunitlist.js";
+import ABCustomFocusableTemplate from "./focusableTemplate.js";
+import ABCustomFormIOPreview from "./formioPreview.js";
+import ABCustomFormBuilder from "./formioBuilder.js";
+import ABCustomNumberText from "./numbertext.js";
+import ABCustomThaiCalendar from "./thaicalendar.js";
+import ABCustomTimePicker from "./timepicker.js";
+import ABCustomTinyMCE from "./tinyMce.js";
+import ABCustomTotalFooter from "./totalfooter.js";
+import ABCustomTreeSuggest from "./treesuggest.js";
+// import './savablelayout'
+
+const componentList = [
+   ABCustomActiveList,
+   ABCustomCountFooter,
+   ABCustomDatetimePicker,
+   ABCustomEditList,
+   ABCustomEditTree,
+   ABCustomEditUnitList,
+   ABCustomFocusableTemplate,
+   ABCustomFormIOPreview,
+   ABCustomFormBuilder,
+   ABCustomNumberText,
+   ABCustomThaiCalendar,
+   ABCustomTimePicker,
+   ABCustomTinyMCE,
+   ABCustomTotalFooter,
+   ABCustomTreeSuggest,
 ];
 
-module.exports = class ABCustomComponentManager {
+export default class ABCustomComponentManager {
    constructor() {}
 
    initComponents(App) {
@@ -38,4 +54,4 @@ module.exports = class ABCustomComponentManager {
       // Transition to v2:
       App.AB.custom = App.custom;
    }
-};
+}

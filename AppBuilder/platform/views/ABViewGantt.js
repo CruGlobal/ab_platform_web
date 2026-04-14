@@ -1,6 +1,6 @@
 import ABViewGanttComponent from "./viewComponent/ABViewGanttComponent";
 
-const ABViewGanttCore = require("../../core/views/ABViewGanttCore");
+import ABViewGanttCore from "../../core/views/ABViewGanttCore";
 
 export default class ABViewGantt extends ABViewGanttCore {
    constructor(values, application, parent, defaultValues) {

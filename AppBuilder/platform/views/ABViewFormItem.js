@@ -1,10 +1,10 @@
-const ABViewFormItemCore = require("../../core/views/ABViewFormItemCore");
-const ABViewFormItemComponent = require("./viewComponent/ABViewFormItemComponent");
+import ABViewFormItemCore from "../../core/views/ABViewFormItemCore";
+import ABViewFormItemComponent from "./viewComponent/ABViewFormItemComponent";
 
 const ABViewFormFieldPropertyComponentDefaults =
    ABViewFormItemCore.defaultValues();
 
-module.exports = class ABViewFormItem extends ABViewFormItemCore {
+export default class ABViewFormItem extends ABViewFormItemCore {
    // constructor(values, application, parent, defaultValues) {
    //    super(values, application, parent, defaultValues);
    // }

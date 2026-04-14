@@ -5,14 +5,16 @@
  *
  */
 
-const ABViewComponent = require("./viewComponent/ABViewComponent").default;
-const ABViewForm = require("./ABViewForm");
-const ABViewFormButton = require("./ABViewFormButton");
+import ABViewComponent from "./viewComponent/ABViewComponent";
+
+import ABViewForm from "./ABViewForm";
+import ABViewFormButton from "./ABViewFormButton";
 
 var L = null;
+
 // multilingual Label fn()
 
-module.exports = class ABWorkObjectKanBan extends ABViewComponent {
+export default class ABWorkObjectKanBan extends ABViewComponent {
    constructor(comKanBan, idBase, editFields) {
       idBase = idBase || `${comKanBan.view?.id}_formSidePanel`;
       super(idBase, {

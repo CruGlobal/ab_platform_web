@@ -1,7 +1,7 @@
-const ABViewDetailImageCore = require("../../core/views/ABViewDetailImageCore");
-const ABViewDetailImageComponent = require("./viewComponent/ABViewDetailImageComponent");
+import ABViewDetailImageCore from "../../core/views/ABViewDetailImageCore";
+import ABViewDetailImageComponent from "./viewComponent/ABViewDetailImageComponent";
 
-module.exports = class ABViewDetailImage extends ABViewDetailImageCore {
+export default class ABViewDetailImage extends ABViewDetailImageCore {
    /**
     * @method component()
     * return a UI component based upon this view.

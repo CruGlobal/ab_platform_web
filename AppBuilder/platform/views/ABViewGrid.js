@@ -1,8 +1,7 @@
-const ABViewGridCore = require("../../core/views/ABViewGridCore");
+import ABViewGridCore from "../../core/views/ABViewGridCore";
 import ABViewGridComponent from "./viewComponent/ABViewGridComponent";
 import ABViewGridFilter from "./viewProperties/ABViewPropertyFilterData";
-const ABViewPropertyLinkPage =
-   require("./viewProperties/ABViewPropertyLinkPage").default;
+import ABViewPropertyLinkPage from "./viewProperties/ABViewPropertyLinkPage";
 
 export default class ABViewGrid extends ABViewGridCore {
    /**

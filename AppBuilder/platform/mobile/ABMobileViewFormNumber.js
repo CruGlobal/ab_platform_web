@@ -1,5 +1,5 @@
-const ABMobileViewFormNumberCore = require("../../core/mobile/ABMobileViewFormNumberCore");
+import ABMobileViewFormNumberCore from "../../core/mobile/ABMobileViewFormNumberCore";
 
-module.exports = class ABMobileViewFormNumber extends (
+export default class ABMobileViewFormNumber extends (
    ABMobileViewFormNumberCore
 ) {};

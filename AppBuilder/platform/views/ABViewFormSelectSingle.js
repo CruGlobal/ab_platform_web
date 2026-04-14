@@ -1,7 +1,7 @@
-const ABViewFormSelectSingleCore = require("../../core/views/ABViewFormSelectSingleCore");
-const ABViewFormSelectSingleComponent = require("./viewComponent/ABViewFormSelectSingleComponent");
+import ABViewFormSelectSingleCore from "../../core/views/ABViewFormSelectSingleCore";
+import ABViewFormSelectSingleComponent from "./viewComponent/ABViewFormSelectSingleComponent";
 
-module.exports = class ABViewFormSelectSingle extends (
+export default class ABViewFormSelectSingle extends (
    ABViewFormSelectSingleCore
 ) {
    /**

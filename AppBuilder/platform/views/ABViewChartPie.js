@@ -1,7 +1,7 @@
-const ABViewChartPieCore = require("../../core/views/ABViewChartPieCore");
-const ABViewChartPieComponent = require("./viewComponent/ABViewChartPieComponent");
+import ABViewChartPieCore from "../../core/views/ABViewChartPieCore";
+import ABViewChartPieComponent from "./viewComponent/ABViewChartPieComponent";
 
-module.exports = class ABViewChartPie extends ABViewChartPieCore {
+export default class ABViewChartPie extends ABViewChartPieCore {
    // constructor(values, application, parent, defaultValues) {
    //    super(values, application, parent, defaultValues);
    // }

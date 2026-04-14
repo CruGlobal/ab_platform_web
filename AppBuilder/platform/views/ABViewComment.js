@@ -1,7 +1,7 @@
-const ABViewCommentCore = require("../../core/views/ABViewCommentCore");
-const ABViewCommentComponent = require("./viewComponent/ABViewCommentComponent");
+import ABViewCommentCore from "../../core/views/ABViewCommentCore";
+import ABViewCommentComponent from "./viewComponent/ABViewCommentComponent";
 
-module.exports = class ABViewComment extends ABViewCommentCore {
+export default class ABViewComment extends ABViewCommentCore {
    // constructor(values, application, parent, defaultValues) {
    //    super(values, application, parent, defaultValues);
    // }

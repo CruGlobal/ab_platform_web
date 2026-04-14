@@ -1,8 +1,7 @@
-const ABViewTabCore = require("../../core/views/ABViewTabCore");
+import ABViewTabCore from "../../core/views/ABViewTabCore";
+import ABViewTabComponent from "./viewComponent/ABViewTabComponent";
 
-const ABViewTabComponent = require("./viewComponent/ABViewTabComponent");
-
-module.exports = class ABViewTab extends ABViewTabCore {
+export default class ABViewTab extends ABViewTabCore {
    /**
     * @method component()
     * return a UI component based upon this view.

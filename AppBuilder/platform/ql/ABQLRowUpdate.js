@@ -6,7 +6,7 @@
  *
  */
 
-const ABQLRowUpdateCore = require("../../core/ql/ABQLRowUpdateCore.js");
+import ABQLRowUpdateCore from "../../core/ql/ABQLRowUpdateCore.js";
 
 class ABQLRowUpdate extends ABQLRowUpdateCore {
    // constructor(attributes, prevOP, task, application) {
@@ -21,4 +21,4 @@ class ABQLRowUpdate extends ABQLRowUpdateCore {
    ///
 }
 
-module.exports = ABQLRowUpdate;
+export default ABQLRowUpdate;

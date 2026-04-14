@@ -1,6 +1,6 @@
-const ABViewContainerComponent = require("./ABViewContainerComponent");
+import ABViewContainerComponent from "./ABViewContainerComponent";
 
-module.exports = class ABViewChartComponent extends ABViewContainerComponent {
+export default class ABViewChartComponent extends ABViewContainerComponent {
    constructor(baseView, idBase, ids) {
       super(baseView, idBase || `ABViewChart_${baseView.id}`, ids);
    }

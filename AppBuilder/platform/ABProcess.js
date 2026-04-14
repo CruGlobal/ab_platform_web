@@ -1,8 +1,8 @@
-const ABProcessCore = require("../core/ABProcessCore");
+import ABProcessCore from "../core/ABProcessCore";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABProcess extends ABProcessCore {
+export default class ABProcess extends ABProcessCore {
    constructor(attributes, AB) {
       super(attributes, AB);
 

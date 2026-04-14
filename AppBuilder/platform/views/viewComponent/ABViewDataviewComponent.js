@@ -1,9 +1,8 @@
-const ABViewComponent = require("./ABViewComponent").default;
-const ABViewDetailComponent = require("./ABViewDetailComponent");
-const ABViewPropertyLinkPage =
-   require("../viewProperties/ABViewPropertyLinkPage").default;
+import ABViewComponent from "./ABViewComponent";
+import ABViewDetailComponent from "./ABViewDetailComponent";
+import ABViewPropertyLinkPage from "../viewProperties/ABViewPropertyLinkPage";
 
-module.exports = class ABViewDataviewComponent extends ABViewComponent {
+export default class ABViewDataviewComponent extends ABViewComponent {
    constructor(baseView, idBase, ids) {
       super(
          baseView,

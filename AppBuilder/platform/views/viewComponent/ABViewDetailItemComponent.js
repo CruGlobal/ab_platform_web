@@ -1,4 +1,4 @@
-const ABViewComponent = require("./ABViewComponent").default;
+import ABViewComponent from "./ABViewComponent";
 
 const SAFE_HTML_TAGS = [
    "abbr",
@@ -26,7 +26,7 @@ const SAFE_HTML_TAGS = [
    "h5",
 ];
 
-module.exports = class ABViewDetailItemComponent extends ABViewComponent {
+export default class ABViewDetailItemComponent extends ABViewComponent {
    constructor(baseView, idBase, ids) {
       super(
          baseView,

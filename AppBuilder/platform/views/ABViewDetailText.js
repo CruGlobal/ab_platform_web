@@ -1,7 +1,7 @@
-const ABViewDetailTextCore = require("../../core/views/ABViewDetailTextCore");
-const ABViewDetailTextComponent = require("./viewComponent/ABViewDetailTextComponent");
+import ABViewDetailTextCore from "../../core/views/ABViewDetailTextCore";
+import ABViewDetailTextComponent from "./viewComponent/ABViewDetailTextComponent";
 
-module.exports = class ABViewDetailText extends ABViewDetailTextCore {
+export default class ABViewDetailText extends ABViewDetailTextCore {
    /**
     * @param {obj} values  key=>value hash of ABView values
     * @param {ABApplication} application the application object this view is under

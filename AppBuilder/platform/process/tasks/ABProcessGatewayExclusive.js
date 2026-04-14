@@ -1,8 +1,8 @@
-const ABProcessGatewayExclusiveCore = require("../../../core/process/tasks/ABProcessGatewayExclusiveCore.js");
+import ABProcessGatewayExclusiveCore from "../../../core/process/tasks/ABProcessGatewayExclusiveCore.js";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABProcessGatewayExclusive extends (
+export default class ABProcessGatewayExclusive extends (
    ABProcessGatewayExclusiveCore
 ) {
    ////

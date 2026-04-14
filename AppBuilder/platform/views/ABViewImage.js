@@ -1,9 +1,9 @@
-const ABViewImageCore = require("../../core/views/ABViewImageCore");
-const ABViewImageComponent = require("./viewComponent/ABViewImageComponent");
+import ABViewImageCore from "../../core/views/ABViewImageCore";
+import ABViewImageComponent from "./viewComponent/ABViewImageComponent";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABViewImage extends ABViewImageCore {
+export default class ABViewImage extends ABViewImageCore {
    // constructor(values, application, parent, defaultValues) {
    //    super(values, application, parent, defaultValues);
    // }

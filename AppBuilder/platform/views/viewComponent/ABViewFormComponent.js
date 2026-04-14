@@ -1,9 +1,9 @@
-const ABViewComponent = require("./ABViewComponent").default;
-const ABViewFormItem = require("../ABViewFormItem");
-const ABViewFormConnect = require("../ABViewFormConnect");
-const ABViewFormCustom = require("../ABViewFormCustom");
-const ABViewFormTextbox = require("../ABViewFormTextbox");
-const ABViewFormJson = require("../ABViewFormJson");
+import ABViewComponent from "./ABViewComponent";
+import ABViewFormItem from "../ABViewFormItem";
+import ABViewFormConnect from "../ABViewFormConnect";
+import ABViewFormCustom from "../ABViewFormCustom";
+import ABViewFormTextbox from "../ABViewFormTextbox";
+import ABViewFormJson from "../ABViewFormJson";
 
 async function timeout(ms) {
    return new Promise((resolve) => setTimeout(resolve, ms));
@@ -11,7 +11,7 @@ async function timeout(ms) {
 
 const fieldValidations = [];
 
-module.exports = class ABViewFormComponent extends ABViewComponent {
+export default class ABViewFormComponent extends ABViewComponent {
    constructor(baseView, idBase, ids) {
       super(
          baseView,

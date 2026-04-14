@@ -1,4 +1,4 @@
-const ABViewCarouselCore = require("../../core/views/ABViewCarouselCore");
+import ABViewCarouselCore from "../../core/views/ABViewCarouselCore";
 import ABViewCarouselComponent from "./viewComponent/ABViewCarouselComponent";
 
 // const ABViewPropertyFilterData = require("./viewProperties/ABViewPropertyFilterData");

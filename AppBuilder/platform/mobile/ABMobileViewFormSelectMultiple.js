@@ -1,5 +1,5 @@
-const ABMobileViewFormSelectMultipleCore = require("../../core/mobile/ABMobileViewFormSelectMultipleCore");
+import ABMobileViewFormSelectMultipleCore from "../../core/mobile/ABMobileViewFormSelectMultipleCore";
 
-module.exports = class ABMobileViewFormSelectMultiple extends (
+export default class ABMobileViewFormSelectMultiple extends (
    ABMobileViewFormSelectMultipleCore
 ) {};

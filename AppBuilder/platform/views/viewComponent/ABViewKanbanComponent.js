@@ -1,7 +1,7 @@
-const ABViewComponent = require("./ABViewComponent").default;
-const ABFormSidePanel = require("../ABViewKanbanFormSidePanel");
+import ABViewComponent from "./ABViewComponent";
+import ABFormSidePanel from "../ABViewKanbanFormSidePanel";
 
-module.exports = class ABViewKanbanComponent extends ABViewComponent {
+export default class ABViewKanbanComponent extends ABViewComponent {
    constructor(baseView, idBase, ids) {
       super(
          baseView,

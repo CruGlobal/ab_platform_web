@@ -1,5 +1,5 @@
-const ABMobileViewFormSelectSingleCore = require("../../core/mobile/ABMobileViewFormSelectSingleCore");
+import ABMobileViewFormSelectSingleCore from "../../core/mobile/ABMobileViewFormSelectSingleCore";
 
-module.exports = class ABMobileViewFormSelectSingle extends (
+export default class ABMobileViewFormSelectSingle extends (
    ABMobileViewFormSelectSingleCore
 ) {};

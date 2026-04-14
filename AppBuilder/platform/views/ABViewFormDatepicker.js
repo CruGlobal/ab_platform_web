@@ -1,7 +1,7 @@
-const ABViewFormDatepickerCore = require("../../core/views/ABViewFormDatepickerCore");
-const ABViewFormDatepickerComponent = require("./viewComponent/ABViewFormDatepickerComponent");
+import ABViewFormDatepickerCore from "../../core/views/ABViewFormDatepickerCore";
+import ABViewFormDatepickerComponent from "./viewComponent/ABViewFormDatepickerComponent";
 
-module.exports = class ABViewFormDatepicker extends ABViewFormDatepickerCore {
+export default class ABViewFormDatepicker extends ABViewFormDatepickerCore {
    /**
     * @method component()
     * return a UI component based upon this view.

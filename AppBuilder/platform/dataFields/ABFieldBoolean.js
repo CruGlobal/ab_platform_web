@@ -1,6 +1,6 @@
-const ABFieldBooleanCore = require("../../core/dataFields/ABFieldBooleanCore");
+import ABFieldBooleanCore from "../../core/dataFields/ABFieldBooleanCore";
 
-module.exports = class ABFieldBoolean extends ABFieldBooleanCore {
+export default class ABFieldBoolean extends ABFieldBooleanCore {
    constructor(values, object) {
       super(values, object);
    }

@@ -58,7 +58,7 @@ jobs:
               LHCI_UPLOAD__TOKEN: ${{ secrets.LHCI_BUILD_TOKEN }}
               LHCI_COLLECT__URL: "http://127.0.0.1"
               LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
-              LHCI_COLLECT__PUPPETEER_SCRIPT: "ciLighthouseAuth.js"
+              LHCI_COLLECT__PUPPETEER_SCRIPT: "ciLighthouseAuth.cjs"
 
          - name: Get the Lighouse Reports
            if: ${{ github.event_name == 'pull_request' }}

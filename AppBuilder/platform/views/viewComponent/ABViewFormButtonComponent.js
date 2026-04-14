@@ -1,6 +1,6 @@
-const ABViewFormItemComponent = require("./ABViewFormItemComponent");
+import ABViewFormItemComponent from "./ABViewFormItemComponent";
 
-module.exports = class ABViewFormButton extends ABViewFormItemComponent {
+export default class ABViewFormButton extends ABViewFormItemComponent {
    constructor(baseView, idBase, ids) {
       super(baseView, idBase || `ABViewFormButton_${baseView.id}`, ids);
    }

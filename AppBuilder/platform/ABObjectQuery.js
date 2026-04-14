@@ -13,7 +13,7 @@
 // A where statement is also part of the definition.
 //
 
-const ABObjectQueryCore = require("../core/ABObjectQueryCore");
+import ABObjectQueryCore from "../core/ABObjectQueryCore";
 
 var ABFactory = null;
 if (typeof io != "undefined") {
@@ -37,7 +37,7 @@ if (typeof io != "undefined") {
 // io.socket.on("ab.query.delete", function (msg) {
 // });
 
-module.exports = class ABObjectQuery extends ABObjectQueryCore {
+export default class ABObjectQuery extends ABObjectQueryCore {
    constructor(attributes, AB) {
       super(attributes, AB);
 

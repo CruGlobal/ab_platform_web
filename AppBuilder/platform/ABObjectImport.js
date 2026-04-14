@@ -1,4 +1,4 @@
-const ABObject = require("./ABObject");
+import ABObject from "./ABObject";
 
 /**
  * ABObjectImport
@@ -7,4 +7,4 @@ const ABObject = require("./ABObject");
  *
  * NOTE: on the web client, these should function just like ABObjects
  */
-module.exports = class ABObjectImport extends ABObject {};
+export default class ABObjectImport extends ABObject {};

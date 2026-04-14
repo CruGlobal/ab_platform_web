@@ -1,8 +1,8 @@
-const AccountingBatchProcessingCore = require("../../../core/process/tasks/ABProcessTaskServiceAccountingBatchProcessingCore.js");
+import AccountingBatchProcessingCore from "../../../core/process/tasks/ABProcessTaskServiceAccountingBatchProcessingCore.js";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class AccountingBatchProcessing extends (
+export default class AccountingBatchProcessing extends (
    AccountingBatchProcessingCore
 ) {
    ////

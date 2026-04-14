@@ -1,8 +1,8 @@
-const ABViewPageCore = require("../../core/views/ABViewPageCore");
+import ABViewPageCore from "../../core/views/ABViewPageCore";
 
 const ABPropertyComponentDefaults = ABViewPageCore.defaultValues();
 
-module.exports = class ABViewPage extends ABViewPageCore {
+export default class ABViewPage extends ABViewPageCore {
    // constructor(values, application, parent, defaultValues) {
    //    super(values, application, parent, defaultValues);
    // }

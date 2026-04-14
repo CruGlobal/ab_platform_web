@@ -1,7 +1,7 @@
-const ABViewFormNumberCore = require("../../core/views/ABViewFormNumberCore");
-const ABViewFormNumberComponent = require("./viewComponent/ABViewFormNumberComponent");
+import ABViewFormNumberCore from "../../core/views/ABViewFormNumberCore";
+import ABViewFormNumberComponent from "./viewComponent/ABViewFormNumberComponent";
 
-module.exports = class ABViewFormNumber extends ABViewFormNumberCore {
+export default class ABViewFormNumber extends ABViewFormNumberCore {
    /**
     * @method component()
     * return a UI component based upon this view.
