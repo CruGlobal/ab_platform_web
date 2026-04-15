@@ -1,3 +1,4 @@
+import viewDataview from "./view_dataview/FNAbviewdataview.js";
 import viewCarousel from "./view_carousel/FNAbviewcarousel.js";
 import viewComment from "./view_comment/FNAbviewcomment.js";
 import viewCsvExporter from "./view_csvExporter/FNAbviewcsvexporter.js";
@@ -27,7 +28,7 @@ const AllPlugins = [
    viewPdfImporter,
    viewTab,
    viewText,
-];
+, viewDataview];
 
 export default {
    load: (AB) => {
