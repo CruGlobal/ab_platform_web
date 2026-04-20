@@ -6,7 +6,8 @@ export default function FNAbviewformSelectSingle({
    ABViewFormItemComponent,
    ABViewFormItem,
 }) {
-   const ABViewFormSelectSingleCore = FNAbviewformSelectSingleCoreFactory(ABViewFormItem);
+   const ABViewFormSelectSingleCore =
+      FNAbviewformSelectSingleCoreFactory(ABViewFormItem);
    const ABAbviewformSelectSingleComponent = FNAbviewformSelectSingleComponent({
       ABViewFormItemComponent,
    });

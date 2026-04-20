@@ -6,7 +6,8 @@ export default function FNAbviewformSelectMultiple({
    ABViewFormItemComponent,
    ABViewFormItem,
 }) {
-   const ABViewFormSelectMultipleCore = FNAbviewformSelectMultipleCoreFactory(ABViewFormItem);
+   const ABViewFormSelectMultipleCore =
+      FNAbviewformSelectMultipleCoreFactory(ABViewFormItem);
 
    const ABAbviewformSelectMultipleComponent =
       FNAbviewformSelectMultipleComponent({

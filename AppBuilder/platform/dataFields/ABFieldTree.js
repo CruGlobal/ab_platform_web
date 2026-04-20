@@ -230,8 +230,16 @@ module.exports = class ABFieldTree extends ABFieldTreeCore {
             typeof row[field.columnName] != "undefined"
          ) {
             values = row[field.columnName];
+            if (typeof values == "string" && values !== "") {
+               try {
+                  values = JSON.parse(values);
+               } catch (e) {
+                  // If it's a comma-separated string?
+                  values = values.split(",").filter((v) => v !== "");
+               }
+            }
          }
-         return values;
+         return Array.isArray(values) ? values : [];
       }
 
       function populateTree(field, vals) {
@@ -247,7 +255,7 @@ module.exports = class ABFieldTree extends ABFieldTreeCore {
          $Tree.uncheckAll();
          $Tree.openAll();
 
-         if (values != null && values.length) {
+         if (Array.isArray(values)) {
             values.forEach(function (id) {
                if ($Tree.exists(id)) {
                   $Tree.checkItem(id);
@@ -351,7 +359,10 @@ module.exports = class ABFieldTree extends ABFieldTreeCore {
                            const rowData = {};
                            rowData[field.columnName] = $$(idTree).getChecked();
 
-                           field.setValue($$(parentComponent.ui.id), rowData);
+                           field.setValue(
+                              $$(parentComponent.ids.formItem),
+                              rowData
+                           );
                         }
                      },
                   },
@@ -426,9 +437,15 @@ module.exports = class ABFieldTree extends ABFieldTreeCore {
       return detailComponentSetting;
    }
 
-   getValue(item, rowData) {
+   getValue(item) {
+      if (!item) return {};
+      // selectivity
       let values = {};
-      values = item.getValues();
+      if (typeof item.getValues == "function") {
+         values = item.getValues();
+      } else if (typeof item.getValue == "function") {
+         values = item.getValue();
+      }
       return values;
    }
 
@@ -437,7 +454,11 @@ module.exports = class ABFieldTree extends ABFieldTreeCore {
 
       const val = rowData[this.columnName] || [];
 
-      item.setValues(val);
+      if (typeof item.setValues == "function") {
+         item.setValues(val);
+      } else if (typeof item.setValue == "function") {
+         item.setValue(val);
+      }
       // get dom
       const dom = item.$view.querySelector(".list-data-values");
 

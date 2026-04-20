@@ -6,7 +6,8 @@ export default function FNAbviewformDatepicker({
    ABViewFormItemComponent,
    ABViewFormItem,
 }) {
-   const ABViewFormDatepickerCore = FNAbviewformDatepickerCoreFactory(ABViewFormItem);
+   const ABViewFormDatepickerCore =
+      FNAbviewformDatepickerCoreFactory(ABViewFormItem);
    const ABAbviewformDatepickerComponent = FNAbviewformDatepickerComponent({
       ABViewFormItemComponent,
    });

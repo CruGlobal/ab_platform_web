@@ -6,7 +6,8 @@ export default function FNAbviewformCheckbox({
    ABViewFormItemComponent,
    ABViewFormItem,
 }) {
-   const ABViewFormCheckboxCore = FNAbviewformCheckboxCoreFactory(ABViewFormItem);
+   const ABViewFormCheckboxCore =
+      FNAbviewformCheckboxCoreFactory(ABViewFormItem);
    const ABAbviewformCheckboxComponent = FNAbviewformCheckboxComponent({
       ABViewFormItemComponent,
    });

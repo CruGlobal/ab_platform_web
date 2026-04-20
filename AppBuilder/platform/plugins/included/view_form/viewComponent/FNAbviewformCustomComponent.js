@@ -141,7 +141,7 @@ export default function FNAbviewformCustomComponent({
                      let node = $$(trg).getParentView().$view;
                      field?.customEdit(
                         rowData,
-                        this.AB_App,
+                        this.AB._App,
                         node,
                         this.ids.formItem,
                         evt

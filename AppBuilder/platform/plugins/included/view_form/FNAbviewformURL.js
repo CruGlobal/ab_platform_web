@@ -1,9 +1,6 @@
 import FNAbviewformURLCoreFactory from "./core/ABViewFormURLCore.js";
 
-export default function FNAbviewformURL({
-   ABAbviewformComponent,
-   ABViewForm,
-}) {
+export default function FNAbviewformURL({ ABAbviewformComponent, ABViewForm }) {
    const ABViewFormURLCore = FNAbviewformURLCoreFactory(ABViewForm);
 
    return class ABViewFormURL extends ABViewFormURLCore {

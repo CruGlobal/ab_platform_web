@@ -35,7 +35,12 @@ export default function FNAbviewform(API) {
    };
 
    // 1. Initialize Base Item
-   const { FNAbviewformItem, FNAbviewformCustom, FNAbviewformURL, ...otherFComponents } = fComponents;
+   const {
+      FNAbviewformItem,
+      FNAbviewformCustom,
+      FNAbviewformURL,
+      ...otherFComponents
+   } = fComponents;
 
    FormAPI.ABViewFormItem = FNAbviewformItem(FormAPI);
 
@@ -44,31 +49,42 @@ export default function FNAbviewform(API) {
       AB.Class.ABViewFormItem = FormAPI.ABViewFormItem;
    }
 
-   FormAPI.ABViewFormItemComponent = FormAPI.ABViewFormItem.ABViewFormItemComponent;
+   FormAPI.ABViewFormItemComponent =
+      FormAPI.ABViewFormItem.ABViewFormItemComponent;
    FormAPI.ABViewFormItemCore = FNAbviewformItemCore(ABViewPlugin);
 
    // 2. Initialize Custom (base for others)
    FormAPI.ABViewFormCustom = FNAbviewformCustom(FormAPI);
-   FormAPI.ABViewFormCustomCore = FNAbviewformCustomCore(FormAPI.ABViewFormItemCore);
+   FormAPI.ABViewFormCustomCore = FNAbviewformCustomCore(
+      FormAPI.ABViewFormItemCore
+   );
 
    // 3. Initialize common views
    const views = Object.values(otherFComponents).map((FNv) => FNv(FormAPI));
    views.push(FormAPI.ABViewFormItem);
    views.push(FormAPI.ABViewFormCustom);
 
-   const ABViewFormButton = views.find(v => v.common().key === "button");
-   const ABViewFormCheckbox = views.find(v => v.common().key === "checkbox");
-   const ABViewFormConnect = views.find(v => v.common().key === "connect");
+   const ABViewFormButton = views.find((v) => v.common().key === "button");
+   const ABViewFormCheckbox = views.find((v) => v.common().key === "checkbox");
+   const ABViewFormConnect = views.find((v) => v.common().key === "connect");
    const ABViewFormCustom = FormAPI.ABViewFormCustom;
-   const ABViewFormDatepicker = views.find(v => v.common().key === "datepicker");
+   const ABViewFormDatepicker = views.find(
+      (v) => v.common().key === "datepicker"
+   );
    const ABViewFormItem = FormAPI.ABViewFormItem;
-   const ABViewFormJson = views.find(v => v.common().key === "json");
-   const ABViewFormNumber = views.find(v => v.common().key === "numberbox");
-   const ABViewFormReadonly = views.find(v => v.common().key === "fieldreadonly");
-   const ABViewFormSelectMultiple = views.find(v => v.common().key === "selectmultiple");
-   const ABViewFormSelectSingle = views.find(v => v.common().key === "selectsingle");
-   const ABViewFormTree = views.find(v => v.common().key === "tree");
-   const ABViewFormTextbox = views.find(v => v.common().key === "textbox");
+   const ABViewFormJson = views.find((v) => v.common().key === "json");
+   const ABViewFormNumber = views.find((v) => v.common().key === "numberbox");
+   const ABViewFormReadonly = views.find(
+      (v) => v.common().key === "fieldreadonly"
+   );
+   const ABViewFormSelectMultiple = views.find(
+      (v) => v.common().key === "selectmultiple"
+   );
+   const ABViewFormSelectSingle = views.find(
+      (v) => v.common().key === "selectsingle"
+   );
+   const ABViewFormTree = views.find((v) => v.common().key === "tree");
+   const ABViewFormTextbox = views.find((v) => v.common().key === "textbox");
 
    // 4. Initialize Form Base and URL view
    const ABRecordRule = ABViewRuleListFormRecordRules;
@@ -89,7 +105,7 @@ export default function FNAbviewform(API) {
    };
 
    FormAPI.ABViewFormBase = ABViewFormBase;
-   
+
    const ABAbviewformComponent = FNAbviewformComponent({
       ABViewComponentPlugin,
       ABViewFormButton,
@@ -106,8 +122,6 @@ export default function FNAbviewform(API) {
       ABViewFormTree,
       ABViewFormTextbox,
    });
-
-
 
    views.forEach((v) => {
       v.getPluginKey = () => v.common().key;
@@ -287,7 +301,7 @@ export default function FNAbviewform(API) {
             if (!domInvalidMessage?.style["margin-left"]) {
                domInvalidMessage.style.marginLeft = `${
                   this.settings.labelWidth ??
-                  ABViewFormPropertyComponentDefaults.labelWidth
+                  ABViewFormBase.defaultValues().labelWidth
                }px`;
             }
          };
@@ -508,8 +522,6 @@ export default function FNAbviewform(API) {
          }
       }
    }
-
-
 
    if (AB && AB.Class) {
       AB.Class.ABViewForm = ABViewForm;

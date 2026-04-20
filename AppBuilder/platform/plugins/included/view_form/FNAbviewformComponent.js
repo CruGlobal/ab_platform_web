@@ -2,13 +2,18 @@ export default function FNAbviewformComponent({
    /*AB,*/
    ABViewComponentPlugin,
    ABViewFormButton,
+   ABViewFormCheckbox,
    ABViewFormConnect,
    ABViewFormCustom,
    ABViewFormDatepicker,
    ABViewFormItem,
    ABViewFormJson,
+   ABViewFormNumber,
+   ABViewFormReadonly,
    ABViewFormSelectMultiple,
+   ABViewFormSelectSingle,
    ABViewFormTextbox,
+   ABViewFormTree,
 }) {
    async function timeout(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms));
@@ -421,7 +426,10 @@ export default function FNAbviewformComponent({
       async displayData(rowData) {
          // If setTimeout is already scheduled, no need to do anything
          if (this.timerId) return;
-         else this.timerId = await timeout(80);
+
+         this.timerId = true;
+         await timeout(80);
+         this.timerId = null;
 
          const baseView = this.view;
          const customFields = baseView.fieldComponents(
