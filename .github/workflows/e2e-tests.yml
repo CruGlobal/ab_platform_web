@@ -44,7 +44,7 @@ jobs:
       # webpack expects the folder to be called "web" ab-install action expects "ab_service_web"
       - run: mv web ab_service_web
 
-      - uses: CruGlobal/ab-install-action@main
+      - uses: CruGlobal/ab-install-action@v1
         with:
           port: 8080
           folder: ab
