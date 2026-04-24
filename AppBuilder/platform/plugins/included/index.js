@@ -1,3 +1,4 @@
+import viewDataview from "./view_dataview/FNAbviewdataview.js";
 import viewForm from "./view_form/FNAbviewform.js";
 import viewCarousel from "./view_carousel/FNAbviewcarousel.js";
 import viewComment from "./view_comment/FNAbviewcomment.js";
@@ -18,7 +19,6 @@ const AllPlugins = [
    viewComment,
    viewCsvExporter,
    viewCsvImporter,
-   viewCsvImporter,
    viewDataSelect,
    viewDetail,
    viewImage,
@@ -28,6 +28,7 @@ const AllPlugins = [
    viewPdfImporter,
    viewTab,
    viewText,
+   viewDataview,
    viewForm,
 ];
 
