@@ -1,6 +1,5 @@
 import FNABViewPivotComponent from "./FNABViewPivotComponent.js";
 
-
 // FNAbviewpivot Web
 // A web side import for an ABView.
 //
@@ -8,9 +7,12 @@ export default function FNABViewPivot({
    /*AB,*/
    ABViewWidgetPlugin,
    ABViewComponentPlugin,
-   ABViewContainer
+   ABViewContainer,
 }) {
-   const ABAbviewpivotComponent = FNABViewPivotComponent({ ABViewComponentPlugin });
+   const ABAbviewpivotComponent = FNABViewPivotComponent({
+      AB,
+      ABViewComponentPlugin,
+   });
 
    const ABViewPivotPropertyComponentDefaults = {
       dataviewID: null,
@@ -74,7 +76,10 @@ export default function FNABViewPivot({
             this.settings.max || ABViewPivotPropertyComponentDefaults.max
          );
 
-         if (this.settings.structure && typeof this.settings.structure == "string")
+         if (
+            this.settings.structure &&
+            typeof this.settings.structure == "string"
+         )
             this.settings.structure = JSON.parse(this.settings.structure);
 
          // "0" -> 0
@@ -110,36 +115,30 @@ export default function FNABViewPivot({
       componentList() {
          return [];
       }
-   };
-
-
+   }
 
    return class ABViewPivot extends ABViewPivotCore {
-
       /**
-             * @method getPluginKey
-             * return the plugin key for this view.
-             * @return {string} plugin key
-             */
+       * @method getPluginKey
+       * return the plugin key for this view.
+       * @return {string} plugin key
+       */
       static getPluginKey() {
          return this.common().key;
       }
 
       /**
-             * @method component()
-             * return a UI component based upon this view.
-             * @return {obj} UI component
-             */
+       * @method component()
+       * return a UI component based upon this view.
+       * @return {obj} UI component
+       */
       component(parentId) {
          return new ABAbviewpivotComponent(this, parentId);
       }
 
-
       constructor(values, application, parent, defaultValues) {
          super(values, application, parent, defaultValues);
       }
-
-
 
       warningsEval() {
          super.warningsEval();
@@ -152,6 +151,4 @@ export default function FNABViewPivot({
          }
       }
    };
-
 }
-

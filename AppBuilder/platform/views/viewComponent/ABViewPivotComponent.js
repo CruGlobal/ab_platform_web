@@ -13,10 +13,11 @@ module.exports = class ABViewPivotComponent extends ABViewComponent {
    }
 
    ui() {
+      const ids = this.ids;
       const self = this;
       const settings = this.settings;
       const uiPivot = {
-         id: this.ids.pivot,
+         id: ids.pivot,
          view: "pivot",
          readonly: true,
          removeMissed: settings.removeMissed,
@@ -44,11 +45,7 @@ module.exports = class ABViewPivotComponent extends ABViewComponent {
                      const object = dc.datasource;
                      if (!object) return webix.promise.resolve([]);
 
-                     switch (dc.dataStatus) {
-                        case dc.dataStatusFlag.notInitial:
-                           await dc.loadData();
-                           break;
-                     }
+                     await dc.waitReady();
 
                      const data = dc.getData();
                      const dataMapped = data.map((d) => {
