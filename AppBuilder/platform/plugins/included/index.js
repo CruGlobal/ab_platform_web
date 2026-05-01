@@ -22,6 +22,7 @@ const AllPlugins = [
    viewCsvExporter,
    viewCsvImporter,
    viewDataSelect,
+   viewDataview,
    viewDetail,
    viewGantt,
    viewImage,
