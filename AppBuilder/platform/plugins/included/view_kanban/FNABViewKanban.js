@@ -118,11 +118,6 @@ export default function FNABViewKanban({
       //	Editor Related
       //
 
-      get linkPageHelper() {
-         return (this.__linkPageHelper =
-            this.__linkPageHelper || new ABViewPropertyLinkPage());
-      }
-
       warningsEval() {
          super.warningsEval();
          let DC = this.datacollection;
