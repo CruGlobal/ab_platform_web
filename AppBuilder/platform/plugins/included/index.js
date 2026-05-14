@@ -5,8 +5,10 @@ import viewComment from "./view_comment/FNAbviewcomment.js";
 import viewCsvExporter from "./view_csvExporter/FNAbviewcsvexporter.js";
 import viewCsvImporter from "./view_csvImporter/FNAbviewcsvimporter.js";
 import viewDataSelect from "./view_data-select/FNAbviewdataselect.js";
+import viewDataview from "./view_dataview/FNAbviewdataview.js";
 import viewDetail from "./view_detail/FNAbviewdetail.js";
 import viewImage from "./view_image/FNAbviewimage.js";
+import viewKanban from "./view_kanban/FNABViewKanban.js";
 import viewLabel from "./view_label/FNAbviewlabel.js";
 import viewLayout from "./view_layout/FNAbviewlayout.js";
 import viewList from "./view_list/FNAbviewlist.js";
@@ -20,8 +22,10 @@ const AllPlugins = [
    viewCsvExporter,
    viewCsvImporter,
    viewDataSelect,
+   viewDataview,
    viewDetail,
    viewImage,
+   viewKanban,
    viewLabel,
    viewLayout,
    viewList,
