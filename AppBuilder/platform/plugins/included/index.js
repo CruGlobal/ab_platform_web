@@ -1,5 +1,4 @@
 import viewGrid from "./view_grid/FNAbviewgrid.js";
-import viewDataview from "./view_dataview/FNAbviewdataview.js";
 import viewCarousel from "./view_carousel/FNAbviewcarousel.js";
 import viewComment from "./view_comment/FNAbviewcomment.js";
 import viewCsvExporter from "./view_csvExporter/FNAbviewcsvexporter.js";
