@@ -5,6 +5,7 @@ import viewCsvImporter from "./view_csvImporter/FNAbviewcsvimporter.js";
 import viewDataSelect from "./view_data-select/FNAbviewdataselect.js";
 import viewDataview from "./view_dataview/FNAbviewdataview.js";
 import viewDetail from "./view_detail/FNAbviewdetail.js";
+import viewGantt from "./view_gantt/FNAbviewgantt.js";
 import viewImage from "./view_image/FNAbviewimage.js";
 import viewKanban from "./view_kanban/FNABViewKanban.js";
 import viewLabel from "./view_label/FNAbviewlabel.js";
@@ -22,6 +23,7 @@ const AllPlugins = [
    viewDataSelect,
    viewDataview,
    viewDetail,
+   viewGantt,
    viewImage,
    viewKanban,
    viewLabel,
