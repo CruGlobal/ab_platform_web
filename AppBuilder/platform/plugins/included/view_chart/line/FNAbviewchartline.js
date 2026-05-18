@@ -5,10 +5,7 @@ import FNAbviewchartlineComponent from "./FNAbviewchartlineComponent.js";
 // A web side import for an ABView.
 //
 export default function FNAbviewchartline({
-   /*AB,*/
-   ABViewPlugin,
    ABViewComponentPlugin,
-   ABViewContainer,
    ABViewWidgetPlugin,
 }) {
    const ABViewChartCore = FNABViewChartCore({ ABViewWidgetPlugin });

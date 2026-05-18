@@ -1,7 +1,6 @@
 import { FNAbviewchartcontainerComponent } from "../chartBindings.js";
 
 export default function FNAbviewchartbarComponent({
-   /*AB,*/
    ABViewComponentPlugin,
 }) {
    const ChartContainerComponent = FNAbviewchartcontainerComponent({
