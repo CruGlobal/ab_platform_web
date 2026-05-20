@@ -34,11 +34,20 @@ jobs:
               token: ${{ secrets.GITHUB_TOKEN }}
               ref: ${{ matrix.branch }}
 
-         - run: npm i
+         - uses: actions/setup-node@v4
+           with:
+              node-version: 22
+              cache: pnpm
+              cache-dependency-path: ab_platform_web/pnpm-lock.yaml
+         - uses: pnpm/action-setup@v4
+           with:
+              version: 11.0.6
+
+         - run: pnpm install --frozen-lockfile
            working-directory: ./ab_platform_web
 
          - name: Webpack
-           run: npm run build:${{ matrix.webpack }}
+           run: pnpm run build:${{ matrix.webpack }}
            working-directory: ./ab_platform_web
 
          # webpack expects the folder to be called "web" ab-install action expects "ab_service_web"

@@ -34,12 +34,12 @@ jobs:
             token: ${{ secrets.GITHUB_TOKEN }}
 
         - name: Install dependencies
-          run: npm install
+          run: pnmp install
           working-directory: ./ab_platform_web
 
         # Webpack
         - name: Webpack build
-          run: npm run build:${{ inputs.build_type }}
+          run: pnmp run build:${{ inputs.build_type }}
           working-directory: ./ab_platform_web
           env:
             SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
