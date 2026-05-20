@@ -34,11 +34,20 @@ jobs:
               token: ${{ secrets.GITHUB_TOKEN }}
               ref: ${{ matrix.branch }}
 
-         - run: pnmp i
+         - uses: actions/setup-node@v4
+           with:
+              node-version: 22
+              cache: pnpm
+              cache-dependency-path: ab_platform_web/pnpm-lock.yaml
+         - uses: pnpm/action-setup@v4
+           with:
+              version: 11.0.6
+
+         - run: pnpm install --frozen-lockfile
            working-directory: ./ab_platform_web
 
          - name: Webpack
-           run: pnmp run build:${{ matrix.webpack }}
+           run: pnpm run build:${{ matrix.webpack }}
            working-directory: ./ab_platform_web
 
          # webpack expects the folder to be called "web" ab-install action expects "ab_service_web"
@@ -57,7 +66,7 @@ jobs:
               path: ab/test/e2e/cypress/e2e/kitchensink_app
 
          # These next steps are to save our ablogs to file
-         - run: pnmp install pm2@latest -g
+         - run: npm install pm2@latest -g
          - name: Save Logs
            run: pm2 start ./logs.js -- --toFile logs/ABServices.log
            working-directory: ./ab
@@ -72,7 +81,7 @@ jobs:
               timeout: 300000
 
          - name: Run Cypress Tests
-           run: pnmp run test:e2e:app -- --browser chrome
+           run: npm run test:e2e:app -- --browser chrome
            working-directory: ./ab
 
          - uses: actions/upload-artifact@v4
