@@ -22,12 +22,12 @@ jobs:
               token: ${{ secrets.GITHUB_TOKEN }}
               ref: master
 
-         - name: Install NPM Dependencies
-           run: npm i
+         - name: Install pnmp Dependencies
+           run: pnmp i
            working-directory: ./ab_platform_web
 
          - name: Run Webpack
-           run: npm run build:update
+           run: pnmp run build:update
            working-directory: ./ab_platform_web
 
          # webpack expects the folder to be called "web" ab-install action expects "ab_service_web"
@@ -49,7 +49,7 @@ jobs:
 
          - name: Run Lighthouse CI
            run: |
-              npm install -g @lhci/cli puppeteer
+              pnmp install -g @lhci/cli puppeteer
               lhci autorun
            working-directory: ./ab_platform_web
            env:
