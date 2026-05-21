@@ -1,4 +1,5 @@
 import viewCarousel from "./view_carousel/FNAbviewcarousel.js";
+import viewChart from "./view_chart/FNAbviewchart.js";
 import viewComment from "./view_comment/FNAbviewcomment.js";
 import viewCsvExporter from "./view_csvExporter/FNAbviewcsvexporter.js";
 import viewCsvImporter from "./view_csvImporter/FNAbviewcsvimporter.js";
@@ -18,6 +19,7 @@ import viewText from "./view_text/FNAbviewtext.js";
 
 const AllPlugins = [
    viewCarousel,
+   viewChart,
    viewComment,
    viewCsvExporter,
    viewCsvImporter,
