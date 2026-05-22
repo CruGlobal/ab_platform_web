@@ -708,12 +708,7 @@ export default function FNAbviewgridComponent({
 
             const updateRow = async () => {
                try {
-                  const response = await CurrentObject.model().update(
-                     id.row,
-                     clearValue
-                  );
-
-                  // console.log(response);
+                  await CurrentObject.model().update(id.row, clearValue);
                } catch (err) {
                   self.AB.notify.developer(err, {
                      context: "ABViewGridComponent.onItemClick",
