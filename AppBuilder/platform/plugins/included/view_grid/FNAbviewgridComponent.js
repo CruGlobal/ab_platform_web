@@ -687,7 +687,7 @@ export default function FNAbviewgridComponent({
          if (!CurrentObject) return;
 
          if (settings.isEditable === 0) {
-            const items = $DataTable.getItem(id);
+            $DataTable.getItem(id);
          }
          // if this was our edit icon:
          // console.log(e.target.className);
