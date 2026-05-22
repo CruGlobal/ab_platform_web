@@ -612,8 +612,6 @@ export default function FNAbviewgridComponent({
 
          const verticalScrollState = $DataTable.getScrollState().y,
             rowHeight = $DataTable.config.rowHeight,
-            height =
-               $DataTable.$view.querySelector(".webix_ss_body").clientHeight,
             startRecIndex = Math.floor(verticalScrollState / rowHeight),
             endRecIndex = startRecIndex + $DataTable.getVisibleCount();
 
