@@ -1232,7 +1232,6 @@ export default function FNAbviewgridComponent({
     * @param {event} event
     */
    async onAfterColumnDrop(sourceId, targetId, event) {
-      const CurrentObject = this.datacollection.datasource;
       const settings = this.settings;
       const columnConfig = this.localSettings();
 
