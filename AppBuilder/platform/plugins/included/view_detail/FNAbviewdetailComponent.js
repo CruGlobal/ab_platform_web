@@ -1,13 +1,5 @@
 export default function FNAbviewdetailComponent({ ABViewContainerComponent }) {
-   const ContainerComponent =
-      ABViewContainerComponent?.default ?? ABViewContainerComponent;
-   if (!ContainerComponent) {
-      throw new Error(
-         "FNAbviewdetailComponent requires ABViewContainerComponent from getPluginAPI()"
-      );
-   }
-
-   return class ABAbviewdetailComponent extends ContainerComponent {
+   return class ABAbviewdetailComponent extends ABViewContainerComponent {
       constructor(baseView, idBase, ids) {
          super(
             baseView,

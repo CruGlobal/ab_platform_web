@@ -7,7 +7,7 @@ export default function FNAbviewimageComponent({
          super(
             baseView,
             idBase || `ABViewImage_${baseView.id}`,
-            Object.assign({ image: "" }, ids)
+            Object.assign({ image: "" }, ids),
          );
       }
 
@@ -44,7 +44,7 @@ export default function FNAbviewimageComponent({
          if (settings.filename)
             $image.define(
                "template",
-               `<img src="/file/${settings.filename}" height="${settings.height}" width="${settings.width}">`
+               `<img src="/file/${settings.filename}" height="${settings.height}" width="${settings.width}">`,
             );
          else $image.define("template", "");
 

@@ -7,7 +7,7 @@ export default function FNAbviewlistComponent({
          super(
             baseView,
             idBase || `ABViewList_${baseView.id}`,
-            Object.assign({ list: "" }, ids)
+            Object.assign({ list: "" }, ids),
          );
       }
 

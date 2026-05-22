@@ -1,3 +1,4 @@
+import FNABViewWidgetPlugin from "../view_viewwidget/FNAbviewwidget.js";
 import FNAbviewcommentComponent from "./FNAbviewcommentComponent.js";
 
 // FNAbviewcomment Web
@@ -5,10 +6,11 @@ import FNAbviewcommentComponent from "./FNAbviewcommentComponent.js";
 //
 export default function FNAbviewcomment({
    /*AB,*/
-   ABViewWidgetPlugin,
+   ABViewPlugin,
    ABViewComponentPlugin,
-   ABViewContainer,
 }) {
+   const ABViewWidgetPlugin = FNABViewWidgetPlugin({ ABViewPlugin });
+
    const ABAbviewcommentComponent = FNAbviewcommentComponent({
       ABViewComponentPlugin,
    });
@@ -121,7 +123,7 @@ export default function FNAbviewcomment({
 
       getUserData() {
          let UserImageField = this.AB.objectUser().fieldByID(
-            "6383ce19-b344-44ee-87e6-decced7361f8"
+            "6383ce19-b344-44ee-87e6-decced7361f8",
          );
 
          var userObject = this.getUsers();
@@ -181,21 +183,21 @@ export default function FNAbviewcomment({
          let field = this.getUserField();
          if (!field) {
             this.warningsMessage(
-               `can't resolve user field[${this.settings.columnUser}]`
+               `can't resolve user field[${this.settings.columnUser}]`,
             );
          }
 
          field = this.getCommentField();
          if (!field) {
             this.warningsMessage(
-               `can't resolve comment field[${this.settings.columnComment}]`
+               `can't resolve comment field[${this.settings.columnComment}]`,
             );
          }
 
          field = this.getDateField();
          if (!field) {
             this.warningsMessage(
-               `can't resolve date field[${this.settings.columnDate}]`
+               `can't resolve date field[${this.settings.columnDate}]`,
             );
          }
       }

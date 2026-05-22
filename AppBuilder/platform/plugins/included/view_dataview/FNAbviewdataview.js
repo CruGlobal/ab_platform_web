@@ -1,5 +1,7 @@
 import FNAbviewdataviewComponent from "./FNAbviewdataviewComponent.js";
 import FNABViewDetail from "../view_detail/FNAbviewdetail.js";
+import FNAbviewcontainerComponent from "../view_viewcontainer/FNAbviewcontainerComponent.js";
+import FNABViewPropertyLinkPage from "../view_core/FNABViewPropertyLinkPage.js";
 
 // FNAbviewdataview Web
 // A web side import for an ABView.
@@ -7,10 +9,19 @@ import FNABViewDetail from "../view_detail/FNAbviewdetail.js";
 export default function FNAbviewdataview({
    /*AB,*/
    ABViewComponentPlugin,
-   ABViewContainer,
-   ABViewContainerComponent,
-   ABViewPropertyLinkPage,
+   ABViewPlugin,
+   ABUIPlugin,
 }) {
+   const ABViewContainerComponent = FNAbviewcontainerComponent({
+      ABViewComponentPlugin,
+   });
+
+   const ABViewPropertyLinkPage = FNABViewPropertyLinkPage({
+      ABUIPlugin,
+      ABViewPlugin,
+      ABViewComponentPlugin,
+   });
+
    const ABAbviewdataviewComponent = FNAbviewdataviewComponent({
       ABViewComponentPlugin,
       ABViewContainerComponent,
@@ -32,8 +43,8 @@ export default function FNAbviewdataview({
    };
 
    const ABViewDetail = FNABViewDetail({
-      ABViewContainer,
-      ABViewContainerComponent,
+      ABViewPlugin,
+      ABViewComponentPlugin,
    });
 
    class ABViewDataviewCore extends ABViewDetail {
@@ -47,7 +58,7 @@ export default function FNAbviewdataview({
             values,
             application,
             parent,
-            defaultValues || ABViewDataviewDefaults
+            defaultValues || ABViewDataviewDefaults,
          );
       }
 
@@ -74,7 +85,7 @@ export default function FNAbviewdataview({
 
          this.settings.xCount = parseInt(
             this.settings.xCount ||
-               ABViewDataviewPropertyComponentDefaults.xCount
+               ABViewDataviewPropertyComponentDefaults.xCount,
          );
          this.settings.detailsPage =
             this.settings.detailsPage ||

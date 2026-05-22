@@ -1,11 +1,22 @@
+import FNABViewContainer from "../view_viewcontainer/FNAbviewcontainer.js";
+import FNAbviewcontainerComponent from "../view_viewcontainer/FNAbviewcontainerComponent.js";
 import FNAbviewdetailComponent from "./FNAbviewdetailComponent.js";
 
 // Detail view plugin: replaces the original ABViewDetail / ABViewDetailCore.
 // All logic from both Core and platform is contained in this file.
 export default function FNAbviewdetail({
-   ABViewContainer,
-   ABViewContainerComponent,
+   ABViewPlugin,
+   ABViewComponentPlugin,
 }) {
+   const ABViewContainer = FNABViewContainer({
+      ABViewPlugin,
+      ABViewComponentPlugin,
+   });
+
+   const ABViewContainerComponent = FNAbviewcontainerComponent({
+      ABViewComponentPlugin,
+   });
+
    const ABViewDetailComponent = FNAbviewdetailComponent({
       ABViewContainerComponent,
    });
@@ -35,7 +46,7 @@ export default function FNAbviewdetail({
             values,
             application,
             parent,
-            defaultValues ?? ABViewDetailDefaults
+            defaultValues ?? ABViewDetailDefaults,
          );
       }
 
@@ -70,16 +81,16 @@ export default function FNAbviewdetail({
          this.settings.showLabel = JSON.parse(
             this.settings.showLabel != null
                ? this.settings.showLabel
-               : ABViewDetailPropertyComponentDefaults.showLabel
+               : ABViewDetailPropertyComponentDefaults.showLabel,
          );
 
          this.settings.labelWidth = parseInt(
             this.settings.labelWidth ||
-               ABViewDetailPropertyComponentDefaults.labelWidth
+               ABViewDetailPropertyComponentDefaults.labelWidth,
          );
          this.settings.height = parseInt(
             this.settings.height ??
-               ABViewDetailPropertyComponentDefaults.height
+               ABViewDetailPropertyComponentDefaults.height,
          );
       }
 
@@ -91,7 +102,7 @@ export default function FNAbviewdetail({
          const viewsToAllow = ["label", "text"];
          const allComponents = this.application.viewAll();
          return allComponents.filter((c) =>
-            viewsToAllow.includes(c.common().key)
+            viewsToAllow.includes(c.common().key),
          );
       }
 
@@ -130,7 +141,7 @@ export default function FNAbviewdetail({
          const DC = this.datacollection;
          if (!DC) {
             this.warningsMessage(
-               `can't resolve it's datacollection[${this.settings.dataviewID}]`
+               `can't resolve it's datacollection[${this.settings.dataviewID}]`,
             );
          }
       }

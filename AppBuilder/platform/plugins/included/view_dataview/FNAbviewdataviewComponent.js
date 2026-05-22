@@ -1,7 +1,7 @@
 import FNABViewDetailComponent from "../view_detail/FNAbviewdetailComponent.js";
 
 export default function FNAbviewdataviewComponent({
-   /*AB,*/
+   AB,
    ABViewComponentPlugin,
    ABViewContainerComponent,
    ABViewPropertyLinkPage,
@@ -20,8 +20,8 @@ export default function FNAbviewdataviewComponent({
                   dataview: "",
                   reload: "",
                },
-               ids
-            )
+               ids,
+            ),
          );
 
          this.linkPage = null;
@@ -116,7 +116,7 @@ export default function FNAbviewdataviewComponent({
                   "not_in_query",
                   "in_query_field",
                   "not_in_query_field",
-               ].includes(r.rule)
+               ].includes(r.rule),
             ).length > 0;
 
          if (!includeInQuery) return;
@@ -160,7 +160,7 @@ export default function FNAbviewdataviewComponent({
             // Not sure if its a problem so notify
             this.AB.notify.developer(
                new Error("Resize called on missing dataview component"),
-               { context: "ABViewDataviewComponent.resize()", ids: this.ids }
+               { context: "ABViewDataviewComponent.resize()", ids: this.ids },
             );
             return;
          }
@@ -293,7 +293,7 @@ export default function FNAbviewdataviewComponent({
          let currElem = $dataview;
          while (currElem && !$sidebar) {
             $sidebar = (currElem.getChildViews?.() ?? []).filter(
-               (item) => item?.config?.view == "sidebar"
+               (item) => item?.config?.view == "sidebar",
             )[0];
 
             currElem = currElem?.getParentView?.();
@@ -369,7 +369,7 @@ export default function FNAbviewdataviewComponent({
 
          $dataview.$view.setAttribute(
             "data-cy",
-            `dataview container ${name} ${baseView.id}`
+            `dataview container ${name} ${baseView.id}`,
          );
       }
 
@@ -379,11 +379,11 @@ export default function FNAbviewdataviewComponent({
          const name = (baseView.name ?? "").replace(".dataview", "");
          dom.querySelector(".webix_accordionitem_body")?.setAttribute(
             "data-cy",
-            `dataview item ${name} ${uuid} ${baseView.id}`
+            `dataview item ${name} ${uuid} ${baseView.id}`,
          );
          dom.querySelector(".webix_accordionitem_button")?.setAttribute(
             "data-cy",
-            `dataview item button ${name} ${uuid} ${baseView.id}`
+            `dataview item button ${name} ${uuid} ${baseView.id}`,
          );
       }
 
@@ -392,7 +392,7 @@ export default function FNAbviewdataviewComponent({
             this._detailComponent ??
             new ABViewDetailComponent(
                this.view,
-               `${this.ids.component}_detail_view`
+               `${this.ids.component}_detail_view`,
             ));
       }
 

@@ -1,3 +1,4 @@
+import FNABViewWidgetPlugin from "../view_viewwidget/FNAbviewwidget.js";
 import FNAbviewimageComponent from "./FNAbviewimageComponent.js";
 
 // FNAbviewimage Web
@@ -5,10 +6,11 @@ import FNAbviewimageComponent from "./FNAbviewimageComponent.js";
 //
 export default function FNAbviewimage({
    /*AB,*/
-   ABViewWidgetPlugin,
+   ABViewPlugin,
    ABViewComponentPlugin,
-   ABViewContainer,
 }) {
+   const ABViewWidgetPlugin = FNABViewWidgetPlugin({ ABViewPlugin });
+
    const ABAbviewimageComponent = FNAbviewimageComponent({
       ABViewComponentPlugin,
    });
@@ -71,10 +73,10 @@ export default function FNAbviewimage({
 
          // convert from "0" => 0
          this.settings.width = parseInt(
-            this.settings.width || ABViewImagePropertyComponentDefaults.width
+            this.settings.width || ABViewImagePropertyComponentDefaults.width,
          );
          this.settings.height = parseInt(
-            this.settings.height || ABViewImagePropertyComponentDefaults.height
+            this.settings.height || ABViewImagePropertyComponentDefaults.height,
          );
       }
    }

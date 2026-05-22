@@ -1,6 +1,6 @@
-import ABClassUIPlugin from "./ABClassUIPlugin.js";
+import ABUIPlugin from "./ABUIPlugin.js";
 
-export default class ABViewPropertiesPlugin extends ABClassUIPlugin {
+export default class ABViewPropertiesPlugin extends ABUIPlugin {
    constructor(base = "properties_abview", ids = {}) {
       // base: {string} unique base id reference
       // ids: {hash}  { key => '' }

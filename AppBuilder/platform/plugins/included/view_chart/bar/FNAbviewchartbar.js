@@ -5,10 +5,10 @@ import { FNABViewChartCore } from "../chartBindings.js";
 // A web side import for an ABView.
 //
 export default function FNAbviewchartbar({
+   ABViewPlugin,
    ABViewComponentPlugin,
-   ABViewWidgetPlugin,
 }) {
-   const ABViewChartCore = FNABViewChartCore({ ABViewWidgetPlugin });
+   const ABViewChartCore = FNABViewChartCore({ ABViewPlugin });
    const ABAbviewchartbarComponent = FNAbviewchartbarComponent({
       ABViewComponentPlugin,
    });

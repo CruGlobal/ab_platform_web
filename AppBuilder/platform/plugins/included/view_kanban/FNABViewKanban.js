@@ -1,3 +1,5 @@
+import FNABViewWidgetPlugin from "../view_viewwidget/FNAbviewwidget.js";
+import FNABViewPropertyLinkPage from "../view_core/FNABViewPropertyLinkPage.js";
 import FNABViewKanbanComponent from "./FNABViewKanbanComponent.js";
 import FNABViewKanbanDetachedFormSave from "./FNABViewKanbanForm.js";
 import FNABViewKanbanFormSidePanel from "./FNABViewKanbanFormSidePanel.js";
@@ -7,11 +9,17 @@ import FNABViewKanbanFormSidePanel from "./FNABViewKanbanFormSidePanel.js";
 //
 export default function FNABViewKanban({
    AB,
-   ABViewWidgetPlugin,
-   ABViewComponentPlugin,
-   ABViewPropertyLinkPage,
    ABViewPlugin,
+   ABViewComponentPlugin,
+   ABUIPlugin,
 }) {
+   const ABViewWidgetPlugin = FNABViewWidgetPlugin({ ABViewPlugin });
+   const ABViewPropertyLinkPage = FNABViewPropertyLinkPage({
+      ABUIPlugin,
+      ABViewPlugin,
+      ABViewComponentPlugin,
+   });
+
    const ABViewKanbanDetachedFormSave = FNABViewKanbanDetachedFormSave({
       AB,
       ABViewPlugin,

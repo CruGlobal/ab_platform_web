@@ -10,11 +10,7 @@ import ABViewEditorPlugin from "./plugins/ABViewEditorPlugin.js";
 
 // some views need to reference ABViewContainer,
 import ABViewContainer from "./views/ABViewContainer.js";
-import ABViewContainerComponent from "./views/viewComponent/ABViewContainerComponent.js";
 
-// view property helpers used by plugins
-import ABViewPropertyFilterData from "./views/viewProperties/ABViewPropertyFilterData";
-import ABViewPropertyLinkPage from "./views/viewProperties/ABViewPropertyLinkPage";
 import ABViewRuleListFormRecordRules from "../rules/ABViewRuleListFormRecordRules";
 import ABViewRuleListFormSubmitRules from "../rules/ABViewRuleListFormSubmitRules";
 
@@ -69,9 +65,6 @@ export function getPluginAPI() {
       ABViewPropertiesPlugin,
       ABViewEditorPlugin,
       ABViewContainer,
-      ABViewContainerComponent,
-      ABViewPropertyFilterData,
-      ABViewPropertyLinkPage,
       ABViewRuleListFormRecordRules,
       ABViewRuleListFormSubmitRules,
       //  ABFieldPlugin,
@@ -163,7 +156,7 @@ export function pluginRegister(pluginClass) {
          break;
       default:
          throw new Error(
-            `ABClassManager.pluginRegister():: Unknown plugin type: ${type}`
+            `ABClassManager.pluginRegister():: Unknown plugin type: ${type}`,
          );
    }
 }

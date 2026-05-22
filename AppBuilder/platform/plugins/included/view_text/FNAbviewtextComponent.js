@@ -11,8 +11,8 @@ export default function FNAbviewtextComponent({
                {
                   text: "",
                },
-               ids
-            )
+               ids,
+            ),
          );
       }
 

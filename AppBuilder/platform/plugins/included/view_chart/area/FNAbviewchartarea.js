@@ -6,10 +6,10 @@ import { FNABViewChartCore } from "../chartBindings.js";
 //
 export default function FNAbviewchartarea({
    AB,
+   ABViewPlugin,
    ABViewComponentPlugin,
-   ABViewWidgetPlugin,
 }) {
-   const ABViewChartCore = FNABViewChartCore({ ABViewWidgetPlugin });
+   const ABViewChartCore = FNABViewChartCore({ ABViewPlugin });
    const ABAbviewchartareaComponent = FNAbviewchartareaComponent({
       AB,
       ABViewComponentPlugin,

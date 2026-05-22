@@ -1,8 +1,8 @@
 const ABViewWidgetCore = require("../../core/views/ABViewWidgetCore");
 
-const ABPropertyComponentDefaults = ABViewWidgetCore.defaultValues();
+// const ABPropertyComponentDefaults = ABViewWidgetCore.defaultValues();
 
-let L = (...params) => AB.Multilingual.label(...params);
+// let L = (...params) => AB.Multilingual.label(...params);
 
 module.exports = class ABViewWidget extends ABViewWidgetCore {
    // constructor(values, application, parent, defaultValues) {
@@ -18,7 +18,7 @@ module.exports = class ABViewWidget extends ABViewWidgetCore {
    component(App) {
       let base = super.component(App);
 
-      base.onShow = (viewId) => {
+      base.onShow = (/* viewId */) => {
          let dv = this.datacollection; // get from a function or a (get) property
          if (dv && dv.dataStatus == dv.dataStatusFlag.notInitial) {
             // load data when a widget is showing
