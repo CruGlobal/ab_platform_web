@@ -1,10 +1,10 @@
-import ABPopupExport from "../../../views/ABViewGridPopupExport.js";
-import ABPopupMassUpdateClass from "../../../views/ABViewGridPopupMassUpdate.js";
-import ABPopupSortField from "../../../views/ABViewGridPopupSortFields.js";
+import ABPopupExport from "./ABViewGridPopupExport.js";
+import ABPopupMassUpdateClass from "./ABViewGridPopupMassUpdate.js";
 
 export default function FNAbviewgridComponent({
    /*AB,*/
    ABViewComponentPlugin,
+   ABViewPopupSortFields,
 }) {
    return class ABAbviewgridComponent extends ABViewComponentPlugin {
 
@@ -105,7 +105,7 @@ export default function FNAbviewgridComponent({
          // {}
          // The popup for performing a Mass Edit operation.
 
-         this.PopupSortDataTableComponent = new ABPopupSortField(idTable);
+         this.PopupSortDataTableComponent = new ABViewPopupSortFields(idTable);
          this.PopupSortDataTableComponent.init(ab);
          this.PopupSortDataTableComponent.on("changed", (sortOptions) => {
             this.callbackSortData(sortOptions);
@@ -2133,7 +2133,6 @@ export default function FNAbviewgridComponent({
       selectRow(rowData) {
          let id = rowData?.id ?? rowData;
          if (this.__timeout_selectRow) {
-            // console.log("Duplicate selectRow():", id);
             clearTimeout(this.__timeout_selectRow);
          }
          this.__timeout_selectRow = setTimeout(() => {

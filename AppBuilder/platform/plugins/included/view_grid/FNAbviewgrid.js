@@ -10,9 +10,13 @@ export default function FNAbviewgrid({
    /*AB,*/
    ABViewWidgetPlugin,
    ABViewComponentPlugin,
-   ABViewContainer
+   ABViewContainer,
+   ABViewPopupSortFields,
 }) {
-   const ABAbviewgridComponent = FNAbviewgridComponent({ ABViewComponentPlugin });
+   const ABAbviewgridComponent = FNAbviewgridComponent({
+      ABViewComponentPlugin,
+      ABViewPopupSortFields,
+   });
 
 const ABViewGridPropertyComponentDefaults = {
    label: "",

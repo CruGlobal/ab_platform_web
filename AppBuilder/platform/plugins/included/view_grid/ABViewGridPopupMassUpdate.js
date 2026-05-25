@@ -6,8 +6,8 @@
  *
  */
 
-import ClassUI from "../../../ui/ClassUI";
-import RowUpdater from "../RowUpdater";
+import ClassUI from "../../../../../ui/ClassUI";
+import RowUpdater from "../../../RowUpdater";
 
 var L = null;
 

@@ -9,7 +9,7 @@ import ClassUI from "../../../ui/ClassUI";
 
 var L = null;
 
-export default class AB_Work_Object_Workspace_PopupSortFields extends ClassUI {
+export default class ABViewPopupSortFields extends ClassUI {
    constructor(idBase) {
       idBase = idBase || "abviewgridpopupSortFields";
 

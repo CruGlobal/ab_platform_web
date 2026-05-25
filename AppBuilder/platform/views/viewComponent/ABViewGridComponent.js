@@ -1,7 +1,7 @@
 import ABViewComponent from "./ABViewComponent";
-import ABPopupExport from "../ABViewGridPopupExport";
-import ABPopupMassUpdateClass from "../ABViewGridPopupMassUpdate";
-import ABPopupSortField from "../ABViewGridPopupSortFields";
+import ABPopupExport from "../../plugins/included/view_grid/ABViewGridPopupExport";
+import ABPopupMassUpdateClass from "../../plugins/included/view_grid/ABViewGridPopupMassUpdate";
+import ABPopupSortField from "../ABViewPopupSortFields";
 
 export default class ABViewGridComponent extends ABViewComponent {
    constructor(baseView, idBase, ids) {

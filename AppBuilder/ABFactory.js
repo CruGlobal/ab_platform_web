@@ -6,7 +6,7 @@ import { nanoid } from "nanoid";
 import { v4 as uuidv4 } from "uuid";
 import performance from "../utils/performance";
 import FilterComplex from "./platform/FilterComplex";
-import SortPopup from "./platform/views/ABViewGridPopupSortFields";
+import SortPopup from "./platform/views/ABViewPopupSortFields";
 import Papa from "papaparse";
 
 //
