@@ -9,9 +9,12 @@ global.window = dom.window;
 global.document = dom.window.document;
 global.FileReader = global.window.FileReader;
 global.Blob = global.window.Blob;
-global.navigator = {
-   userAgent: "node.js",
-};
+Object.defineProperty(global, "navigator", {
+   value: dom.window.navigator,
+   writable: true,
+   configurable: true,
+   enumerable: true,
+});
 
 // Set webix globally
 global.$$ = webixElement;
