@@ -1423,17 +1423,13 @@ export default class ABViewGridComponent extends ABViewComponent {
          const validator = CurrentObject.isValidData(item);
 
          if (validator.pass()) {
-            //// Question: do we submit full item updates?  or just patches?
-            // IF Patch:
-            // var patch = {};
-            // patch.id = item.id;
-            // patch[editor.column] = item[editor.column];
-            // await CurrentObject.model().update(item.id, patch)
+            const patch = {};
+            patch[editor.column] = item[editor.column];
 
             const ab = this.AB;
 
             try {
-               await CurrentObject.model().update(item.id, item);
+               await CurrentObject.model().update(item.id, patch);
 
                if ($DataTable.exists(editor.row)) {
                   $DataTable.updateItem(editor.row, item);

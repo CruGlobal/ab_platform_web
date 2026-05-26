@@ -7,8 +7,6 @@ export default function FNAbviewgridComponent({
    ABViewPopupSortFields,
 }) {
    return class ABAbviewgridComponent extends ABViewComponentPlugin {
-
-
       constructor(baseView, idBase, ids) {
          super(
             baseView,
@@ -99,7 +97,10 @@ export default function FNAbviewgridComponent({
          // {ABViewGridPopupExport}
          // Popup for managing how to export our data.
 
-         this.PopupMassUpdateComponent = new ABPopupMassUpdateClass(this, idTable);
+         this.PopupMassUpdateComponent = new ABPopupMassUpdateClass(
+            this,
+            idTable
+         );
          this.PopupMassUpdateComponent.init(ab);
          // this.PopupMassUpdateComponent.on("")
          // {}
@@ -192,7 +193,10 @@ export default function FNAbviewgridComponent({
 
          let selectType = "cell";
 
-         if (!settings.isEditable && (settings.detailsPage || settings.editPage))
+         if (
+            !settings.isEditable &&
+            (settings.detailsPage || settings.editPage)
+         )
             selectType = "row";
 
          return {
@@ -240,9 +244,9 @@ export default function FNAbviewgridComponent({
                      if (selectField == null) return true;
 
                      const cellNode = this.getItemNode({
-                        row: data.row,
-                        column: data.column,
-                     }),
+                           row: data.row,
+                           column: data.column,
+                        }),
                         rowData = this.getItem(data.row);
 
                      return selectField.customEdit(rowData, null, cellNode);
@@ -317,7 +321,7 @@ export default function FNAbviewgridComponent({
                      oldValue != "" &&
                      // If options does not load completely, then Webix returns state.value as ['', '', '']
                      newValue.filter((val) => val != null && val != "").length <
-                     1 &&
+                        1 &&
                      // Check if no data load to the option
                      editor.getPopup?.().getList?.().data?.find({}).length < 1
                   ) {
@@ -518,7 +522,9 @@ export default function FNAbviewgridComponent({
                   placeholder: this.label("Search..."),
                   on: {
                      onTimedKeyPress: () => {
-                        const searchText = $$(ids.globalSearchToolbar).getValue();
+                        const searchText = $$(
+                           ids.globalSearchToolbar
+                        ).getValue();
 
                         this.view.filterHelper.externalSearchText(searchText);
                      },
@@ -827,7 +833,8 @@ export default function FNAbviewgridComponent({
          if (settings.hideHeader) this.hideHeader();
 
          const dc =
-            this.datacollection || this.AB.datacollectionByID(settings.dataviewID);
+            this.datacollection ||
+            this.AB.datacollectionByID(settings.dataviewID);
 
          if (!this._isDatacollectionLoaded) this.datacollectionLoad(dc);
 
@@ -907,7 +914,9 @@ export default function FNAbviewgridComponent({
 
          // wait until the grid component will done to repaint UI
          setTimeout(() => {
-            gridElem.sort((a, b) => this.PopupSortDataTableComponent.sort(a, b));
+            gridElem.sort((a, b) =>
+               this.PopupSortDataTableComponent.sort(a, b)
+            );
          }, 777);
       }
 
@@ -1394,7 +1403,11 @@ export default function FNAbviewgridComponent({
             item[editor.column] = state.value;
 
             $DataTable.removeCellCss(item.id, editor.column, "webix_invalid");
-            $DataTable.removeCellCss(item.id, editor.column, "webix_invalid_cell");
+            $DataTable.removeCellCss(
+               item.id,
+               editor.column,
+               "webix_invalid_cell"
+            );
 
             //maxlength field
             const f = CurrentObject.fieldByID(editor.config?.fieldID);
@@ -1406,11 +1419,15 @@ export default function FNAbviewgridComponent({
                   title: this.label("Limit max length"),
                   text: this.label(
                      "You can enter a maximum of " +
-                     f.settings.maxLength +
-                     " characters"
+                        f.settings.maxLength +
+                        " characters"
                   ),
                });
-               $DataTable.addCellCss(item.id, editor.column, "webix_invalid_cell");
+               $DataTable.addCellCss(
+                  item.id,
+                  editor.column,
+                  "webix_invalid_cell"
+               );
                $DataTable.refresh(editor.row);
                $DataTable.clearSelection();
                return false;
@@ -1419,17 +1436,13 @@ export default function FNAbviewgridComponent({
             const validator = CurrentObject.isValidData(item);
 
             if (validator.pass()) {
-               //// Question: do we submit full item updates?  or just patches?
-               // IF Patch:
-               // var patch = {};
-               // patch.id = item.id;
-               // patch[editor.column] = item[editor.column];
-               // await CurrentObject.model().update(item.id, patch)
+               const patch = {};
+               patch[editor.column] = item[editor.column];
 
                const ab = this.AB;
 
                try {
-                  await CurrentObject.model().update(item.id, item);
+                  await CurrentObject.model().update(item.id, patch);
 
                   if ($DataTable.exists(editor.row)) {
                      $DataTable.updateItem(editor.row, item);
@@ -1745,7 +1758,9 @@ export default function FNAbviewgridComponent({
          columnHeaders.forEach((c) => {
             // we want to overwrite our default settings with anything stored
             // in local storage
-            const origCol = objColumnHeaders.find((h) => h.fieldID === c.fieldID);
+            const origCol = objColumnHeaders.find(
+               (h) => h.fieldID === c.fieldID
+            );
 
             // none of our functions can be stored in localStorage, so scan
             // the original column and attach any template functions to our
@@ -1920,7 +1935,10 @@ export default function FNAbviewgridComponent({
                         CurrentObject.fields(),
                         CurrentObject
                      );
-                     const ruleValid = filterComplex.isValid(data, filter.filters);
+                     const ruleValid = filterComplex.isValid(
+                        data,
+                        filter.filters
+                     );
 
                      // if invalid we need to tell the field
                      if (!ruleValid) {
@@ -2092,7 +2110,9 @@ export default function FNAbviewgridComponent({
             (await ab.Storage.get(this.keyStorageSettings)) || {};
          const _gridSettings = this._gridSettings;
 
-         savedLocalSettings[this.settingsID()] = _gridSettings[this.settingsID()]
+         savedLocalSettings[this.settingsID()] = _gridSettings[
+            this.settingsID()
+         ]
             ? _gridSettings[this.settingsID()]
             : [];
 
@@ -2352,8 +2372,10 @@ export default function FNAbviewgridComponent({
          // var node = $$(ids.tooltip).getNode();
          if (node.firstChild?.nodeName === "IMG") {
             setTimeout(() => {
-               const imgBottom = parseInt(node.style.top.replace("px", "")) + 500;
-               const imgRight = parseInt(node.style.left.replace("px", "")) + 500;
+               const imgBottom =
+                  parseInt(node.style.top.replace("px", "")) + 500;
+               const imgRight =
+                  parseInt(node.style.left.replace("px", "")) + 500;
 
                if (imgBottom > window.innerHeight) {
                   const imgOffsetY = imgBottom - window.innerHeight;
@@ -2398,8 +2420,5 @@ export default function FNAbviewgridComponent({
          this.grouping();
          this.ready();
       }
-
-
    };
-
 }
