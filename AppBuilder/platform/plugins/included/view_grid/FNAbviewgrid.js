@@ -1,6 +1,4 @@
 import FNAbviewgridComponent from "./FNAbviewgridComponent.js";
-import ABViewGridFilter from "../../../views/viewProperties/ABViewPropertyFilterData.js";
-import ABViewPropertyLinkPage from "../../../views/viewProperties/ABViewPropertyLinkPage.js";
 
 // FNAbviewgrid Web
 // A web side import for an ABView.
@@ -11,7 +9,11 @@ export default function FNAbviewgrid({
    ABViewComponentPlugin,
    ABViewContainer,
    ABViewPopupSortFields,
+   ABViewPropertyFilterData,
+   ABViewPropertyLinkPage,
 }) {
+   const ABViewGridFilter = ABViewPropertyFilterData;
+
    const ABAbviewgridComponent = FNAbviewgridComponent({
       ABViewComponentPlugin,
       ABViewPopupSortFields,
