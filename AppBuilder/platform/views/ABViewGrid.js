@@ -1,8 +1,7 @@
 const ABViewGridCore = require("../../core/views/ABViewGridCore");
 import ABViewGridComponent from "./viewComponent/ABViewGridComponent";
 import ABViewGridFilter from "./viewProperties/ABViewPropertyFilterData";
-const ABViewPropertyLinkPage =
-   require("./viewProperties/ABViewPropertyLinkPage").default;
+const ABViewPropertyLinkPage = require("./viewProperties/ABViewPropertyLinkPage");
 
 export default class ABViewGrid extends ABViewGridCore {
    /**
@@ -61,7 +60,7 @@ export default class ABViewGrid extends ABViewGridCore {
       if (this.__filterHelper == null) {
          this.__filterHelper = new ABViewGridFilter(
             this.AB,
-            `${this.id}_filterHelper`
+            `${this.id}_filterHelper`,
          );
       }
 
@@ -83,7 +82,7 @@ export default class ABViewGrid extends ABViewGridCore {
       this.warningsSilent = origWS;
       if (!DC) {
          this.warningsMessage(
-            `can't resolve it's datacollection[${this.settings.dataviewID}]`
+            `can't resolve it's datacollection[${this.settings.dataviewID}]`,
          );
       }
    }
