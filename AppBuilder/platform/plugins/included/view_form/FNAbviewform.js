@@ -1,10 +1,8 @@
-import FNAbviewformComponent from "./FNAbviewformComponent.js";
 import * as fComponents from "./FormComponents.js";
-
-// Internalized Core Factories
+import FNAbviewformComponent from "./FNAbviewformComponent.js";
 import FNAbviewformCore from "./core/ABViewFormCore.js";
-import FNAbviewformItemCore from "./core/ABViewFormItemCore.js";
 import FNAbviewformCustomCore from "./core/ABViewFormCustomCore.js";
+import FNAbviewformItemCore from "./core/ABViewFormItemCore.js";
 
 /**
  * FNAbviewform
@@ -20,7 +18,6 @@ export default function FNAbviewform(API) {
       ABViewPropertyAddPage,
       ABViewPropertyEditPage,
       ABFieldImage,
-      FocusableTemplate,
       AB,
    } = API;
 
@@ -31,7 +28,6 @@ export default function FNAbviewform(API) {
       ABViewPropertyAddPage,
       ABViewPropertyEditPage,
       ABFieldImage,
-      FocusableTemplate,
    };
 
    // 1. Initialize Base Item
@@ -56,7 +52,7 @@ export default function FNAbviewform(API) {
    // 2. Initialize Custom (base for others)
    FormAPI.ABViewFormCustom = FNAbviewformCustom(FormAPI);
    FormAPI.ABViewFormCustomCore = FNAbviewformCustomCore(
-      FormAPI.ABViewFormItemCore
+      FormAPI.ABViewFormItem
    );
 
    // 3. Initialize common views
@@ -96,13 +92,6 @@ export default function FNAbviewform(API) {
       ABRecordRule,
       ABSubmitRule
    );
-
-   ABViewFormBase.prototype.superComponent = function () {
-      if (this._superComponent == null) {
-         this._superComponent = ABViewContainer.prototype.component.call(this);
-      }
-      return this._superComponent;
-   };
 
    FormAPI.ABViewFormBase = ABViewFormBase;
 

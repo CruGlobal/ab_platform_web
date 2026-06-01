@@ -5,14 +5,10 @@ export default function FNAbviewformTree({
    ABViewComponentPlugin,
    ABViewFormItemComponent,
    ABViewFormCustom,
-   ABFieldImage,
-   FocusableTemplate,
 }) {
    const ABViewFormTreeCore = FNAbviewformTreeCoreFactory(ABViewFormCustom);
    const ABAbviewformTreeComponent = FNAbviewformTreeComponent({
       ABViewFormItemComponent,
-      ABFieldImage,
-      FocusableTemplate,
    });
 
    return class ABViewFormTree extends ABViewFormTreeCore {

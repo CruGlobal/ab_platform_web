@@ -1,7 +1,6 @@
 export default function FNAbviewformCustomComponent({
    ABViewFormItemComponent,
    ABFieldImage,
-   FocusableTemplate,
 }) {
    const DEFAULT_HEIGHT = 80;
 
@@ -118,7 +117,7 @@ export default function FNAbviewformCustomComponent({
             paddingX: 0,
             css: "ab-custom-field",
             body: {
-               view: new FocusableTemplate(this.AB._App).key,
+               view: "focusabletemplate",
                css: "customFieldCls",
                borderless: true,
                template: template,
@@ -139,13 +138,7 @@ export default function FNAbviewformCustomComponent({
                      }
 
                      let node = $$(trg).getParentView().$view;
-                     field?.customEdit(
-                        rowData,
-                        this.AB._App,
-                        node,
-                        this.ids.formItem,
-                        evt
-                     );
+                     field?.customEdit(rowData, node, this.ids.formItem, evt);
                   },
                },
             },

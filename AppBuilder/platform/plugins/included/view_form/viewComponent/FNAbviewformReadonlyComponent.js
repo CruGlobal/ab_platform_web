@@ -1,7 +1,6 @@
 export default function FNAbviewformReadonlyComponent({
    ABViewFormItemComponent,
    ABFieldImage,
-   FocusableTemplate,
 }) {
    return class ABViewFormReadonlyComponent extends ABViewFormItemComponent {
       constructor(baseView, idBase, ids) {

@@ -6,13 +6,11 @@ export default function FNAbviewformCustom({
    ABViewFormItemComponent,
    ABViewFormItem,
    ABFieldImage,
-   FocusableTemplate,
 }) {
    const ABViewFormCustomCore = FNAbviewformCustomCoreFactory(ABViewFormItem);
    const ABAbviewformCustomComponent = FNAbviewformCustomComponent({
       ABViewFormItemComponent,
       ABFieldImage,
-      FocusableTemplate,
    });
 
    return class ABViewFormCustom extends ABViewFormCustomCore {

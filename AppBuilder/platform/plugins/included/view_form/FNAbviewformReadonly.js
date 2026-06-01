@@ -6,14 +6,12 @@ export default function FNAbviewformReadonly({
    ABViewFormItemComponent,
    ABViewFormCustom,
    ABFieldImage,
-   FocusableTemplate,
 }) {
    const ABViewFormReadonlyCore =
       FNAbviewformReadonlyCoreFactory(ABViewFormCustom);
    const ABAbviewformReadonlyComponent = FNAbviewformReadonlyComponent({
       ABViewFormItemComponent,
       ABFieldImage,
-      FocusableTemplate,
    });
 
    return class ABViewFormReadonly extends ABViewFormReadonlyCore {

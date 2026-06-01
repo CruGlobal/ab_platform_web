@@ -201,7 +201,7 @@ module.exports = class ABFieldTree extends ABFieldTreeCore {
          node.innerHTML = nodeHTML;
       }
 
-      field.setBadge(node, App, row);
+      field.setBadge(node, row);
    }
 
    /*
@@ -213,7 +213,19 @@ module.exports = class ABFieldTree extends ABFieldTreeCore {
     * @param {HtmlDOM} node  the HTML Dom object for this field's display.
     */
    customEdit(row, App, node, component) {
-      const idBase = App.unique(this.idCustomContainer(row));
+      if (
+         App == null ||
+         (typeof App === "object" && typeof App.unique !== "function")
+      ) {
+         component = node;
+         node = App;
+         App = this.AB._App;
+      }
+
+      const idBase =
+         App && typeof App.unique === "function"
+            ? App.unique(this.idCustomContainer(row))
+            : `${this.idCustomContainer(row)}-${this.AB.uuid()}`;
       const idPopup = `${idBase}-popup`;
       const idTree = `${idBase}-tree`;
       const view = $$(node);

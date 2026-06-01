@@ -1,4 +1,3 @@
-import viewDataview from "./view_dataview/FNAbviewdataview.js";
 import viewForm from "./view_form/FNAbviewform.js";
 import viewCarousel from "./view_carousel/FNAbviewcarousel.js";
 import viewChart from "./view_chart/FNAbviewchart.js";
@@ -38,7 +37,6 @@ const AllPlugins = [
    viewPivot,
    viewTab,
    viewText,
-   viewDataview,
    viewForm,
 ];
 

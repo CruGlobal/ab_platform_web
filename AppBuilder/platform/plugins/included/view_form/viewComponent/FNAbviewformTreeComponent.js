@@ -71,7 +71,6 @@ export default function FNAbviewformTreeComponent({ ABViewFormItemComponent }) {
 
                field.customEdit(
                   { [field.columnName]: self.getValue() },
-                  this.AB._App,
                   node,
                   this
                );

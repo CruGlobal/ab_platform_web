@@ -240,7 +240,7 @@ export default class ABViewGridComponent extends ABViewComponent {
                      }),
                      rowData = this.getItem(data.row);
 
-                  return selectField.customEdit(rowData, self.AB._App, cellNode, self);
+                  return selectField.customEdit(rowData, null, cellNode);
                } else if (!settings.detailsPage && !settings.editPage)
                   return false;
             },

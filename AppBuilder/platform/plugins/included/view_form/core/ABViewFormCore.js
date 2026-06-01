@@ -64,6 +64,13 @@ export default function (
          this.isForm = true;
       }
 
+      superComponent() {
+         if (this._superComponent == null) {
+            this._superComponent = super.component();
+         }
+         return this._superComponent;
+      }
+
       static common() {
          return ABViewFormDefaults;
       }
