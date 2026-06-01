@@ -12,6 +12,9 @@ import ABViewPlugin from "./plugins/ABViewPlugin.js";
 import ABViewPropertiesPlugin from "./plugins/ABViewPropertiesPlugin.js";
 import ABViewPropertyAddPage from "./views/viewProperties/ABViewPropertyAddPage";
 import ABViewPropertyEditPage from "./views/viewProperties/ABViewPropertyEditPage";
+import ABViewPopupSortFields from "./views/ABViewPopupSortFields.js";
+
+// view property helpers used by plugins
 import ABViewPropertyFilterData from "./views/viewProperties/ABViewPropertyFilterData";
 import ABViewPropertyLinkPage from "./views/viewProperties/ABViewPropertyLinkPage";
 import ABViewRuleListFormRecordRules from "../rules/ABViewRuleListFormRecordRules";
@@ -74,6 +77,7 @@ export function getPluginAPI() {
       ABViewPropertyAddPage,
       ABViewPropertyEditPage,
       ABFieldImage,
+      ABViewPopupSortFields,
       //  ABFieldPlugin,
       //  ABViewPlugin,
    };

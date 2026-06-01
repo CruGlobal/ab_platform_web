@@ -4,7 +4,7 @@
  * formats.
  */
 
-import ClassUI from "../../../ui/ClassUI";
+import ClassUI from "../../../../../ui/ClassUI";
 
 export default class ABWorkObjectPopupExport extends ClassUI {
    constructor(idBase) {

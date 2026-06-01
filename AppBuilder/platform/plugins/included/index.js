@@ -1,4 +1,5 @@
 import viewForm from "./view_form/FNAbviewform.js";
+import viewGrid from "./view_grid/FNAbviewgrid.js";
 import viewCarousel from "./view_carousel/FNAbviewcarousel.js";
 import viewChart from "./view_chart/FNAbviewchart.js";
 import viewComment from "./view_comment/FNAbviewcomment.js";
@@ -38,6 +39,7 @@ const AllPlugins = [
    viewTab,
    viewText,
    viewForm,
+   viewGrid,
 ];
 
 export default {
