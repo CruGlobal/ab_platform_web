@@ -456,7 +456,8 @@ function _getSelectedOptions(field, rowData = {}) {
       result = rowData[field.columnName];
 
       try {
-         if (typeof result == "string") result = JSON.parse(result);
+         if (typeof result == "string" && result !== "") result = JSON.parse(result);
+         else if (typeof result == "string" && result === "") result = [];
       } catch (e) {
          console.error(`Error JSON.pars()ing result [${result}]: `, e);
          // just go with what is there

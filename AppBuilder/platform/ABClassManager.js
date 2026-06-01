@@ -12,6 +12,8 @@ import ABViewEditorPlugin from "./plugins/ABViewEditorPlugin.js";
 import ABViewContainer from "./views/ABViewContainer.js";
 import ABViewContainerComponent from "./views/viewComponent/ABViewContainerComponent.js";
 
+import ABViewPopupSortFields from "./views/ABViewPopupSortFields.js";
+
 // view property helpers used by plugins
 import ABViewPropertyFilterData from "./views/viewProperties/ABViewPropertyFilterData";
 import ABViewPropertyLinkPage from "./views/viewProperties/ABViewPropertyLinkPage";
@@ -74,6 +76,7 @@ export function getPluginAPI() {
       ABViewPropertyLinkPage,
       ABViewRuleListFormRecordRules,
       ABViewRuleListFormSubmitRules,
+      ABViewPopupSortFields,
       //  ABFieldPlugin,
       //  ABViewPlugin,
    };
