@@ -49,6 +49,10 @@ class Multilingual extends MLClass {
    }
 
    label(key, altText, values = [], postMissing = true) {
+      if (typeof key == "undefined") {
+         return "";
+      }
+
       // part of our transition: L("single string") should start to work:
       if (typeof altText == "undefined" && key) {
          altText = key;

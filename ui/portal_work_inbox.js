@@ -34,6 +34,7 @@ class PortalWorkInbox extends ClassUI {
       return {
          id: this.id,
          view: "window",
+         move: true,
          head: {
             view: "toolbar",
             css: "webix_dark inbox_drawer",

@@ -1,0 +1,14 @@
+diff --git a/node_modules/webpack-log/lib/index.js b/node_modules/webpack-log/lib/index.js
+index 40dba46..f2bbb81 100644
+--- a/node_modules/webpack-log/lib/index.js
++++ b/node_modules/webpack-log/lib/index.js
+@@ -10,7 +10,8 @@
+ */
+ const chalk = require('chalk');
+ const loglevel = require('loglevelnext');
+-const nanoid = require('nanoid');
++const nanoidModule = require('nanoid');
++const nanoid = typeof nanoidModule === 'function' ? nanoidModule : nanoidModule.nanoid;
+ 
+ const defaults = {
+   level: 'info',

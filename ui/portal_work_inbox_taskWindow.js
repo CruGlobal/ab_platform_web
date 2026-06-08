@@ -23,9 +23,10 @@ class PortalWorkInboxTaskwindow extends ClassUI {
             state.height = state.maxHeight * 0.7;
          },
          modal: true,
+         move: true,
          head: {
             view: "toolbar",
-            css: "webix_dark",
+            css: "webix_dark team-form-header",
             cols: [
                { width: 17 },
                {

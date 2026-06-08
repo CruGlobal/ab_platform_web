@@ -19,7 +19,7 @@
          // .__AB_preload  {Promise} our index.js script will await this 
          // before continuing the Bootstrap.init();  This way all resources will
          // be loaded before we start the initialization.
-         window.__AB_preload = new Promise(async (resolve, reject) => {
+         window.__AB_preload = new Promise((resolve) => {
             window.__AB_preload_resolve = resolve;
          });
 

@@ -1,6 +1,6 @@
 import ABViewProperty from "./ABViewProperty";
 import ABViewFormButton from "../ABViewFormButton";
-import ABViewPDFImporter from "../ABViewPDFImporter";
+
 
 let L = (...params) => AB.Multilingual.label(...params);
 
@@ -218,7 +218,7 @@ export default class ABViewPropertyAddPage extends ABViewProperty {
                   pageClone.views(
                      (v) =>
                         v instanceof ABViewFormButton ||
-                        v instanceof ABViewPDFImporter,
+                        v.key == "pdfImporter",
                      true
                   ) ?? [];
 

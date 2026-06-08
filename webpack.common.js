@@ -1,6 +1,7 @@
 const path = require("path");
 const APP = path.resolve(__dirname);
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
    context: APP,
@@ -35,6 +36,15 @@ module.exports = {
             "*.LICENSE.txt",
          ],
       }),
+      new CopyPlugin({
+         patterns: [
+            {
+               from: path.join(APP, "node_modules", "tinymce", "models", "dom", "model.js"),
+               to: "models/dom/model.js",
+               noErrorOnMissing: true,
+            },
+         ],
+      }),
    ],
    resolve: {
       alias: {
@@ -48,9 +58,9 @@ module.exports = {
          cacheGroups: {
             vendors: false,
             default: false,
-            pdfjs: {
-               test: /[\\/]node_modules[\\/]pdfjs-dist|[\\/]init[\\/]pdfjs/,
-               filename: "pdfjs.[name].[contenthash].mjs",
+             pdfjs: {
+                test: /[\\/]node_modules[\\/]pdfjs-dist|[\\/]AppBuilder[\\/]platform[\\/]plugins[\\/]included[\\/]view_pdfImporter[\\/]pdfjs/,
+                filename: "pdfjs.[name].[contenthash].mjs",
                chunks: "all",
                reuseExistingChunk: true,
                priority: 10,

@@ -6,7 +6,7 @@ import { nanoid } from "nanoid";
 import { v4 as uuidv4 } from "uuid";
 import performance from "../utils/performance";
 import FilterComplex from "./platform/FilterComplex";
-import SortPopup from "./platform/views/ABViewGridPopupSortFields";
+import SortPopup from "./platform/views/ABViewPopupSortFields";
 import Papa from "papaparse";
 
 //
@@ -32,7 +32,7 @@ import Network from "../resources/Network.js";
 import Storage from "../resources/Storage.js";
 // Storage: manages our interface for local storage
 
-import ABViewManager from "./core/ABViewManagerCore";
+import ABViewManager from "./platform/ABViewManager";
 
 import Tenant from "../resources/Tenant.js";
 // Tenant: manages the Tenant information of the current instance
@@ -45,6 +45,7 @@ class ABValidator {
    constructor(AB) {
       this.AB = AB;
       this.errors = [];
+      this.platform = "web";
    }
 
    addError(name, message) {
@@ -874,6 +875,17 @@ class ABFactory extends ABFactoryCore {
       this._plugins.push(p);
    }
 
+   async pluginLocalLoad() {
+      // Load included plugins when available (e.g. platform/plugins/included/).
+      // Optional so unit tests and CI can run when that path is not present.
+      try {
+         const LocalPlugins = await import("./platform/plugins/included/index.js");
+         return LocalPlugins.default.load(this);
+      } catch (e) {
+         if (e?.code !== "MODULE_NOT_FOUND") throw e;
+      }
+   }
+
    //
    // Utilities
    //
@@ -883,6 +895,16 @@ class ABFactory extends ABFactoryCore {
 
    cloneDeep(value) {
       return _.cloneDeep(value);
+   }
+
+   /**
+    * implements the _.defaultsDeep function
+    * @param {object} target
+    * @param {object} source
+    * @returns {object} the merged object
+    */
+   defaultsDeep(target, source) {
+      return _.defaultsDeep(target, source);
    }
 
    error(message, ...rest) {

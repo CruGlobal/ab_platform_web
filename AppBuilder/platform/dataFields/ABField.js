@@ -416,11 +416,7 @@ module.exports = class ABField extends ABFieldCore {
             values.settings.objectId = this.object.id;
             values.settings.fieldId = this.id;
 
-            const ABFieldPlaceholder = application.viewNew(
-               values,
-               application,
-               parent
-            ); // ABViewManager.newView(values, application, parent);
+            const ABFieldPlaceholder = application.viewNew(values, parent);
             // ABFieldPlaceholder.formatTitle();
             // ABFieldPlaceholder.text = "ABFieldPlaceholder";
 
@@ -452,11 +448,7 @@ module.exports = class ABField extends ABFieldCore {
             values.settings.objectId = this.object.id;
             values.settings.fieldId = this.id;
 
-            const ABFieldPlaceholder = application.viewNew(
-               values,
-               application,
-               parent
-            ); // ABViewManager.newView(values, application, parent);
+            const ABFieldPlaceholder = application.viewNew(values, parent);
 
             return ABFieldPlaceholder;
          },

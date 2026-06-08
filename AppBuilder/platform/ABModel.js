@@ -102,6 +102,20 @@ module.exports = class ABModel extends ABModelCore {
             let lengthPacked = JSON.stringify(data).length;
             data = this.csvUnpack(data);
 
+            // Fix TypeError: Converting circular structure to JSON
+            const getCircularReplacer = () => {
+               const seen = new WeakSet();
+               return (key, value) => {
+                  if (typeof value === "object" && value !== null) {
+                     if (seen.has(value)) {
+                        return;
+                     }
+                     seen.add(value);
+                  }
+                  return value;
+               };
+            };
+
             // JOHNNY: getting "RangeError: Invalid string length"
             // when data.data is too large. So we are just going
             // to .stringify() the rows individually and count the
@@ -110,10 +124,16 @@ module.exports = class ABModel extends ABModelCore {
             let lengthUnpacked = 0;
             if (Array.isArray(data.data)) {
                for (var d = 0; d < data.data.length; d++) {
-                  lengthUnpacked += JSON.stringify(data.data[d]).length;
+                  lengthUnpacked += JSON.stringify(
+                     data.data[d],
+                     getCircularReplacer()
+                  ).length;
                }
             } else {
-               lengthUnpacked += JSON.stringify(data.data).length;
+               lengthUnpacked += JSON.stringify(
+                  data.data,
+                  getCircularReplacer()
+               ).length;
             }
 
             Object.keys(data)
@@ -172,32 +192,6 @@ module.exports = class ABModel extends ABModelCore {
    ///
    /// Instance Methods
    ///
-
-   // Prepare multilingual fields to be untranslated
-   // Before untranslating we need to ensure that values.translations is set.
-   prepareMultilingualData(values) {
-      // if this object has some multilingual fields, translate the data:
-      var mlFields = this.object.multilingualFields();
-      // if mlFields are inside of the values saved we want to translate otherwise do not because it will reset the translation field and you may loose unchanged translations
-      var shouldTranslate = false;
-      if (mlFields.length) {
-         mlFields.forEach(function (field) {
-            if (values[field] != null) {
-               shouldTranslate = true;
-            }
-         });
-      }
-      if (shouldTranslate) {
-         if (
-            values.translations == null ||
-            typeof values.translations == "undefined" ||
-            values.translations == ""
-         ) {
-            values.translations = [];
-         }
-         this.object.unTranslate(values, values, mlFields);
-      }
-   }
 
    request(method, params) {
       return this.AB.Network[method](params);

@@ -280,7 +280,7 @@ module.exports = class ABViewFormComponent extends ABViewComponent {
 
       fieldValidations.forEach((f) => {
          // init each ui to have the properties (app and fields) of the object we are editing
-         f.filter.applicationLoad(dc.datasource.application);
+         f.filter.applicationLoad?.(dc.datasource.application); // depreciated.
          f.filter.fieldsLoad(dc.datasource.fields());
          // now we can set the value because the fields are properly initialized
          f.filter.setValue(f.validationRules);
@@ -291,11 +291,14 @@ module.exports = class ABViewFormComponent extends ABViewComponent {
             complexValidations[f.columnName] = [];
 
          // now we can push the rules into the hash
-         complexValidations[f.columnName].push({
-            filters: $$(f.view).getFilterHelper(),
-            // values: $$(ids.form).getValues(),
-            invalidMessage: f.invalidMessage,
-         });
+         // what happens if $$(f.view) isn't present?
+         if ($$(f.view)) {
+            complexValidations[f.columnName].push({
+               filters: $$(f.view).getFilterHelper(),
+               // values: $$(ids.form).getValues(),
+               invalidMessage: f.invalidMessage,
+            });
+         }
       });
 
       const ids = this.ids;
@@ -307,14 +310,17 @@ module.exports = class ABViewFormComponent extends ABViewComponent {
             name: key,
          });
 
+         if (!formField) return;
+
          // store the rules in a data param to be used later
          formField.$view.complexValidations = complexValidations[key];
          // define validation rules
          formField.define("validate", function (nval, oval, field) {
             // get field now that we are validating
-            const fieldValidating = $$(ids.form).queryView({
+            const fieldValidating = $$(ids.form)?.queryView({
                name: field,
             });
+            if (!fieldValidating) return true;
 
             // default valid is true
             let isValid = true;

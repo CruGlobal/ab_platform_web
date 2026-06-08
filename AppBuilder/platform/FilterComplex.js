@@ -230,6 +230,9 @@ module.exports = class FilterComplex extends FilterComplexCore {
             containsCurrentUserCondition: L("contains current user"),
             notContainsCurrentUserCondition: L("does not contain current user"),
 
+            isCurrentUserEmailCondition: L("is current user's email"),
+            isNotCurrentUserEmailCondition: L("is not current user's email"),
+
             contextDefaultOption: L("choose option"),
             equalsProcessValue: L("equals process value"),
             notEqualsProcessValueCondition: L("not equals process value"),
@@ -375,6 +378,8 @@ module.exports = class FilterComplex extends FilterComplexCore {
                case "is_not_current_user":
                case "contain_current_user":
                case "not_contain_current_user":
+               case "is_current_email":
+               case "is_not_current_email":
                case "same_as_user":
                case "not_same_as_user":
                case "less_current":

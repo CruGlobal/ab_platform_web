@@ -36,7 +36,9 @@ const webixLoading = import(
 
 // __AB_preload should be created by our /config/preload script that gets
 // loaded on the initial page load.
-window.__AB_preload.then(() => {
+Promise.all([window.__AB_preload, window.__AB_socketReady]).then(() => {
+   delete window.__AB_preload_resolve;
+   delete window.__AB_socketReady_resolve;
    Bootstrap.init(webixLoading).catch((err) => {
       // This is a known error that has already been handled.
       if (err.code == "ENODEFS") return;

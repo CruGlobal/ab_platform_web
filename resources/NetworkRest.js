@@ -274,7 +274,7 @@ class NetworkRest extends EventEmitter {
                      params._retry++;
 
                      // retry the attempt:
-                     this._request(params)
+                     this._request(params, jobResponse)
                         .then((data) => {
                            // console.log('--- timeout.then():',data);
                            this.AB.warn(
