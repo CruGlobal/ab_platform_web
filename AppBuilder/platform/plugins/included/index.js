@@ -1,3 +1,4 @@
+import viewDocxBuilder from "./view_docxBuilder/FNAbviewdocxbuilder.js";
 import viewGrid from "./view_grid/FNAbviewgrid.js";
 import viewCarousel from "./view_carousel/FNAbviewcarousel.js";
 import viewChart from "./view_chart/FNAbviewchart.js";
@@ -38,7 +39,8 @@ const AllPlugins = [
    viewTab,
    viewText,
    viewDataview,
-   viewGrid
+   viewGrid,
+   viewDocxBuilder
 ];
 
 export default {
