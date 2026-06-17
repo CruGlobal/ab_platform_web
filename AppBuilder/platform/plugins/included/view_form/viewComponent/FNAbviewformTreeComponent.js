@@ -106,14 +106,16 @@ export default function FNAbviewformTreeComponent({ ABViewFormItemComponent }) {
                   } else if (cleanVals.indexOf("[") === 0) {
                      try {
                         cleanVals = JSON.parse(cleanVals);
-                      } catch (e) {
-                        cleanVals = cleanVals.split(",").filter((v) => v !== "");
+                     } catch (e) {
+                        cleanVals = cleanVals
+                           .split(",")
+                           .filter((v) => v !== "");
                      }
                   } else {
                      cleanVals = cleanVals.split(",").filter((v) => v !== "");
                   }
                }
-               
+
                if (cleanVals == null) {
                   cleanVals = "";
                } else if (cleanVals !== "" && !Array.isArray(cleanVals)) {
@@ -123,7 +125,10 @@ export default function FNAbviewformTreeComponent({ ABViewFormItemComponent }) {
                this._value = cleanVals;
                if (typeof $formItem.refresh === "function") {
                   $formItem.refresh();
-               } else if (typeof $formItem.getBody === "function" && typeof $formItem.getBody().refresh === "function") {
+               } else if (
+                  typeof $formItem.getBody === "function" &&
+                  typeof $formItem.getBody().refresh === "function"
+               ) {
                   $formItem.getBody().refresh();
                }
             };
