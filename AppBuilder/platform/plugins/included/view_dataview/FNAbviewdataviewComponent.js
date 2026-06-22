@@ -1,7 +1,7 @@
 import FNABViewDetailComponent from "../view_detail/FNAbviewdetailComponent.js";
 
 export default function FNAbviewdataviewComponent({
-   /*AB,*/
+   AB,
    ABViewComponentPlugin,
    ABViewContainerComponent,
    ABViewPropertyLinkPage,
@@ -138,6 +138,7 @@ export default function FNAbviewdataviewComponent({
 
          this.__throttleRefreshWarning = setTimeout(() => {
             $$(this.ids.reload)?.show();
+            delete this.__throttleRefreshWarning;
          }, 200);
       }
 

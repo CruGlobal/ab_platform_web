@@ -96,6 +96,7 @@ export default function FNAbviewform(API) {
    FormAPI.ABViewFormBase = ABViewFormBase;
 
    const ABAbviewformComponent = FNAbviewformComponent({
+      AB,
       ABViewComponentPlugin,
       ABViewFormButton,
       ABViewFormCheckbox,
@@ -196,7 +197,7 @@ export default function FNAbviewform(API) {
             const field = f.field();
             if (field) {
                const getValue =
-                  vComponent.getValue ?? vComponent.logic.getValue;
+                  vComponent?.getValue ?? vComponent?.logic?.getValue;
                if (getValue)
                   formVals[field.columnName] = getValue.call(
                      vComponent,

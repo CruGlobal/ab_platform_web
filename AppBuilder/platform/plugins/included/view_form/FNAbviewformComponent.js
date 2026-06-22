@@ -1,5 +1,5 @@
 export default function FNAbviewformComponent({
-   /*AB,*/
+   AB,
    ABViewComponentPlugin,
    ABViewFormButton,
    ABViewFormCheckbox,
@@ -25,7 +25,7 @@ export default function FNAbviewformComponent({
       constructor(baseView, idBase, ids) {
          super(
             baseView,
-            idBase || `ABViewForm_${baseView.id}`,
+            idBase ?? `ABViewForm_${baseView.id}`,
             Object.assign(
                {
                   form: "",
