@@ -1,3 +1,4 @@
+import viewForm from "./view_form/FNAbviewform.js";
 import viewDocxBuilder from "./view_docxBuilder/FNAbviewdocxbuilder.js";
 import viewGrid from "./view_grid/FNAbviewgrid.js";
 import viewCarousel from "./view_carousel/FNAbviewcarousel.js";
@@ -38,7 +39,7 @@ const AllPlugins = [
    viewPivot,
    viewTab,
    viewText,
-   viewDataview,
+   viewForm,
    viewGrid,
    viewDocxBuilder
 ];

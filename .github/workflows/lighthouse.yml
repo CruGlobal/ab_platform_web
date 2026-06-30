@@ -83,7 +83,12 @@ jobs:
                require(`./ab_platform_web/.lighthouseci/${process.env.REPORT_B}`),
                require(`./ab_platform_web/.lighthouseci/${process.env.REPORT_C}`),
             ];
-            const links = require("./ab_platform_web/.lighthouseci/links.json");
+            let links = {};
+            try {
+               links = require("./ab_platform_web/.lighthouseci/links.json");
+            } catch (e) {
+               console.log("Warning: links.json not found. Upload might have failed or been skipped.");
+            }
             const getColor = (score) => score - 49 <= 0 ? "FF3333" : score - 89 <= 0 ? "FFAA33": "00CC66";
             const average = (vals, multiply = 1) => Math.round(vals.reduce((a,b) => a + b) / vals.length * multiply);
             const extractDetails = (key) => {
@@ -116,7 +121,8 @@ jobs:
             const speed = extractDetails("speed-index");
             core.exportVariable("SPEED", `${Math.round(speed.score/100)/10}%20s`);
             core.exportVariable("SPEED_COLOR", speed.color);
-            core.exportVariable("LINK", links[Object.keys(links)[0]]);
+            const linkUrl = Object.keys(links).length > 0 ? links[Object.keys(links)[0]] : "";
+            core.exportVariable("LINK", linkUrl);
 
       # NejcZdovc/comment-pr@v2 needs a checkout to the base path
       - name: Fix for NejcZdovc/comment-pr

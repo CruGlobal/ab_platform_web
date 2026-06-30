@@ -28,9 +28,36 @@ module.exports = class ABViewDetailTreeComponent extends (
 
    setValue(val) {
       // convert value to array
-      const vals = [];
+      let vals = [];
 
-      if (val && !Array.isArray(val)) vals.push(val);
+      if (Array.isArray(val)) {
+         vals = val;
+      } else if (val) {
+         // if it is the initial html string, then just set it and return
+         if (typeof val == "string" && val.indexOf(this.className) > -1) {
+            super.setValue(val);
+            return;
+         }
+
+         try {
+            const parsed = JSON.parse(val);
+
+            if (Array.isArray(parsed)) {
+               vals = parsed;
+            } else {
+               vals.push(parsed);
+            }
+         } catch (e) {
+            if (typeof val == "string")
+               vals = val.split(",").filter((v) => v !== "");
+            else vals.push(val);
+         }
+
+         // Normalize all entries to IDs
+         vals = vals.map((v) =>
+            v && typeof v === "object" && v.id ? v.id : v
+         );
+      }
 
       setTimeout(() => {
          // get tree dom
@@ -41,27 +68,25 @@ module.exports = class ABViewDetailTreeComponent extends (
          const field = this.view.field();
          const branches = [];
 
-         if (typeof field.settings.options.data === "undefined")
-            field.settings.options = new this.AB.Webix.TreeCollection({
-               data: field.settings.options,
-            });
+         let selectOptions = this.AB.cloneDeep(field.settings.options);
 
-         field.settings.options.data.each(function (obj) {
-            if (vals.indexOf(obj.id) !== -1) {
+         selectOptions = new this.AB.Webix.TreeCollection({
+            data: selectOptions,
+         });
+
+         selectOptions.data.each(function (obj) {
+            if (vals.some((v) => v == obj.id)) {
                let html = "";
                let rootid = obj.id;
 
-               while (this.getParentId(rootid)) {
-                  field.settings.options.data.each(function (par) {
-                     if (
-                        field.settings.options.data.getParentId(rootid) ===
-                        par.id
-                     ) {
+               while (selectOptions.data.getParentId(rootid)) {
+                  selectOptions.data.each(function (par) {
+                     if (selectOptions.data.getParentId(rootid) === par.id) {
                         html = `${par.text}: ${html}`;
                      }
                   });
 
-                  rootid = this.getParentId(rootid);
+                  rootid = selectOptions.data.getParentId(rootid);
                }
 
                html += obj.text;

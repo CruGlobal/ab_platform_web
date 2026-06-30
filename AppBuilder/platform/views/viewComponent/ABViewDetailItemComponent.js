@@ -119,7 +119,8 @@ module.exports = class ABViewDetailItemComponent extends ABViewComponent {
       switch (field?.key) {
          case "string":
          case "LongText": {
-            const strVal = val
+            const strVal = (val || "")
+               .toString()
                // Sanitize all of HTML tags
                .replace(/[<]/gm, "&lt;")
                // Allow safe HTML tags
@@ -129,6 +130,16 @@ module.exports = class ABViewDetailItemComponent extends ABViewComponent {
                );
 
             $detailItem.setValues({ display: strVal });
+            break;
+         }
+         case "json": {
+            let jsonVal = val;
+
+            if (typeof val == "object") {
+               jsonVal = JSON.stringify(val, null, 2);
+            }
+
+            $detailItem.setValues({ display: jsonVal });
             break;
          }
          default:

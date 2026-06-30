@@ -88,6 +88,8 @@ module.exports = class ABViewContainerComponent extends ABViewComponent {
       const defaultSettings = this.view.constructor.defaultValues();
 
       views.forEach((v) => {
+         if (v === this.view) return;
+
          // let component = v.component(/* App, idPrefix */);
          // NOTE: PONG - Just temporary to be compatible old & new versions
          let component;

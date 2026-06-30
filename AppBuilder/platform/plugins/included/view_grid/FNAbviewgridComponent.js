@@ -236,6 +236,10 @@ export default function FNAbviewgridComponent({
                   if (self.skippableColumns.indexOf(data.column) != -1) {
                      return false;
                   } else if (settings.isEditable) {
+                     if (settings.detailsPage || settings.editPage) {
+                        return true;
+                     }
+
                      const currObject = self.datacollection.datasource;
                      const selectField = currObject.fields(
                         (f) => f.columnName === data.column
@@ -244,9 +248,9 @@ export default function FNAbviewgridComponent({
                      if (selectField == null) return true;
 
                      const cellNode = this.getItemNode({
-                           row: data.row,
-                           column: data.column,
-                        }),
+                        row: data.row,
+                        column: data.column,
+                     }),
                         rowData = this.getItem(data.row);
 
                      return selectField.customEdit(rowData, null, cellNode);
@@ -260,6 +264,9 @@ export default function FNAbviewgridComponent({
                   //        indicates whether the previous selection state should
                   //        be saved. (is multiselect and they are holding SHIFT)
                   if (this.settings.isEditable) {
+                     if (this.settings.detailsPage || this.settings.editPage) {
+                        return;
+                     }
                      this.onAfterSelect(data, preserve);
                   }
                },
@@ -321,7 +328,7 @@ export default function FNAbviewgridComponent({
                      oldValue != "" &&
                      // If options does not load completely, then Webix returns state.value as ['', '', '']
                      newValue.filter((val) => val != null && val != "").length <
-                        1 &&
+                     1 &&
                      // Check if no data load to the option
                      editor.getPopup?.().getList?.().data?.find({}).length < 1
                   ) {
@@ -1419,8 +1426,8 @@ export default function FNAbviewgridComponent({
                   title: this.label("Limit max length"),
                   text: this.label(
                      "You can enter a maximum of " +
-                        f.settings.maxLength +
-                        " characters"
+                     f.settings.maxLength +
+                     " characters"
                   ),
                });
                $DataTable.addCellCss(
