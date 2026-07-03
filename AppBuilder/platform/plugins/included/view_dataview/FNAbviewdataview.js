@@ -8,7 +8,6 @@ export default function FNAbviewdataview(API) {
    const {
       AB,
       ABViewComponentPlugin,
-      ABViewContainer,
       ABViewContainerComponent,
       ABViewPropertyLinkPage,
    } = API;
