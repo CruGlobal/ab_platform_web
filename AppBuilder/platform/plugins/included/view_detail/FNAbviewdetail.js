@@ -1,7 +1,6 @@
 import * as dComponents from "./DetailComponents.js";
 import FNAbviewdetailComponent from "./viewComponent/FNAbviewdetailComponent.js";
 import FNAbviewdetailCore from "./core/ABViewDetailCore.js";
-import FNAbviewdetailItemCore from "./core/ABViewDetailItemCore.js";
 
 export default function FNAbviewdetail(API) {
    const {
