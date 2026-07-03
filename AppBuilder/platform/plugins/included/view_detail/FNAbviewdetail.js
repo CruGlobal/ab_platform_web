@@ -1,86 +1,55 @@
-import FNAbviewdetailComponent from "./FNAbviewdetailComponent.js";
+import * as dComponents from "./DetailComponents.js";
+import FNAbviewdetailComponent from "./viewComponent/FNAbviewdetailComponent.js";
+import FNAbviewdetailCore from "./core/ABViewDetailCore.js";
+import FNAbviewdetailItemCore from "./core/ABViewDetailItemCore.js";
 
-// Detail view plugin: replaces the original ABViewDetail / ABViewDetailCore.
-// All logic from both Core and platform is contained in this file.
-export default function FNAbviewdetail({
-   ABViewContainer,
-   ABViewContainerComponent,
-}) {
-   const ABViewDetailComponent = FNAbviewdetailComponent({
+export default function FNAbviewdetail(API) {
+   const {
+      ABViewComponentPlugin,
+      ABViewPlugin,
+      ABViewWidgetPlugin,
+      ABViewContainer,
       ABViewContainerComponent,
-   });
+      ABViewPropertyAddPage,
+      AB,
+   } = API;
 
-   const ABViewDetailDefaults = {
-      key: "detail",
-      icon: "file-text-o",
-      labelKey: "Detail(plugin)",
+   let DetailAPI = {
+      AB,
+      ABViewComponentPlugin,
+      ABViewPlugin,
+      ABViewPropertyAddPage,
+      ABViewWidget: ABViewWidgetPlugin,
    };
 
-   const ABViewDetailPropertyComponentDefaults = {
-      dataviewID: null,
-      showLabel: true,
-      labelPosition: "left",
-      labelWidth: 120,
-      height: 0,
-   };
+   // 1. Initialize Base Item
+   const { FNAbviewdetailItem, ...otherDComponents } = dComponents;
 
-   return class ABViewDetailPlugin extends ABViewContainer {
-      /**
-       * @param {obj} values  key=>value hash of ABView values
-       * @param {ABApplication} application the application object this view is under
-       * @param {ABView} parent the ABView this view is a child of. (can be null)
-       */
-      constructor(values, application, parent, defaultValues) {
-         super(
-            values,
-            application,
-            parent,
-            defaultValues ?? ABViewDetailDefaults
-         );
-      }
+   DetailAPI.ABViewDetailItem = FNAbviewdetailItem(DetailAPI);
 
-      static getPluginType() {
-         return "view";
-      }
+   // Store ABViewDetailItem for 'instanceof' checks in other plugins
+   if (AB && AB.Class) {
+      AB.Class.ABViewDetailItem = DetailAPI.ABViewDetailItem;
+   }
 
+   DetailAPI.ABViewDetailItemComponent =
+      DetailAPI.ABViewDetailItem.ABViewDetailItemComponent;
+   // 2. Initialize Custom/Sub classes
+   const views = Object.values(otherDComponents).map((FNv) => FNv(DetailAPI));
+
+   // 3. Main Detail View Component & Class
+   const ABViewDetailComponent = FNAbviewdetailComponent(
+      ABViewContainerComponent
+   );
+   const ABViewDetailCore = FNAbviewdetailCore(ABViewContainer);
+
+   const ABViewDetail = class ABViewDetail extends ABViewDetailCore {
       static getPluginKey() {
          return this.common().key;
       }
 
-      static common() {
-         return ABViewDetailDefaults;
-      }
-
-      static defaultValues() {
-         return ABViewDetailPropertyComponentDefaults;
-      }
-
-      /**
-       * @method fromValues()
-       * Initialize this object with the given set of values.
-       * @param {obj} values
-       */
-      fromValues(values) {
-         super.fromValues(values);
-
-         this.settings.labelPosition =
-            this.settings.labelPosition ||
-            ABViewDetailPropertyComponentDefaults.labelPosition;
-
-         this.settings.showLabel = JSON.parse(
-            this.settings.showLabel != null
-               ? this.settings.showLabel
-               : ABViewDetailPropertyComponentDefaults.showLabel
-         );
-
-         this.settings.labelWidth = parseInt(
-            this.settings.labelWidth ||
-               ABViewDetailPropertyComponentDefaults.labelWidth
-         );
-         this.settings.height = parseInt(
-            this.settings.height ??
-               ABViewDetailPropertyComponentDefaults.height
-         );
+      static getPluginType() {
+         return "view";
       }
 
       /**
@@ -107,7 +76,7 @@ export default function FNAbviewdetail({
          newView.settings.fieldId = field.id;
          newView.settings.labelWidth =
             this.settings.labelWidth ||
-            ABViewDetailPropertyComponentDefaults.labelWidth;
+            this.constructor.defaultValues().labelWidth;
          newView.settings.alias = field.alias;
          newView.position.y = yPosition;
 
@@ -135,4 +104,8 @@ export default function FNAbviewdetail({
          }
       }
    };
+
+   views.push(ABViewDetail);
+
+   return views;
 }
