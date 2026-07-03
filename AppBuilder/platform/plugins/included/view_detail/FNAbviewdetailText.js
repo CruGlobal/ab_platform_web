@@ -20,6 +20,10 @@ export default function FNAbviewdetailText({
          return "view";
       }
 
+      static get Component() {
+         return ABViewDetailTextComponent;
+      }
+
       component() {
          return new ABViewDetailTextComponent(this);
       }

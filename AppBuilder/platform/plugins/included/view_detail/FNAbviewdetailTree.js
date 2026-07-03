@@ -20,6 +20,10 @@ export default function FNAbviewdetailTree({
          return "view";
       }
 
+      static get Component() {
+         return ABViewDetailTreeComponent;
+      }
+
       component() {
          return new ABViewDetailTreeComponent(this);
       }

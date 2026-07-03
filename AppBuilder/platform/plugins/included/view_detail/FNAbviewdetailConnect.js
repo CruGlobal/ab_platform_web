@@ -27,6 +27,10 @@ export default function FNAbviewdetailConnect({
          this.addPageTool.fromSettings(this.settings);
       }
 
+      static get Component() {
+         return ABViewDetailConnectComponent;
+      }
+
       component() {
          return new ABViewDetailConnectComponent(this);
       }

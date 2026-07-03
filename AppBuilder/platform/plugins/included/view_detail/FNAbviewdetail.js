@@ -88,6 +88,10 @@ export default function FNAbviewdetail(API) {
        * Return a UI component based upon this view.
        * @return {obj} UI component
        */
+      static get Component() {
+         return ABViewDetailComponent;
+      }
+
       component() {
          return new ABViewDetailComponent(this);
       }

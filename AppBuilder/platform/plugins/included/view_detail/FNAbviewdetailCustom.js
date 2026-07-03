@@ -21,6 +21,10 @@ export default function FNAbviewdetailCustom({
          return "view";
       }
 
+      static get Component() {
+         return ABViewDetailCustomComponent;
+      }
+
       component() {
          return new ABViewDetailCustomComponent(this);
       }

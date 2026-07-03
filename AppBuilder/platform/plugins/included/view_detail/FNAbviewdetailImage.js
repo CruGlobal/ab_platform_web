@@ -21,6 +21,10 @@ export default function FNAbviewdetailImage({
          return "view";
       }
 
+      static get Component() {
+         return ABViewDetailImageComponent;
+      }
+
       component() {
          return new ABViewDetailImageComponent(this);
       }

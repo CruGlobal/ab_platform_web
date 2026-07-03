@@ -1,10 +1,10 @@
 import assert from "assert";
 import ABFactory from "../../../../../AppBuilder/ABFactory";
-import ABViewDetailText from "../../../../../AppBuilder/platform/views/ABViewDetailText";
-import ABViewDetailTextComponent from "../../../../../AppBuilder/platform/views/viewComponent/ABViewDetailTextComponent";
+import { getDetailClasses } from "../viewHelper";
 
 function getTarget() {
    const AB = new ABFactory();
+   const { ABViewDetailText, ABViewDetailTextComponent } = getDetailClasses(AB);
    const application = AB.applicationNew({});
    const detailTextView = new ABViewDetailText({}, application);
    return new ABViewDetailTextComponent(detailTextView);

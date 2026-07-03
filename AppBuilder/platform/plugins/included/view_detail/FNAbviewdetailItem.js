@@ -11,6 +11,10 @@ export default function FNAbviewdetailItem({
    );
 
    const ABViewDetailItem = class ABViewDetailItem extends ABViewDetailItemCore {
+      static get Component() {
+         return ABViewDetailItemComponent;
+      }
+
       component() {
          return new ABViewDetailItemComponent(this);
       }

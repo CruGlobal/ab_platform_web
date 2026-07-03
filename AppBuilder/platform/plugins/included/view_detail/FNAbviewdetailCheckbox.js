@@ -21,6 +21,10 @@ export default function FNAbviewdetailCheckbox({
          return "view";
       }
 
+      static get Component() {
+         return ABViewDetailCheckboxComponent;
+      }
+
       component() {
          return new ABViewDetailCheckboxComponent(this);
       }
