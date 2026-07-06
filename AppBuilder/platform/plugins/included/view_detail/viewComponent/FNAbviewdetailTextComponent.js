@@ -18,7 +18,7 @@ export default function (ABViewDetailItemComponent) {
                      this.view.parent.id
                   }`;
 
-                  $$(this.ids.component)?.$view.setAttribute("data-cy", dataCy);
+                  $$(this.ids.detailItem)?.$view.setAttribute("data-cy", dataCy);
                },
             },
          };

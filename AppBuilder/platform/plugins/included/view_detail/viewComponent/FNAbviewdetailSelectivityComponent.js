@@ -46,7 +46,7 @@ export default function (ABViewDetailItemComponent) {
       }
 
       getDomSelectivity() {
-         const elem = $$(this.ids.component);
+         const elem = $$(this.ids.detailItem);
 
          if (!elem) return;
 
