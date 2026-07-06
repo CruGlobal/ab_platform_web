@@ -11,14 +11,14 @@ export default function (ABViewDetailItemComponent) {
             on: {
                //Add data-cy attribute for Cypress Testing
                onAfterRender: () => {
-                  const dataCy = `detail text ${field?.columnName} ${
-                     field?.id
-                  } ${
-                     this.view.parentDetailComponent()?.id ||
+                  const dataCy = `detail text ${field?.columnName} ${field?.id
+                     } ${this.view.parentDetailComponent()?.id ||
                      this.view.parent.id
-                  }`;
+                     }`;
 
-                  $$(this.ids.detailItem)?.$view.setAttribute("data-cy", dataCy);
+                  setTimeout(() => {
+                     $$(this.ids.component)?.$view?.setAttribute("data-cy", dataCy);
+                  });
                },
             },
          };
