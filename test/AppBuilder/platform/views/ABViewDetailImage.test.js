@@ -1,10 +1,10 @@
 import assert from "assert";
 import ABFactory from "../../../../AppBuilder/ABFactory";
-import ABViewDetailImage from "../../../../AppBuilder/platform/views/ABViewDetailImage";
-import ABViewDetailImageComponent from "../../../../AppBuilder/platform/views/viewComponent/ABViewDetailImageComponent";
+import { getDetailClasses } from "./viewHelper";
 
 function getTarget() {
    const AB = new ABFactory();
+   const { ABViewDetailImage } = getDetailClasses(AB);
    const application = AB.applicationNew({});
    return new ABViewDetailImage({}, application);
 }
@@ -15,6 +15,6 @@ describe("ABViewDetailImage widget", function () {
 
       const result = target.component();
 
-      assert.equal(true, result instanceof ABViewDetailImageComponent);
+      assert.equal(true, result instanceof target.constructor.Component);
    });
 });

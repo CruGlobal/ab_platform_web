@@ -4,13 +4,14 @@ import FNABViewDetail from "../view_detail/FNAbviewdetail.js";
 // FNAbviewdataview Web
 // A web side import for an ABView.
 //
-export default function FNAbviewdataview({
-   AB,
-   ABViewComponentPlugin,
-   ABViewContainer,
-   ABViewContainerComponent,
-   ABViewPropertyLinkPage,
-}) {
+export default function FNAbviewdataview(API) {
+   const {
+      AB,
+      ABViewComponentPlugin,
+      ABViewContainerComponent,
+      ABViewPropertyLinkPage,
+   } = API;
+
    const ABAbviewdataviewComponent = FNAbviewdataviewComponent({
       AB,
       ABViewComponentPlugin,
@@ -32,10 +33,10 @@ export default function FNAbviewdataview({
       labelKey: "Data view(plugin)", // {string} the multilingual label key for the class label
    };
 
-   const ABViewDetail = FNABViewDetail({
-      ABViewContainer,
-      ABViewContainerComponent,
-   });
+   const detailViews = FNABViewDetail(API);
+   const ABViewDetail = Array.isArray(detailViews)
+      ? detailViews.find((v) => v.common().key === "detail")
+      : detailViews;
 
    class ABViewDataviewCore extends ABViewDetail {
       /**
