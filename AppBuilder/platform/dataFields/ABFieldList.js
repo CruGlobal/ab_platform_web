@@ -472,9 +472,10 @@ function _getSelectedOptions(field, rowData = {}) {
 
       // Pull text with current language
       if (field.settings) {
+         const resultArray = Array.isArray(result) ? result : [result];
          result = (field.settings.options || []).filter((opt) => {
             return (
-               (result || []).filter(
+               resultArray.filter(
                   (v) => opt && v && (opt.id || opt) == (v.id || v)
                ).length > 0
             );
