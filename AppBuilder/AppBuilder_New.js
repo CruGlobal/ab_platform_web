@@ -1,4 +1,4 @@
-var EventEmitter = require("events").EventEmitter;
+import {EventEmitter} from "events";
 
 var configDefaults = {
    "appbuilder-portal-autoenter": true,
@@ -97,4 +97,4 @@ class AppBuilder extends EventEmitter {
       return this._ui;
    }
 }
-module.exports = new AppBuilder();
+export default new AppBuilder();
