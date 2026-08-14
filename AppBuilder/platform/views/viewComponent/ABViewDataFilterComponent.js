@@ -1,5 +1,5 @@
 import ABViewComponent from "./ABViewComponent";
-import ABPopupSortField from "../ABViewGridPopupSortFields";
+import ABPopupSortField from "../ABViewPopupSortFields";
 import ABViewCustomFilter from "../viewProperties/ABViewPropertyFilterData";
 import _ from "lodash";
 

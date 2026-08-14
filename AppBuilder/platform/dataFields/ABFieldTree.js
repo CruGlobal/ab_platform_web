@@ -2,6 +2,9 @@ import ABFieldTreeCore from "../../core/dataFields/ABFieldTreeCore";
 
 const L = (...params) => AB.Multilingual.label(...params);
 
+/** Hex colour used for selected-item tags */
+const TAG_COLOR = "#4CAF50";
+
 export default class ABFieldTree extends ABFieldTreeCore {
    // constructor(values, object) {
    //    super(values, object);
@@ -14,7 +17,7 @@ export default class ABFieldTree extends ABFieldTreeCore {
    // isValid() {
    //    const validator = super.isValid();
 
-   //    // validator.addError('columnName', L('ab.validation.object.name.unique', 'Field columnName must be unique (#name# already used in this Application)').replace('#name#', this.name) );
+   //    // validator.addError('columnName', L('ab.validation.object.name.unique', 'Field columnName must be unique (#name# already used in this Application)').replace('#name#', this.name) );\
 
    //    return validator;
    // }
@@ -27,6 +30,74 @@ export default class ABFieldTree extends ABFieldTreeCore {
       return `${this.columnName.replace(/ /g, "_")}-${obj.id}-tree`;
    }
 
+   /**
+    * Build an array of human-readable branch label strings for the
+    * given list of selected item ids, walking up the tree collection
+    * to prepend ancestor labels.
+    *
+    * @param {webix.TreeCollection} treeCollection
+    * @param {Array<string|number>} selectedIds
+    * @returns {string[]}
+    */
+   _buildBranchLabels(treeCollection, selectedIds) {
+      const labels = [];
+
+      treeCollection.data.each(function (item) {
+         if (
+            typeof selectedIds.indexOf !== "undefined" &&
+            selectedIds.indexOf(item.id) !== -1
+         ) {
+            let labelText = "";
+            let ancestorId = item.id;
+
+            while (this.getParentId(ancestorId)) {
+               treeCollection.data.each(function (candidate) {
+                  if (
+                     treeCollection.data.getParentId(ancestorId) ===
+                     candidate.id
+                  ) {
+                     labelText = `${candidate.text}: ${labelText}`;
+                  }
+               });
+               ancestorId = this.getParentId(ancestorId);
+            }
+
+            labelText += item.text;
+            labels.push(labelText);
+         }
+      });
+
+      return labels;
+   }
+
+   /**
+    * Build the inner HTML string that renders selected-item tags.
+    *
+    * @param {string[]} labels     - Branch label strings to display
+    * @param {string}   cssClass   - Extra CSS class on the wrapper div
+    * @param {string}   [placeholder] - HTML shown when labels is empty
+    * @returns {string}
+    */
+   _renderTagsHtml(labels, cssClass, placeholder = "") {
+      const wrapperClass = `list-data-values${cssClass ? ` ${cssClass}` : ""}`;
+      let html = `<div class='${wrapperClass}'>`;
+
+      if (labels.length === 0) {
+         html += placeholder;
+      } else {
+         labels.forEach((label) => {
+            html +=
+               `<span class="selectivity-multiple-selected-item rendered" ` +
+               `style="background-color:${TAG_COLOR} !important;">` +
+               label +
+               `</span>`;
+         });
+      }
+
+      html += "</div>";
+      return html;
+   }
+
    // return the grid column header definition for this instance of ABFieldTree
    columnHeader(options) {
       options = options || {};
@@ -34,92 +105,42 @@ export default class ABFieldTree extends ABFieldTreeCore {
       const config = super.columnHeader(options);
       const field = this;
 
-      let formClass = "";
-      let placeHolder = "";
-      if (options.isForm) {
-         formClass = " form-entry";
-         placeHolder =
-            "<span style='color: #CCC; padding: 0 5px;'>" +
-            L("Select items") +
-            "</span>";
-      }
+      const isForm = options.isForm;
+      const indentWidth = options.width;
 
-      const width = options.width;
+      const emptyPlaceholder = isForm
+         ? `<span style='color: #CCC; padding: 0 5px;'>${L(
+              "Select items"
+           )}</span>`
+         : "";
 
-      config.template = (obj) => {
-         if (obj.$group) return obj[field.columnName];
+      config.template = (row) => {
+         if (row.$group) return row[field.columnName];
 
-         const branches = [];
-         let selectOptions = this.AB.cloneDeep(field.settings.options);
-         selectOptions = new webix.TreeCollection({
-            data: selectOptions,
+         const treeCollection = new webix.TreeCollection({
+            data: field.AB.cloneDeep(field.settings.options),
          });
 
-         let values = obj;
-         if (obj[field.columnName] != null) {
-            values = obj[field.columnName];
-         }
+         const selectedIds =
+            row[field.columnName] != null ? row[field.columnName] : row;
 
-         selectOptions.data.each(function (obj) {
-            if (
-               typeof values.indexOf != "undefined" &&
-               values.indexOf(obj.id) != -1
-            ) {
-               let html = "";
+         const labels = field._buildBranchLabels(treeCollection, selectedIds);
+         const tagsHtml = field._renderTagsHtml(labels, "", emptyPlaceholder);
 
-               let rootid = obj.id;
-               while (this.getParentId(rootid)) {
-                  selectOptions.data.each(function (par) {
-                     if (selectOptions.data.getParentId(rootid) == par.id) {
-                        html = par.text + ": " + html;
-                     }
-                  });
-                  rootid = this.getParentId(rootid);
-               }
-
-               html += obj.text;
-               branches.push(html);
-            }
-         });
-
-         const myHex = "#4CAF50";
-         let nodeHTML = "";
-         nodeHTML += "<div class='list-data-values'>";
-         if (branches.length == 0) {
-            nodeHTML += placeHolder;
-         } else {
-            branches.forEach(function (item) {
-               nodeHTML +=
-                  '<span class="selectivity-multiple-selected-item rendered" style="background-color:' +
-                  myHex +
-                  ' !important;">' +
-                  item +
-                  "</span>";
-            });
-         }
-         nodeHTML += "</div>";
-
-         // field.setBadge(node, App, row);
-
-         if (width) {
+         if (indentWidth) {
             return (
-               '<div style="margin-left: ' +
-               width +
-               'px;" class="list-data-values' +
-               formClass +
-               '">' +
-               nodeHTML +
-               "</div>"
-            );
-         } else {
-            return (
-               '<div class="list-data-values' +
-               formClass +
-               '">' +
-               nodeHTML +
-               "</div>"
+               `<div style="margin-left: ${indentWidth}px;" ` +
+               `class="list-data-values${isForm ? " form-entry" : ""}">` +
+               tagsHtml +
+               `</div>`
             );
          }
+
+         return (
+            `<div class="list-data-values${isForm ? " form-entry" : ""}">` +
+            tagsHtml +
+            `</div>`
+         );
       };
 
       return config;
@@ -130,78 +151,40 @@ export default class ABFieldTree extends ABFieldTreeCore {
     * perform any custom display modifications for this field.
     * @param {object} row is the {name=>value} hash of the current row of data.
     * @param {App} App the shared ui App object useful more making globally
-    *					unique id references.
+    *                  unique id references.
     * @param {HtmlDOM} node  the HTML Dom object for this field's display.
     */
    customDisplay(row, App, node, options) {
       // sanity check.
-      if (!node) {
-         return;
-      }
+      if (!node) return;
 
       options = options || {};
 
       const field = this;
 
       if (options.isForm) {
-         if (!row || row.length == 0) {
+         if (!row || row.length === 0) {
             node.innerHTML =
-               "<div class='list-data-values form-entry'><span style='color: #CCC; padding: 0 5px;'>" +
-               L("Select items") +
-               "</span></div>";
+               `<div class='list-data-values form-entry'>` +
+               `<span style='color: #CCC; padding: 0 5px;'>${L(
+                  "Select items"
+               )}</span>` +
+               `</div>`;
             return;
          }
 
-         const branches = [];
-         options = this.AB.cloneDeep(field.settings.options);
-         options = new webix.TreeCollection({
-            data: options,
+         const treeCollection = new webix.TreeCollection({
+            data: field.AB.cloneDeep(field.settings.options),
          });
 
-         let values = row;
-         if (row[field.columnName] != null) {
-            values = row[field.columnName];
-         }
+         const selectedIds =
+            row[field.columnName] != null ? row[field.columnName] : row;
 
-         options.data.each(function (obj) {
-            if (
-               typeof values.indexOf != "undefined" &&
-               values.indexOf(obj.id) != -1
-            ) {
-               let html = "";
-
-               let rootid = obj.id;
-               while (this.getParentId(rootid)) {
-                  options.data.each(function (par) {
-                     if (options.data.getParentId(rootid) == par.id) {
-                        html = par.text + ": " + html;
-                     }
-                  });
-                  rootid = this.getParentId(rootid);
-               }
-
-               html += obj.text;
-               branches.push(html);
-            }
-         });
-
-         const myHex = "#4CAF50";
-         let nodeHTML = "";
-         nodeHTML += "<div class='list-data-values form-entry'>";
-         branches.forEach(function (item) {
-            nodeHTML +=
-               '<span class="selectivity-multiple-selected-item rendered" style="background-color:' +
-               myHex +
-               ' !important;">' +
-               item +
-               "</span>";
-         });
-         nodeHTML += "</div>";
-
-         node.innerHTML = nodeHTML;
+         const labels = field._buildBranchLabels(treeCollection, selectedIds);
+         node.innerHTML = field._renderTagsHtml(labels, "form-entry");
       }
 
-      field.setBadge(node, App, row);
+      field.setBadge(node, row);
    }
 
    /*
@@ -209,200 +192,261 @@ export default class ABFieldTree extends ABFieldTreeCore {
     *
     * @param {object} row is the {name=>value} hash of the current row of data.
     * @param {App} App the shared ui App object useful more making globally
-    *					unique id references.
+    *                  unique id references.
     * @param {HtmlDOM} node  the HTML Dom object for this field's display.
     */
    customEdit(row, App, node, component) {
-      const idBase = App.unique(this.idCustomContainer(row));
+      // Normalise arguments: (row, node, component) when App is not an App instance
+      if (App && typeof App === "object" && typeof App.unique !== "function") {
+         component = node;
+         node = App;
+         App = null;
+      }
+
+      const idBase =
+         App && typeof App.unique === "function"
+            ? App.unique(this.idCustomContainer(row))
+            : this.idCustomContainer(row);
+
       const idPopup = `${idBase}-popup`;
       const idTree = `${idBase}-tree`;
-      const view = $$(node);
+
+      const gridView = $$(node);
       const field = this;
-      const parentComponent = component;
-      let values = {};
-      let firstRender = true;
+      const formComponent = component;
 
-      function getValues(field, row) {
-         let values = {};
-         if (
-            typeof field != "undefined" &&
-            typeof field.columnName != "undefined" &&
-            typeof row[field.columnName] != "undefined"
-         ) {
-            values = row[field.columnName];
+      let activeRow = row;
+
+      // ── Helpers ──────────────────────────────────────────────────────────
+
+      /**
+       * Normalise a raw column value into an array of strings.
+       * Handles: Array, JSON string, comma-separated string, scalar.
+       */
+      function normaliseToArray(raw) {
+         if (raw == null || raw === "") return [];
+         if (Array.isArray(raw)) return raw.map(String);
+         if (typeof raw === "string") {
+            try {
+               const parsed = JSON.parse(raw);
+               if (Array.isArray(parsed)) return parsed.map(String);
+               return [String(parsed)];
+            } catch {
+               return raw
+                  .split(",")
+                  .filter((v) => v !== "")
+                  .map(String);
+            }
          }
-         return values;
+         return [String(raw)];
       }
 
-      function populateTree(field, vals) {
-         values = getValues(field, vals);
+      /**
+       * Tick the checkboxes in the Webix tree that match the ids stored in
+       * `rowData`.  Must be called after the tree DOM is rendered.
+       */
+      function applyCheckedItems(rowData) {
+         const $tree = $$(idTree);
+         if (!$tree) return;
 
-         const $Tree = $$(idTree);
-         $Tree.blockEvent(); // prevents endless loop
+         const selectedIds = normaliseToArray(rowData[field.columnName]);
 
-         const options = field.AB.cloneDeep(field.settings.options);
-         $Tree.clearAll();
-         $Tree.parse(options);
-         $Tree.refresh();
-         $Tree.uncheckAll();
-         $Tree.openAll();
+         $tree.blockEvent();
+         $tree.uncheckAll();
 
-         if (values != null && values.length) {
-            values.forEach(function (id) {
-               if ($Tree.exists(id)) {
-                  $Tree.checkItem(id);
-                  const dom = $Tree.getItemNode(id);
-                  dom.classList.add("selected");
-               }
-            });
-         }
-         $Tree.unblockEvent();
+         selectedIds.forEach((id) => {
+            // Webix ids may be stored as strings or numbers — try both.
+            let resolvedId = id;
+            if (!$tree.exists(resolvedId)) resolvedId = String(id);
+            if (!$tree.exists(resolvedId) && !isNaN(id))
+               resolvedId = Number(id);
+
+            if ($tree.exists(resolvedId)) {
+               $tree.checkItem(resolvedId);
+            }
+         });
+
+         $tree.unblockEvent();
       }
+
+      /**
+       * Re-load the tree with fresh option data, open all nodes, then
+       * apply saved check-marks after Webix finishes rendering (50 ms).
+       */
+      function refreshTree(rowData) {
+         const $tree = $$(idTree);
+         if (!$tree) return;
+
+         const treeData = field.AB.cloneDeep(field.settings.options);
+         $tree.clearAll();
+         $tree.parse(treeData);
+         $tree.openAll();
+
+         setTimeout(() => applyCheckedItems(rowData), 50);
+      }
+
+      // ── Open popup ───────────────────────────────────────────────────────
 
       if ($$(idPopup)) {
-         $$(idPopup).show();
-         populateTree(this, row);
-      } else {
-         webix
-            .ui({
-               id: idPopup,
-               view: "popup",
-               width: 500,
-               height: 400,
-               on: {
-                  onShow: () => {
-                     if (firstRender == true) populateTree(this, row);
-
-                     firstRender = false;
-                  },
-               },
-               body: {
-                  id: idTree,
-                  view: "tree",
-                  css: "ab-data-tree",
-                  template: function (obj, common) {
-                     return (
-                        "<label>" +
-                        common.checkbox(obj, common) +
-                        "&nbsp;" +
-                        obj.text +
-                        "</label>"
-                     );
-                  },
-                  on: {
-                     onItemCheck: async function (id, value, event) {
-                        const dom = this.getItemNode(id);
-                        const tree = this;
-                        if (value == true) {
-                           dom.classList.add("selected");
-                        } else {
-                           dom.classList.remove("selected");
-                        }
-                        // works for the same-level children only
-                        // except root items
-                        if (this.getParentId(id)) {
-                           tree.blockEvent(); // prevents endless loop
-
-                           let rootid = id;
-                           while (this.getParentId(rootid)) {
-                              rootid = this.getParentId(rootid);
-                              if (rootid != id) tree.uncheckItem(rootid);
-                           }
-
-                           this.data.eachSubItem(rootid, function (item) {
-                              if (item.id != id) tree.uncheckItem(item.id);
-                           });
-
-                           tree.unblockEvent();
-                        } else {
-                           tree.blockEvent(); // prevents endless loop
-                           this.data.eachSubItem(id, function (obj) {
-                              if (obj.id != id) tree.uncheckItem(obj.id);
-                           });
-                           tree.unblockEvent();
-                        }
-                        const values = {};
-                        values[field.columnName] = $$(idTree).getChecked();
-
-                        if (row.id) {
-                           // pass null because it could not put empty array in REST api
-                           if (values[field.columnName].length == 0)
-                              values[field.columnName] = "";
-
-                           try {
-                              await field.object.model().update(row.id, values);
-
-                              // update the client side data object as well so other data changes won't cause this save to be reverted
-                              if (view && view.updateItem) {
-                                 view.updateItem(row.id, values);
-                              }
-                           } catch (err) {
-                              node.classList.add("webix_invalid");
-                              node.classList.add("webix_invalid_cell");
-
-                              this.AB.notify.developer(err, {
-                                 message:
-                                    "ABFieldTree:onItemClick(): Error updating our entry.",
-                                 row: row,
-                                 values: values,
-                              });
-                           }
-                        } else {
-                           const rowData = {};
-                           rowData[field.columnName] = $$(idTree).getChecked();
-
-                           field.setValue($$(parentComponent.ui.id), rowData);
-                        }
-                     },
-                  },
-               },
-            })
-            .show(node, {
-               x: -7,
-            });
+         activeRow = row;
+         $$(idPopup).show(node, { x: -7 });
+         refreshTree(activeRow);
+         return false;
       }
+
+      // ── Create popup (first open) ─────────────────────────────────────────
+
+      webix
+         .ui({
+            id: idPopup,
+            view: "popup",
+            width: 500,
+            height: 400,
+            body: {
+               id: idTree,
+               view: "tree",
+               css: "ab-data-tree",
+               template(treeItem, common) {
+                  return (
+                     "<label>" +
+                     common.checkbox(treeItem, common) +
+                     `&nbsp;${treeItem.text}` +
+                     "</label>"
+                  );
+               },
+               on: {
+                  /**
+                   * Fired when a tree checkbox is toggled.
+                   * Rules:
+                   *  - Checking a child → uncheck its ancestors (parent+child
+                   *    together would be redundant).
+                   *  - Checking a root  → uncheck all its descendants.
+                   *  - Cross-branch selections are unrestricted.
+                   */
+                  onItemCheck: async function onItemCheck(
+                     checkedId,
+                     isChecked
+                  ) {
+                     const $tree = this;
+                     const itemNode = $tree.getItemNode(checkedId);
+
+                     // Update visual "selected" highlight
+                     if (itemNode) {
+                        itemNode.classList.toggle("selected", isChecked);
+                     }
+
+                     // Enforce parent ↔ child exclusivity within the same branch
+                     $tree.blockEvent();
+
+                     if (isChecked && $tree.getParentId(checkedId)) {
+                        // Child checked → uncheck all its ancestors
+                        let parentId = $tree.getParentId(checkedId);
+                        while (parentId) {
+                           $tree.uncheckItem(parentId);
+                           parentId = $tree.getParentId(parentId);
+                        }
+                     } else if (isChecked && !$tree.getParentId(checkedId)) {
+                        // Root checked → uncheck all descendants
+                        $tree.data.eachSubItem(checkedId, (child) => {
+                           $tree.uncheckItem(child.id);
+                        });
+                     }
+
+                     $tree.unblockEvent();
+
+                     // Build payload from currently checked ids
+                     const checkedIds = ($$(idTree).getChecked() || []).map(
+                        String
+                     );
+                     const columnValue =
+                        checkedIds.length === 0 ? null : checkedIds;
+
+                     // Sync activeRow so re-opening the popup shows current state
+                     activeRow[field.columnName] = columnValue;
+
+                     if (activeRow.id) {
+                        // ── Grid / existing record ───────────────────────
+                        const payload = { [field.columnName]: columnValue };
+
+                        try {
+                           await field.object
+                              .model()
+                              .update(activeRow.id, payload);
+
+                           if (gridView && gridView.updateItem) {
+                              gridView.updateItem(activeRow.id, payload);
+                           }
+                        } catch (err) {
+                           node.classList.add(
+                              "webix_invalid",
+                              "webix_invalid_cell"
+                           );
+
+                           field.AB.notify.developer(err, {
+                              message:
+                                 "ABFieldTree:onItemCheck(): Error updating entry.",
+                              row: activeRow,
+                              payload,
+                           });
+                        }
+                     } else {
+                        // ── Form / new record ─────────────────────────────
+                        field.setValue($$(formComponent.ids.formItem), {
+                           [field.columnName]: checkedIds,
+                        });
+                     }
+                  },
+               },
+            },
+         })
+         .show(node, { x: -7 });
+
+      refreshTree(activeRow);
       return false;
    }
 
    setBadge(domNode, row) {
       const field = this;
-      domNode = domNode.querySelector(".list-data-values");
-      const innerHeight = domNode.scrollHeight;
-      const outerHeight = domNode.parentElement.clientHeight;
-      if (innerHeight - outerHeight > 5) {
-         let count = 0;
-         if (row[field.columnName] && row[field.columnName].length)
-            count = row[field.columnName].length;
-         else count = 0;
+      const listNode = domNode.querySelector(".list-data-values");
+      if (!listNode) return;
 
-         if (count > 1) {
-            const badge = domNode.querySelector(
-               ".webix_badge.selectivityBadge"
-            );
-            if (badge != null) {
-               badge.innerHTML = count;
-            } else {
-               const anchor = document.createElement("A");
-               anchor.href = "javascript:void(0);";
-               anchor.addEventListener("click", function (event) {
-                  // v2: this was just saving the new height to the
-                  // field properties. We don't do that anymore:
-                  // App.actions.onRowResizeAuto(row.id, innerHeight);
-                  event.stopPropagation();
-               });
-               const node = document.createElement("SPAN");
-               const textnode = document.createTextNode(count);
-               node.classList.add("webix_badge", "selectivityBadge");
-               node.appendChild(textnode);
-               anchor.appendChild(node);
-               domNode.appendChild(anchor);
-            }
-         }
+      const innerHeight = listNode.scrollHeight;
+      const outerHeight = listNode.parentElement.clientHeight;
+
+      if (innerHeight - outerHeight <= 5) return;
+
+      const selectedCount =
+         row[field.columnName] && row[field.columnName].length
+            ? row[field.columnName].length
+            : 0;
+
+      if (selectedCount <= 1) return;
+
+      const existingBadge = listNode.querySelector(
+         ".webix_badge.selectivityBadge"
+      );
+      if (existingBadge) {
+         existingBadge.innerHTML = selectedCount;
+         return;
       }
+
+      // Create badge anchor + span
+      const anchor = document.createElement("a");
+      anchor.href = "javascript:void(0);";
+      anchor.addEventListener("click", (event) => {
+         event.stopPropagation();
+      });
+
+      const badgeSpan = document.createElement("span");
+      badgeSpan.classList.add("webix_badge", "selectivityBadge");
+      badgeSpan.textContent = selectedCount;
+
+      anchor.appendChild(badgeSpan);
+      listNode.appendChild(anchor);
    }
 
    /*
-    * @funciton formComponent
+    * @function formComponent
     * returns a drag and droppable component that is used on the UI
     * interface builder to place form components related to this ABField.
     *
@@ -417,19 +461,18 @@ export default class ABFieldTree extends ABFieldTreeCore {
    detailComponent() {
       const detailComponentSetting = super.detailComponent();
 
-      detailComponentSetting.common = () => {
-         return {
-            key: "detailtree",
-         };
-      };
+      detailComponentSetting.common = () => ({
+         key: "detailtree",
+      });
 
       return detailComponentSetting;
    }
 
-   getValue(item, rowData) {
-      let values = {};
-      values = item.getValues();
-      return values;
+   getValue(item) {
+      if (!item) return {};
+      if (typeof item.getValues === "function") return item.getValues();
+      if (typeof item.getValue === "function") return item.getValue();
+      return {};
    }
 
    setValue(item, rowData) {
@@ -437,25 +480,24 @@ export default class ABFieldTree extends ABFieldTreeCore {
 
       const val = rowData[this.columnName] || [];
 
-      item.setValues(val);
-      // get dom
-      const dom = item.$view.querySelector(".list-data-values");
+      if (typeof item.setValues === "function") {
+         item.setValues(val);
+      } else if (typeof item.setValue === "function") {
+         item.setValue(val);
+      }
 
-      if (!dom) return false;
+      const listNode = item.$view.querySelector(".list-data-values");
+      if (!listNode) return false;
 
-      // set value to selectivity
-      this.customDisplay(val, this.App, dom, {
+      this.customDisplay(val, this.App, listNode, {
          editable: true,
          isForm: true,
       });
 
-      setTimeout(function () {
-         let height = 33;
-         if (dom.scrollHeight > 33) {
-            height = dom.scrollHeight;
-         }
+      setTimeout(() => {
+         const height = listNode.scrollHeight > 33 ? listNode.scrollHeight : 33;
          item.config.height = height + 5;
          item.resize();
       }, 200);
    }
-};
+}

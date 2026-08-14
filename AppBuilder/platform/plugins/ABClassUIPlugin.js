@@ -182,7 +182,7 @@ export default class ABClassUIPlugin extends ClassUI {
    get CurrentView() {
       return this.CurrentApplication?.views(
          (v) => v.id == this.CurrentViewID
-      )[0];
+      )?.[0];
    }
 
    /**
@@ -204,7 +204,7 @@ export default class ABClassUIPlugin extends ClassUI {
     *         icon: {string} the icon to display
     */
    datacollectionsIncluded() {
-      return this.CurrentApplication?.datacollectionsIncluded()
+      return (this.CurrentApplication?.datacollectionsIncluded() || [])
          .filter((dc) => {
             const obj = dc.datasource;
             return (

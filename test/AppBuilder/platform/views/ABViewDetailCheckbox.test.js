@@ -1,10 +1,10 @@
 import assert from "assert";
 import ABFactory from "../../../../AppBuilder/ABFactory";
-import ABViewDetailCheckbox from "../../../../AppBuilder/platform/views/ABViewDetailCheckbox";
-import ABViewDetailCheckboxComponent from "../../../../AppBuilder/platform/views/viewComponent/ABViewDetailCheckboxComponent";
+import { getDetailClasses } from "./viewHelper";
 
 function getTarget() {
    const AB = new ABFactory();
+   const { ABViewDetailCheckbox } = getDetailClasses(AB);
    const application = AB.applicationNew({});
    return new ABViewDetailCheckbox({}, application);
 }
@@ -15,6 +15,6 @@ describe("ABViewDetailCheckbox widget", function () {
 
       const result = target.component();
 
-      assert.equal(true, result instanceof ABViewDetailCheckboxComponent);
+      assert.equal(true, result instanceof target.constructor.Component);
    });
 });

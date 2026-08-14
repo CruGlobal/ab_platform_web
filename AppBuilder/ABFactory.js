@@ -6,7 +6,7 @@ import { nanoid } from "nanoid";
 import { v4 as uuidv4 } from "uuid";
 import performance from "../utils/performance";
 import FilterComplex from "./platform/FilterComplex";
-import SortPopup from "./platform/views/ABViewGridPopupSortFields";
+import SortPopup from "./platform/views/ABViewPopupSortFields";
 import Papa from "papaparse";
 
 //
@@ -32,7 +32,7 @@ import Network from "../resources/Network.js";
 import Storage from "../resources/Storage.js";
 // Storage: manages our interface for local storage
 
-import ABViewManager from "./core/ABViewManagerCore";
+import ABViewManager from "./platform/ABViewManager";
 
 import Tenant from "../resources/Tenant.js";
 // Tenant: manages the Tenant information of the current instance

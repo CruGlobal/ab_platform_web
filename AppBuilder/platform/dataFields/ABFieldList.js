@@ -421,8 +421,14 @@ export default class ABFieldList extends ABFieldListCore {
             result.push(rowData);
          }
       }
-      if (result.length) {
-         if (typeof result == "string") result = JSON.parse(result);
+      if (result && result.length) {
+         if (typeof result == "string") {
+            try {
+               result = JSON.parse(result);
+            } catch (e) {
+               console.error(`Error JSON.parsing result [${result}]: `, e);
+            }
+         }
 
          // Pull text with current language
          if (this.settings) {
@@ -456,18 +462,20 @@ function _getSelectedOptions(field, rowData = {}) {
       result = rowData[field.columnName];
 
       try {
-         if (typeof result == "string") result = JSON.parse(result);
+         if (typeof result == "string" && result !== "") result = JSON.parse(result);
+         else if (typeof result == "string" && result === "") result = [];
       } catch (e) {
-         console.error(`Error JSON.pars()ing result [${result}]: `, e);
+         console.error(`Error JSON.parsing result [${result}]: `, e);
          // just go with what is there
          result = rowData[field.columnName];
       }
 
       // Pull text with current language
       if (field.settings) {
+         const resultArray = Array.isArray(result) ? result : [result];
          result = (field.settings.options || []).filter((opt) => {
             return (
-               (result || []).filter(
+               resultArray.filter(
                   (v) => opt && v && (opt.id || opt) == (v.id || v)
                ).length > 0
             );

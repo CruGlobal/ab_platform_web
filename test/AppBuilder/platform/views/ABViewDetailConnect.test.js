@@ -1,10 +1,10 @@
 import assert from "assert";
 import ABFactory from "../../../../AppBuilder/ABFactory";
-import ABViewDetailConnect from "../../../../AppBuilder/platform/views/ABViewDetailConnect";
-import ABViewDetailConnectComponent from "../../../../AppBuilder/platform/views/viewComponent/ABViewDetailConnectComponent";
+import { getDetailClasses } from "./viewHelper";
 
 function getTarget() {
    const AB = new ABFactory();
+   const { ABViewDetailConnect } = getDetailClasses(AB);
    const application = AB.applicationNew({});
    return new ABViewDetailConnect({}, application);
 }
@@ -15,6 +15,6 @@ describe("ABViewDetailConnect widget", function () {
 
       const result = target.component();
 
-      assert.equal(true, result instanceof ABViewDetailConnectComponent);
+      assert.equal(true, result instanceof target.constructor.Component);
    });
 });

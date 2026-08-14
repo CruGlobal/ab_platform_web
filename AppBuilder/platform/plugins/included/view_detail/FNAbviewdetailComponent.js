@@ -42,13 +42,15 @@ export default function FNAbviewdetailComponent({ ABViewContainerComponent }) {
             const currData = dv.getCursor();
             if (currData) this.displayData(currData);
 
-            ["changeCursor", "cursorStale", "collectionEmpty"].forEach((key) => {
-               this.eventAdd({
-                  emitter: dv,
-                  eventName: key,
-                  listener: (...p) => this.displayData(...p),
-               });
-            });
+            ["changeCursor", "cursorStale", "collectionEmpty"].forEach(
+               (key) => {
+                  this.eventAdd({
+                     emitter: dv,
+                     eventName: key,
+                     listener: (...p) => this.displayData(...p),
+                  });
+               }
+            );
             this.eventAdd({
                emitter: dv,
                eventName: "create",
@@ -171,7 +173,7 @@ export default function FNAbviewdetailComponent({ ABViewContainerComponent }) {
                      break;
                   default:
                      val = field.format(rowData);
-                     // break;
+                  // break;
                }
             }
 

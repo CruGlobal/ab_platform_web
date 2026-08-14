@@ -1,6 +1,5 @@
 // const ABComponent = require("./ABComponent");
 import ClassUI from "../../ui/ClassUI";
-import ABViewForm from "../platform/views/ABViewForm";
 
 let L = null;
 
@@ -313,15 +312,13 @@ class RowUpdater extends ClassUI {
       this._Object = object;
 
       this._mockApp = this.AB.applicationNew({});
-      this._mockFormWidget = new ABViewForm(
-         {
-            settings: {
-               showLabel: false,
-               labelWidth: 0,
-            },
+      this._mockFormWidget = this.AB.viewNewDetatched({
+         key: "form",
+         settings: {
+            showLabel: false,
+            labelWidth: 0,
          },
-         this._mockApp // just need any ABApplication here
-      );
+      });
       this._mockFormWidget.objectLoad(object);
 
       this.setValue(null); // clear
