@@ -4,7 +4,6 @@ import _ from "lodash";
 import ABApplicationCore from "../core/ABApplicationCore.js";
 
 import ABViewPage from "./views/ABViewPage";
-import ABViewManager from "./ABViewManager";
 
 export default class ABClassApplication extends ABApplicationCore {
    constructor(attributes, AB) {
