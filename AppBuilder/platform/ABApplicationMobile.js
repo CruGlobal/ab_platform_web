@@ -4,11 +4,8 @@ import _ from "lodash";
 import ABApplicationMobileCore from "../core/ABApplicationMobileCore.js";
 
 import ABViewPageMobile from "./mobile/ABMobilePage";
-import ABViewManager from "./ABViewManager";
 
-export default class ABClassApplicationMobile extends (
-   ABApplicationMobileCore
-) {
+export default class ABClassApplicationMobile extends ABApplicationMobileCore {
    constructor(attributes, AB) {
       super(attributes, AB);
    }
@@ -42,4 +39,4 @@ export default class ABClassApplicationMobile extends (
          await this.save();
       }
    }
-};
+}
