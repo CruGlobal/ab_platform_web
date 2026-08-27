@@ -1,3 +1,2 @@
-const ABProcessTaskServiceCore = require("../../../core/process/tasks/ABProcessTaskServiceCore.js");
-
-module.exports = class ABProcessTaskService extends ABProcessTaskServiceCore {};
+import ABProcessTaskServiceCore from "../../../core/process/tasks/ABProcessTaskServiceCore.js";
+export default class ABProcessTaskService extends ABProcessTaskServiceCore {};

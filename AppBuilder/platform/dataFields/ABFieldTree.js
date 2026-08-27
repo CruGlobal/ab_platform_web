@@ -1,11 +1,11 @@
-const ABFieldTreeCore = require("../../core/dataFields/ABFieldTreeCore");
+import ABFieldTreeCore from "../../core/dataFields/ABFieldTreeCore";
 
 const L = (...params) => AB.Multilingual.label(...params);
 
 /** Hex colour used for selected-item tags */
 const TAG_COLOR = "#4CAF50";
 
-module.exports = class ABFieldTree extends ABFieldTreeCore {
+export default class ABFieldTree extends ABFieldTreeCore {
    // constructor(values, object) {
    //    super(values, object);
    // }
@@ -500,4 +500,4 @@ module.exports = class ABFieldTree extends ABFieldTreeCore {
          item.resize();
       }, 200);
    }
-};
+}

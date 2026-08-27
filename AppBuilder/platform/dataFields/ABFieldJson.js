@@ -1,6 +1,6 @@
-const ABFieldJsonCore = require("../../core/dataFields/ABFieldJsonCore");
+import ABFieldJsonCore from "../../core/dataFields/ABFieldJsonCore";
 
-module.exports = class ABFieldJson extends ABFieldJsonCore {
+export default class ABFieldJson extends ABFieldJsonCore {
    // constructor(values, object) {
    //    super(values, object);
    // }

@@ -5,11 +5,11 @@
  * Participants manage users in the system (when there are no lanes defined)
  * and provide a way to lookup a SiteUser.
  */
-var ABProcessParticipantCore = require("../../core/process/ABProcessParticipantCore");
+import ABProcessParticipantCore from "../../core/process/ABProcessParticipantCore";
 
 const L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABProcessParticipant extends ABProcessParticipantCore {
+export default class ABProcessParticipant extends ABProcessParticipantCore {
    // constructor(attributes, process, AB) {
    //    super(attributes, process, AB);
    // }

@@ -1,8 +1,8 @@
-const AccountingFPCloseCore = require("../../../core/process/tasks/ABProcessTaskServiceAccountingFPCloseCore.js");
+import AccountingFPCloseCore from "../../../core/process/tasks/ABProcessTaskServiceAccountingFPCloseCore.js";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class AccountingFPClose extends AccountingFPCloseCore {
+export default class AccountingFPClose extends AccountingFPCloseCore {
    ////
    //// Process Instance Methods
    ////

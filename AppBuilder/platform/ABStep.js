@@ -1,8 +1,8 @@
-const ABStepCore = require("../core/ABStepCore");
+import ABStepCore from "../core/ABStepCore";
 
 // let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABStep extends ABStepCore {
+export default class ABStep extends ABStepCore {
    constructor(attributes, AB) {
       super(attributes, AB);
 

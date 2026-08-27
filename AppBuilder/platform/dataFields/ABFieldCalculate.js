@@ -1,6 +1,6 @@
-const ABFieldCalculateCore = require("../../core/dataFields/ABFieldCalculateCore");
+import ABFieldCalculateCore from "../../core/dataFields/ABFieldCalculateCore";
 
-module.exports = class ABFieldCalculate extends ABFieldCalculateCore {
+export default class ABFieldCalculate extends ABFieldCalculateCore {
    constructor(values, object) {
       super(values, object);
    }

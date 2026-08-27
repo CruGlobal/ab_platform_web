@@ -1,8 +1,8 @@
-const ApiTaskCore = require("../../../core/process/tasks/ABProcessTaskServiceApiCore.js");
+import ApiTaskCore from "../../../core/process/tasks/ABProcessTaskServiceApiCore.js";
 
 // let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ApiTask extends ApiTaskCore {
+export default class ApiTask extends ApiTaskCore {
    static defaults() {
       return { key: "Api" };
    }

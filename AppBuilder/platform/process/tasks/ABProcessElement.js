@@ -1,6 +1,6 @@
-const ABProcessElementCore = require("../../../core/process/tasks/ABProcessElementCore.js");
+import ABProcessElementCore from "../../../core/process/tasks/ABProcessElementCore.js";
 
-module.exports = class ABProcessElement extends ABProcessElementCore {
+export default class ABProcessElement extends ABProcessElementCore {
    // constructor(attributes, process, AB, defaultValues) {
    //    super(attributes, process, AB, defaultValues);
 

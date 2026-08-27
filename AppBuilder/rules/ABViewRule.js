@@ -20,11 +20,11 @@
 // A Rule needs to save it's current state to an objects settings, and to
 // initialize itself from those settings.
 //
-const ObjectQueryBuilder = require("./ABViewQueryBuilderObjectFieldConditions");
+import ObjectQueryBuilder from "./ABViewQueryBuilderObjectFieldConditions";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABViewRule {
+export default class ABViewRule {
    /**
     * @param {object} App
     *      The shared App object that is created in OP.Component

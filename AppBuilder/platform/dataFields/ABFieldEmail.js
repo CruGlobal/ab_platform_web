@@ -1,6 +1,6 @@
-const ABFieldEmailCore = require("../../core/dataFields/ABFieldEmailCore");
+import ABFieldEmailCore from "../../core/dataFields/ABFieldEmailCore";
 
-module.exports = class ABFieldEmail extends ABFieldEmailCore {
+export default class ABFieldEmail extends ABFieldEmailCore {
    // constructor(values, object) {
    //    super(values, object);
    // }

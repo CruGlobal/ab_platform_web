@@ -1,6 +1,6 @@
-const ABFieldLongTextCore = require("../../core/dataFields/ABFieldLongTextCore");
+import ABFieldLongTextCore from "../../core/dataFields/ABFieldLongTextCore";
 
-module.exports = class ABFieldLongText extends ABFieldLongTextCore {
+export default class ABFieldLongText extends ABFieldLongTextCore {
    constructor(values, object) {
       super(values, object);
 

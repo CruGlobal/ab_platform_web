@@ -1,7 +1,7 @@
-const ABViewManagerCore = require("../core/ABViewManagerCore");
-const ClassManager = require("./ABClassManager");
+import ABViewManagerCore from "../core/ABViewManagerCore";
+import ClassManager from "./ABClassManager";
 
-module.exports = class ABViewManager extends ABViewManagerCore {
+export default class ABViewManager extends ABViewManagerCore {
    /**
     * @function newView
     * return an instance of an ABView based upon the values.key value.

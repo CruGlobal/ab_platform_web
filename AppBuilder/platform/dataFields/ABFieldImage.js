@@ -1,8 +1,8 @@
-const ABFieldImageCore = require("../../core/dataFields/ABFieldImageCore");
+import ABFieldImageCore from "../../core/dataFields/ABFieldImageCore";
 
 const L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABFieldImage extends ABFieldImageCore {
+export default class ABFieldImage extends ABFieldImageCore {
    constructor(values, object) {
       super(values, object);
    }

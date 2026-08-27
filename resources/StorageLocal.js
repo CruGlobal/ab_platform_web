@@ -9,7 +9,7 @@
  *
  */
 
-var EventEmitter = require("events").EventEmitter;
+import { EventEmitter } from "events";
 
 class StorageLocal extends EventEmitter {
    constructor() {

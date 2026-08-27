@@ -3,7 +3,7 @@
 // An action that allows you to update fields on an object.
 //
 //
-const ABViewRuleAction = require("../ABViewRuleAction");
+import ABViewRuleAction from "../ABViewRuleAction";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
@@ -15,7 +15,7 @@ var ABViewRuleActionObjectUpdaterDefaults = {
    },
 };
 
-module.exports = class ABViewRuleActionObjectUpdater extends ABViewRuleAction {
+export default class ABViewRuleActionObjectUpdater extends ABViewRuleAction {
    /**
     * @param {object} App
     *      The shared App object that is created in OP.Component

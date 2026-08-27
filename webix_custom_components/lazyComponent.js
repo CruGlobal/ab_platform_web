@@ -2,8 +2,8 @@
  * Base class for any custom webix component that we want to initalize lazily,
  * usually to reduce the dependency size required on load.
  */
-var ABEmitter = require("../AppBuilder/platform/ABEmitter.js");
-module.exports = class ABLazyCustomComponent extends ABEmitter {
+import ABEmitter from "../AppBuilder/platform/ABEmitter.js";
+export default class ABLazyCustomComponent extends ABEmitter {
    constructor({ AB }) {
       super();
       this.initialized = false;

@@ -1,5 +1,5 @@
-const ABProcessTaskUserFormCore = require("../../../core/process/tasks/ABProcessTaskUserFormCore.js");
+import ABProcessTaskUserFormCore from "../../../core/process/tasks/ABProcessTaskUserFormCore.js";
 
-module.exports = class ABProcessTaskUserForm extends (
+export default class ABProcessTaskUserForm extends (
    ABProcessTaskUserFormCore
 ) {};

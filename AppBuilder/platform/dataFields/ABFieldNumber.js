@@ -1,11 +1,12 @@
-const ABFieldNumberCore = require("../../core/dataFields/ABFieldNumberCore");
+import ABFieldNumberCore from "../../core/dataFields/ABFieldNumberCore";
 
 let INIT_EDITOR = false;
+
 // {bool} INIT_EDITOR
 // Transition code between previous Framework and current.
 // we now need to wait until webix is declared or accessible globally.
 
-module.exports = class ABFieldNumber extends ABFieldNumberCore {
+export default class ABFieldNumber extends ABFieldNumberCore {
    constructor(values, object) {
       if (!INIT_EDITOR) {
          // NOTE: if you need a unique [edit_type] by your returned config.editor above:

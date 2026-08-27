@@ -1,8 +1,8 @@
-const ABFieldConnectCore = require("../../core/dataFields/ABFieldConnectCore");
+import ABFieldConnectCore from "../../core/dataFields/ABFieldConnectCore";
 
 const L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABFieldConnect extends ABFieldConnectCore {
+export default class ABFieldConnect extends ABFieldConnectCore {
    constructor(values, object, fieldDefaults) {
       super(values, object, fieldDefaults);
    }

@@ -1,8 +1,7 @@
-const ABProcessTaskServiceQueryCore = require("../../../core/process/tasks/ABProcessTaskServiceQueryCore.js");
+import ABProcessTaskServiceQueryCore from "../../../core/process/tasks/ABProcessTaskServiceQueryCore.js";
+import ABQLManager from "../../ql/ABQLManager.js";
 
-const ABQLManager = require("../../ql/ABQLManager.js");
-
-module.exports = class ABProcessTaskServiceQuery extends (
+export default class ABProcessTaskServiceQuery extends (
    ABProcessTaskServiceQueryCore
 ) {
    constructor(attributes, process, AB) {

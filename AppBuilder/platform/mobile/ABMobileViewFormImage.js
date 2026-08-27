@@ -1,5 +1,5 @@
-const ABMobileViewFormImageCore = require("../../core/mobile/ABMobileViewFormImageCore");
+import ABMobileViewFormImageCore from "../../core/mobile/ABMobileViewFormImageCore";
 
-module.exports = class ABMobileViewFormImage extends (
+export default class ABMobileViewFormImage extends (
    ABMobileViewFormImageCore
 ) {};

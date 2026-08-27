@@ -7,11 +7,11 @@
 // modify it to only Insert data.
 //
 //
-const UpdateConnected = require("./ABViewRuleActionFormRecordRuleUpdateConnected");
+import UpdateConnected from "./ABViewRuleActionFormRecordRuleUpdateConnected";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABViewRuleActionFormRecordRuleInsertConnected extends (
+export default class ABViewRuleActionFormRecordRuleInsertConnected extends (
    UpdateConnected
 ) {
    /**

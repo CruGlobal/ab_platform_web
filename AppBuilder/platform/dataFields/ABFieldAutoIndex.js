@@ -1,6 +1,6 @@
-const ABFieldAutoIndexCore = require("../../core/dataFields/ABFieldAutoIndexCore");
+import ABFieldAutoIndexCore from "../../core/dataFields/ABFieldAutoIndexCore";
 
-module.exports = class ABFieldAutoIndex extends ABFieldAutoIndexCore {
+export default class ABFieldAutoIndex extends ABFieldAutoIndexCore {
    // constructor(values, object) {
    //    super(values, object);
    // }

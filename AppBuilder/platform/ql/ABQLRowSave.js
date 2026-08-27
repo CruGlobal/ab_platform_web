@@ -6,7 +6,7 @@
  *
  */
 
-const ABQLRowSaveCore = require("../../core/ql/ABQLRowSaveCore.js");
+import ABQLRowSaveCore from "../../core/ql/ABQLRowSaveCore.js";
 
 class ABQLRowSave extends ABQLRowSaveCore {
    paramChanged(pDef, id) {
@@ -14,4 +14,4 @@ class ABQLRowSave extends ABQLRowSaveCore {
    }
 }
 
-module.exports = ABQLRowSave;
+export default ABQLRowSave;

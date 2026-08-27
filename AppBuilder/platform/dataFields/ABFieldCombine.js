@@ -1,6 +1,6 @@
-const ABFieldCombineCore = require("../../core/dataFields/ABFieldCombineCore");
+import ABFieldCombineCore from "../../core/dataFields/ABFieldCombineCore";
 
-module.exports = class ABFieldCombine extends ABFieldCombineCore {
+export default class ABFieldCombine extends ABFieldCombineCore {
    constructor(values, object) {
       super(values, object);
    }

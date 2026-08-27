@@ -1,4 +1,4 @@
-const ABObjectCore = require("../core/ABObjectCore");
+import ABObjectCore from "../core/ABObjectCore";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
@@ -19,7 +19,7 @@ let L = (...params) => AB.Multilingual.label(...params);
 // io.socket.on("ab.object.delete", function (msg) {
 // });
 
-module.exports = class ABObject extends ABObjectCore {
+export default class ABObject extends ABObjectCore {
    constructor(attributes, AB) {
       super(attributes, AB);
 

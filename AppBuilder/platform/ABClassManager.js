@@ -186,12 +186,20 @@ export function registerLocalPlugins(API) {
    // registerObjectTypes(cObjectNSAPI.getPluginKey(), cObjectNSAPI);
 }
 
-// module.exports = {
-//    getPluginAPI,
-//    createPropertiesObject,
-//    // createField,
-//    // createObjectProperty,
-//    // createView,
-//    // classRegistry, // Expose the registry for testing or introspection
-//    registerLocalPlugins,
-// };
+/** Default namespace object for `import ABClassManager from "./ABClassManager.js"`. */
+const ABClassManager = {
+   getPluginAPI,
+   createObject,
+   createPropertiesObject,
+   allObjectProperties,
+   viewClass,
+   viewCreate,
+   viewAll,
+   viewPropertiesAll,
+   viewEditorCreate,
+   viewEditorAll,
+   pluginRegister,
+   registerLocalPlugins,
+};
+
+export default ABClassManager;

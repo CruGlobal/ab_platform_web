@@ -1,5 +1,4 @@
-var EventEmitter = require("events").EventEmitter;
-
+import { EventEmitter } from "events";
 import Config from "../config/Config.js";
 
 class Tenant extends EventEmitter {

@@ -1,5 +1,5 @@
-const ABMobileViewFormReadonlyCore = require("../../core/mobile/ABMobileViewFormReadonlyCore");
+import ABMobileViewFormReadonlyCore from "../../core/mobile/ABMobileViewFormReadonlyCore";
 
-module.exports = class ABMobileViewFormReadonly extends (
+export default class ABMobileViewFormReadonly extends (
    ABMobileViewFormReadonlyCore
 ) {};

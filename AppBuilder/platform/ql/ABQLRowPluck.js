@@ -1,4 +1,4 @@
-const ABQLRowPluckCore = require("../../core/ql/ABQLRowPluckCore.js");
+import ABQLRowPluckCore from "../../core/ql/ABQLRowPluckCore.js";
 
 class ABQLRowPluck extends ABQLRowPluckCore {
    /*
@@ -17,4 +17,4 @@ class ABQLRowPluck extends ABQLRowPluckCore {
    }
 }
 
-module.exports = ABQLRowPluck;
+export default ABQLRowPluck;

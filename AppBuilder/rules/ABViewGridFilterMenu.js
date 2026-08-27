@@ -1,8 +1,8 @@
-const ABViewGridFilterRule = require("./ABViewGridFilterRule");
+import ABViewGridFilterRule from "./ABViewGridFilterRule";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABViewGridFilterMenu {
+export default class ABViewGridFilterMenu {
    /**
     * @param {object} App
     *      The shared App object that is created in OP.Component

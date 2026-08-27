@@ -1,8 +1,8 @@
-const SubProcessCore = require("../../../core/process/tasks/ABProcessTaskSubProcessCore.js");
+import SubProcessCore from "../../../core/process/tasks/ABProcessTaskSubProcessCore.js";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class SubProcess extends SubProcessCore {
+export default class SubProcess extends SubProcessCore {
    ////
    //// Process Instance Methods
    ////

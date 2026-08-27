@@ -6,7 +6,7 @@
  *
  */
 
-const ABQLSetSaveCore = require("../../core/ql/ABQLSetSaveCore.js");
+import ABQLSetSaveCore from "../../core/ql/ABQLSetSaveCore.js";
 
 class ABQLSetSave extends ABQLSetSaveCore {
    // constructor(attributes, prevOP, task, application) {
@@ -49,4 +49,4 @@ class ABQLSetSave extends ABQLSetSaveCore {
    }
 }
 
-module.exports = ABQLSetSave;
+export default ABQLSetSave;

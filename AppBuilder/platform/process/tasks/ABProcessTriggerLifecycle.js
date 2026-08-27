@@ -1,5 +1,5 @@
-const ABProcessTriggerLifecycleCore = require("../../../core/process/tasks/ABProcessTriggerLifecycleCore.js");
+import ABProcessTriggerLifecycleCore from "../../../core/process/tasks/ABProcessTriggerLifecycleCore.js";
 
-module.exports = class ABProcessTriggerLifecycle extends (
+export default class ABProcessTriggerLifecycle extends (
    ABProcessTriggerLifecycleCore
 ) {};

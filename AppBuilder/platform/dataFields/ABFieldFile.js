@@ -1,8 +1,8 @@
-const ABFieldFileCore = require("../../core/dataFields/ABFieldFileCore");
+import ABFieldFileCore from "../../core/dataFields/ABFieldFileCore";
 
 const L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABFieldFile extends ABFieldFileCore {
+export default class ABFieldFile extends ABFieldFileCore {
    constructor(values, object) {
       super(values, object);
    }

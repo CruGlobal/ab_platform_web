@@ -1,7 +1,7 @@
 /**
  * This is a puppeteer script to login to AppBuilder
  * It is used in our Lighthouse CI test
- * @param {puppeteer.Browser} browser
+ * @param {import("puppeteer").Browser} browser
  */
 module.exports = async (browser) => {
    // launch browser for LHCI

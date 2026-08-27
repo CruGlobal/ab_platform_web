@@ -1,7 +1,7 @@
-const ABViewMenuCore = require("../../core/views/ABViewMenuCore");
-const ABViewMenuComponent = require("./viewComponent/ABViewMenuComponent");
+import ABViewMenuCore from "../../core/views/ABViewMenuCore";
+import ABViewMenuComponent from "./viewComponent/ABViewMenuComponent";
 
-module.exports = class ABViewMenu extends ABViewMenuCore {
+export default class ABViewMenu extends ABViewMenuCore {
    /**
     * @function component()
     * return a UI component based upon this view.

@@ -1,5 +1,4 @@
-var EventEmitter = require("events").EventEmitter;
-
+import { EventEmitter } from "events";
 import StorageLocal from "./StorageLocal.js";
 
 class Storage extends EventEmitter {

@@ -1,8 +1,8 @@
-const AccountingFPYearCloseCore = require("../../../core/process/tasks/ABProcessTaskServiceAccountingFPYearCloseCore.js");
+import AccountingFPYearCloseCore from "../../../core/process/tasks/ABProcessTaskServiceAccountingFPYearCloseCore.js";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class AccountingFPYearClose extends AccountingFPYearCloseCore {
+export default class AccountingFPYearClose extends AccountingFPYearCloseCore {
    ////
    //// Process Instance Methods
    ////
