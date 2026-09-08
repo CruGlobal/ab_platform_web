@@ -4,9 +4,9 @@
  *
  * Lanes manage users in the system, and provide a way to lookup a SiteUser.
  */
-var ABProcessLaneCore = require("../../core/process/ABProcessLaneCore");
+import ABProcessLaneCore from "../../core/process/ABProcessLaneCore";
 
-module.exports = class ABProcessLane extends ABProcessLaneCore {
+export default class ABProcessLane extends ABProcessLaneCore {
    // constructor(attributes, process, application) {
    //    super(attributes, process, application);
    // }

@@ -6,23 +6,18 @@ import FNABViewPropertyLinkPage from "../view_core/FNABViewPropertyLinkPage.js";
 // FNAbviewdataview Web
 // A web side import for an ABView.
 //
-export default function FNAbviewdataview({
-   /*AB,*/
-   ABViewComponentPlugin,
-   ABViewPlugin,
-   ABUIPlugin,
-}) {
-   const ABViewContainerComponent = FNAbviewcontainerComponent({
-      ABViewComponentPlugin,
-   });
 
-   const ABViewPropertyLinkPage = FNABViewPropertyLinkPage({
-      ABUIPlugin,
-      ABViewPlugin,
+export default function FNAbviewdataview(API) {
+   const {
+      AB,
       ABViewComponentPlugin,
-   });
+      ABViewContainerComponent,
+      ABViewPropertyLinkPage,
+   } = API;
+
 
    const ABAbviewdataviewComponent = FNAbviewdataviewComponent({
+      AB,
       ABViewComponentPlugin,
       ABViewContainerComponent,
       ABViewPropertyLinkPage,
@@ -42,10 +37,10 @@ export default function FNAbviewdataview({
       labelKey: "Data view(plugin)", // {string} the multilingual label key for the class label
    };
 
-   const ABViewDetail = FNABViewDetail({
-      ABViewPlugin,
-      ABViewComponentPlugin,
-   });
+   const detailViews = FNABViewDetail(API);
+   const ABViewDetail = Array.isArray(detailViews)
+      ? detailViews.find((v) => v.common().key === "detail")
+      : detailViews;
 
    class ABViewDataviewCore extends ABViewDetail {
       /**
@@ -58,7 +53,7 @@ export default function FNAbviewdataview({
             values,
             application,
             parent,
-            defaultValues || ABViewDataviewDefaults,
+            defaultValues ?? ABViewDataviewDefaults
          );
       }
 
@@ -84,20 +79,20 @@ export default function FNAbviewdataview({
          super.fromValues(values);
 
          this.settings.xCount = parseInt(
-            this.settings.xCount ||
-               ABViewDataviewPropertyComponentDefaults.xCount,
+            this.settings.xCount ??
+              ABViewDataviewPropertyComponentDefaults.xCount
          );
          this.settings.detailsPage =
-            this.settings.detailsPage ||
+            this.settings.detailsPage ??
             ABViewDataviewPropertyComponentDefaults.detailsPage;
          this.settings.editPage =
-            this.settings.editPage ||
+            this.settings.editPage ??
             ABViewDataviewPropertyComponentDefaults.editPage;
          this.settings.detailsTab =
-            this.settings.detailsTab ||
+            this.settings.detailsTab ??
             ABViewDataviewPropertyComponentDefaults.detailsTab;
          this.settings.editTab =
-            this.settings.editTab ||
+            this.settings.editTab ??
             ABViewDataviewPropertyComponentDefaults.editTab;
       }
 
@@ -140,23 +135,6 @@ export default function FNAbviewdataview({
       //    super(values, application, parent, defaultValues);
       // }
 
-      /**
-       * @method fromValues()
-       *
-       * initialze this object with the given set of values.
-       * @param {obj} values
-       */
-      fromValues(values) {
-         super.fromValues(values);
 
-         this.settings.detailsPage =
-            this.settings.detailsPage ?? ABViewDataviewDefaults.detailsPage;
-         this.settings.editPage =
-            this.settings.editPage ?? ABViewDataviewDefaults.editPage;
-         this.settings.detailsTab =
-            this.settings.detailsTab ?? ABViewDataviewDefaults.detailsTab;
-         this.settings.editTab =
-            this.settings.editTab ?? ABViewDataviewDefaults.editTab;
-      }
    };
 }

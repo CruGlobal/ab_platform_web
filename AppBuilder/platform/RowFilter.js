@@ -1,8 +1,8 @@
-const RowFilterCore = require("../core/RowFilterCore");
+import RowFilterCore from "../core/RowFilterCore";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class RowFilter extends RowFilterCore {
+export default class RowFilter extends RowFilterCore {
    constructor(App, idBase, AB) {
       super(App, idBase, AB);
 

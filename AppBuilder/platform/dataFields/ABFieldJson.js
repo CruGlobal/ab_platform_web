@@ -1,6 +1,6 @@
-const ABFieldJsonCore = require("../../core/dataFields/ABFieldJsonCore");
+import ABFieldJsonCore from "../../core/dataFields/ABFieldJsonCore";
 
-module.exports = class ABFieldJson extends ABFieldJsonCore {
+export default class ABFieldJson extends ABFieldJsonCore {
    // constructor(values, object) {
    //    super(values, object);
    // }
@@ -13,13 +13,47 @@ module.exports = class ABFieldJson extends ABFieldJsonCore {
    columnHeader(options) {
       const config = super.columnHeader(options);
 
-      // config.editor = null; // read only for now
       config.editor = "text";
       config.css = "textCell";
 
       // when called by ABViewFormCustom, will need a .template() fn.
-      // currently we don't need to return anything so ...
-      config.template = () => "";
+      config.template = (obj) => {
+         const val = obj[this.columnName];
+
+         if (val && typeof val == "object") {
+            try {
+               return JSON.stringify(val);
+            } catch (e) {
+               return val.toString();
+            }
+         }
+
+         return val || "";
+      };
+
+      config.editFormat = (val) => {
+         if (val && typeof val == "object") {
+            try {
+               return JSON.stringify(val);
+            } catch (e) {
+               return val.toString();
+            }
+         }
+
+         return val || "";
+      };
+
+      config.editParse = (val) => {
+         if (val && typeof val == "string") {
+            try {
+               return JSON.parse(val);
+            } catch (e) {
+               /* ignore */
+            }
+         }
+
+         return val;
+      };
 
       return config;
    }
@@ -67,9 +101,22 @@ module.exports = class ABFieldJson extends ABFieldJsonCore {
    }
 
    setValue(item, rowData) {
-      super.setValue(item, rowData, "");
+      let val = rowData[this.columnName];
+
+      if (val && typeof val == "object") {
+         try {
+            val = JSON.stringify(val);
+         } catch (e) {
+            /* ignore */
+         }
+      }
+
+      const cloneRow = Object.assign({}, rowData, { [this.columnName]: val });
+
+      super.setValue(item, cloneRow);
+
       if (item) {
-         item.config.value = rowData[this.columnName];
+         item.config.value = val;
       }
    }
 

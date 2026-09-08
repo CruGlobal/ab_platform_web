@@ -33,7 +33,7 @@
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABViewRuleList {
+export default class ABViewRuleList {
    /**
     * @param {object} App
     *      The shared App object that is created in OP.Component

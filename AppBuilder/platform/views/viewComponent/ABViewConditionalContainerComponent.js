@@ -1,6 +1,6 @@
-const ABViewContainerComponent = require("./ABViewContainerComponent");
+import ABViewContainerComponent from "./ABViewContainerComponent";
 
-module.exports = class ABViewConditionalContainerComponent extends (
+export default class ABViewConditionalContainerComponent extends (
    ABViewContainerComponent
 ) {
    constructor(baseView, idBase, ids) {

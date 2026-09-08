@@ -1,6 +1,6 @@
-const ABFieldStringCore = require("../../core/dataFields/ABFieldStringCore");
+import ABFieldStringCore from "../../core/dataFields/ABFieldStringCore";
 
-module.exports = class ABFieldString extends ABFieldStringCore {
+export default class ABFieldString extends ABFieldStringCore {
    // constructor(values, object) {
    //    super(values, object);
 

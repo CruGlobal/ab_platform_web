@@ -1,17 +1,17 @@
 {
   "name": "ab_platform_web",
-  "version": "1.23.9+c21503",
+  "version": "1.26.2+c22000",
   "description": "AppBuilder runtime environment for the Web client.",
   "main": "index.js",
   "scripts": {
     "postinstall": "patch-package",
     "lint": "eslint AppBuilder/. init/. resources/. ui/. webix_custom_components/. --fix --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look good.'",
-    "test": "mocha -r esm --require @babel/register --config test/.mocharc.js test/**/*.test.js",
-    "build": "webpack-cli --config webpack.prod.js --progress",
-    "build:update": "webpack-cli --config webpack.prod.js",
-    "build:dev": "webpack-cli --config webpack.dev.js",
-    "watch": "webpack-cli --config webpack.dev.js --watch --progress",
-    "break": "node --inspect-brk=9229 ./node_modules/.bin/webpack-cli --watch --progress"
+    "test": "mocha -r esm --require @babel/register --config test/.mocharc.cjs test/**/*.test.js",
+    "build": "webpack-cli --config webpack.prod.mjs --progress",
+    "build:update": "webpack-cli --config webpack.prod.mjs",
+    "build:dev": "webpack-cli --config webpack.dev.mjs",
+    "watch": "webpack-cli --config webpack.dev.mjs --watch --progress",
+    "break": "node --inspect-brk=9229 ./node_modules/.bin/webpack-cli --config webpack.dev.mjs --watch --progress"
   },
   "author": "",
   "license": "ISC",
@@ -60,7 +60,7 @@
     "papaparse": "^5.5.2",
     "pdfjs-dist": "^4.2.67",
     "sails.io.js": "^1.2.1",
-    "semver": "^7.8.0",
+    "semver": "^7.8.5",
     "socket.io-client": "^2.5.0",
     "tinymce": "^8.3.2",
     "uuid": "^8.3.2"

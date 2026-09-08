@@ -1,8 +1,8 @@
-const ObjectQueryBuilder = require("./ABViewQueryBuilderObjectFieldConditions");
+import ObjectQueryBuilder from "./ABViewQueryBuilderObjectFieldConditions";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABViewGridFilterRule {
+export default class ABViewGridFilterRule {
    /**
     * @param {object} App
     *      The shared App object that is created in OP.Component

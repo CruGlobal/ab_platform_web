@@ -3,9 +3,9 @@
 //
 // Represents the Data interface for an ABObjectQuery data.
 
-const ABModel = require("./ABModel");
+import ABModel from "./ABModel";
 
-module.exports = class ABModelQuery extends ABModel {
+export default class ABModelQuery extends ABModel {
    ///
    /// Instance Methods
    ///

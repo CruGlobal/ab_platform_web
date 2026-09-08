@@ -7,7 +7,7 @@
 // This object is also responsible for saving it's state to a settings value,
 // and generating the settings value to be saved.
 
-module.exports = class ABViewQueryBuilderObjectFieldConditions {
+export default class ABViewQueryBuilderObjectFieldConditions {
    /**
     * @param {object} App
     *      The shared App object that is created in OP.Component

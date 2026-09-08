@@ -1,6 +1,6 @@
-const ABFieldTextFormulaCore = require("../../core/dataFields/ABFieldTextFormulaCore");
+import ABFieldTextFormulaCore from "../../core/dataFields/ABFieldTextFormulaCore";
 
-module.exports = class ABFieldTextFormula extends ABFieldTextFormulaCore {
+export default class ABFieldTextFormula extends ABFieldTextFormulaCore {
    // constructor(values, object) {
    //    super(values, object);
    // }

@@ -1,10 +1,9 @@
-const ABEmitter = require("./ABEmitter");
-
-const CustomComponentManager = require("../../webix_custom_components/customComponentManager");
+import ABEmitter from "./ABEmitter";
+import CustomComponentManager from "../../webix_custom_components/customComponentManager";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABComponent extends ABEmitter {
+export default class ABComponent extends ABEmitter {
    /**
     * @param {object} App ?what is this?
     * @param {string} idBase Identifier for this component

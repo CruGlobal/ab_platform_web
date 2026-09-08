@@ -1,6 +1,6 @@
-const ABObjectApiNetsuiteCore = require("../core/ABObjectApiNetsuiteCore");
+import ABObjectApiNetsuiteCore from "../core/ABObjectApiNetsuiteCore";
 
-module.exports = class ABObjectApiNetsuite extends ABObjectApiNetsuiteCore {
+export default class ABObjectApiNetsuite extends ABObjectApiNetsuiteCore {
    constructor(attributes, AB) {
       super(attributes, AB);
    }

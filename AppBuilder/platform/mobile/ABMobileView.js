@@ -1,6 +1,6 @@
-const ABMobileViewCore = require("../../core/mobile/ABMobileViewCore.js");
+import ABMobileViewCore from "../../core/mobile/ABMobileViewCore.js";
 
-module.exports = class ABMobileView extends ABMobileViewCore {
+export default class ABMobileView extends ABMobileViewCore {
    // constructor(attributes, application, parent) {
    //    super(attributes, application, parent);
    // }

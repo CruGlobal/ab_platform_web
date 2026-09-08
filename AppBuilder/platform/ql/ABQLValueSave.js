@@ -6,8 +6,8 @@
  *
  */
 
-const ABQLValueSaveCore = require("../../core/ql/ABQLValueSaveCore.js");
+import ABQLValueSaveCore from "../../core/ql/ABQLValueSaveCore.js";
 
 class ABQLValueSave extends ABQLValueSaveCore {}
 
-module.exports = ABQLValueSave;
+export default ABQLValueSave;

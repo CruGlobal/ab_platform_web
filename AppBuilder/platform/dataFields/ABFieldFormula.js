@@ -1,6 +1,6 @@
-const ABFieldFormulaCore = require("../../core/dataFields/ABFieldFormulaCore");
+import ABFieldFormulaCore from "../../core/dataFields/ABFieldFormulaCore";
 
-module.exports = class ABFieldFormula extends ABFieldFormulaCore {
+export default class ABFieldFormula extends ABFieldFormulaCore {
    // constructor(values, object) {
    //    super(values, object);
    // }

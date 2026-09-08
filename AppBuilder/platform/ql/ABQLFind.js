@@ -5,7 +5,7 @@
  * and can perform a DB query based upon that BASE object.
  *
  */
-const ABQLFindCore = require("../../core/ql/ABQLFindCore.js");
+import ABQLFindCore from "../../core/ql/ABQLFindCore.js";
 
 class ABQLFind extends ABQLFindCore {
    // constructor(attributes, prevOP, task, application) {
@@ -16,4 +16,4 @@ class ABQLFind extends ABQLFindCore {
    ///
 }
 
-module.exports = ABQLFind;
+export default ABQLFind;

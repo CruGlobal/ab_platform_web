@@ -1,14 +1,11 @@
-const _ = require("lodash");
+import _ from "lodash";
 
 // prettier-ignore
-const ABApplicationMobileCore = require("../core/ABApplicationMobileCore.js");
+import ABApplicationMobileCore from "../core/ABApplicationMobileCore.js";
 
-const ABViewPageMobile = require("./mobile/ABMobilePage");
-const ABViewManager = require("./ABViewManager");
+import ABViewPageMobile from "./mobile/ABMobilePage";
 
-module.exports = class ABClassApplicationMobile extends (
-   ABApplicationMobileCore
-) {
+export default class ABClassApplicationMobile extends ABApplicationMobileCore {
    constructor(attributes, AB) {
       super(attributes, AB);
    }
@@ -42,4 +39,4 @@ module.exports = class ABClassApplicationMobile extends (
          await this.save();
       }
    }
-};
+}

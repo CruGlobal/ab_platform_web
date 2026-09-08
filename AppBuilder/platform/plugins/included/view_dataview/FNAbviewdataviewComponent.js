@@ -138,6 +138,7 @@ export default function FNAbviewdataviewComponent({
 
          this.__throttleRefreshWarning = setTimeout(() => {
             $$(this.ids.reload)?.show();
+            delete this.__throttleRefreshWarning;
          }, 200);
       }
 

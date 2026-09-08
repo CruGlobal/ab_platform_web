@@ -1,4 +1,4 @@
-const ABMobileViewFormConnectCore = require("../../core/mobile/ABMobileViewFormConnectCore");
+import ABMobileViewFormConnectCore from "../../core/mobile/ABMobileViewFormConnectCore";
 
 // const ABViewPropertyAddPage =
 //    require("./viewProperties/ABViewPropertyAddPage").default;
@@ -13,7 +13,7 @@ const ABMobileViewFormConnectCore = require("../../core/mobile/ABMobileViewFormC
 // let FilterComponent = null;
 // let SortComponent = null;
 
-module.exports = class ABMobileViewFormConnect extends (
+export default class ABMobileViewFormConnect extends (
    ABMobileViewFormConnectCore
 ) {
    /**

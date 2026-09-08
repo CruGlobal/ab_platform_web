@@ -1,7 +1,7 @@
-const ABFieldConnectCore = require("../../core/dataFields/ABFieldConnectCore");
-const ABFieldUserCore = require("../../core/dataFields/ABFieldUserCore");
+import ABFieldConnectCore from "../../core/dataFields/ABFieldConnectCore";
+import ABFieldUserCore from "../../core/dataFields/ABFieldUserCore";
 
-module.exports = class ABFieldUser extends ABFieldUserCore {
+export default class ABFieldUser extends ABFieldUserCore {
    constructor(values, object, fieldDefaults) {
       super(values, object, fieldDefaults);
    }

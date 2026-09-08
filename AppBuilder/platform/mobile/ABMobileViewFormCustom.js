@@ -1,5 +1,5 @@
-const ABMobileViewFormCustomCore = require("../../core/mobile/ABMobileViewFormCustomCore");
+import ABMobileViewFormCustomCore from "../../core/mobile/ABMobileViewFormCustomCore";
 
-module.exports = class ABMobileViewFormCustom extends (
+export default class ABMobileViewFormCustom extends (
    ABMobileViewFormCustomCore
 ) {};

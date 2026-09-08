@@ -1,7 +1,7 @@
 // import ABApplication from "./ABApplication"
 // const ABApplication = require("./ABApplication"); // NOTE: change to require()
-const ABProcessTaskUserExternalCore = require("../../../core/process/tasks/ABProcessTaskUserExternalCore.js");
+import ABProcessTaskUserExternalCore from "../../../core/process/tasks/ABProcessTaskUserExternalCore.js";
 
-module.exports = class ABProcessTaskUserExternal extends (
+export default class ABProcessTaskUserExternal extends (
    ABProcessTaskUserExternalCore
 ) {};

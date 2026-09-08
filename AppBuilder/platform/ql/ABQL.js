@@ -7,8 +7,9 @@
  *
  *
  */
-const ABQLCore = require("../../core/ql/ABQLCore.js");
-const RowUpdater = require("../RowUpdater.js").default;
+import ABQLCore from "../../core/ql/ABQLCore.js";
+
+import RowUpdater from "../RowUpdater.js";
 
 const L = (...params) => AB.Multilingual.label(...params);
 
@@ -840,4 +841,4 @@ class ABQL extends ABQLCore {
    ////
 }
 
-module.exports = ABQL;
+export default ABQL;

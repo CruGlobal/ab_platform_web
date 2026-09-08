@@ -1,8 +1,8 @@
-const ABFieldListCore = require("../../core/dataFields/ABFieldListCore");
+import ABFieldListCore from "../../core/dataFields/ABFieldListCore";
 
 const L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABFieldList extends ABFieldListCore {
+export default class ABFieldList extends ABFieldListCore {
    constructor(values, object) {
       super(values, object);
 
@@ -421,8 +421,14 @@ module.exports = class ABFieldList extends ABFieldListCore {
             result.push(rowData);
          }
       }
-      if (result.length) {
-         if (typeof result == "string") result = JSON.parse(result);
+      if (result && result.length) {
+         if (typeof result == "string") {
+            try {
+               result = JSON.parse(result);
+            } catch (e) {
+               console.error(`Error JSON.parsing result [${result}]: `, e);
+            }
+         }
 
          // Pull text with current language
          if (this.settings) {
@@ -455,25 +461,26 @@ function _getSelectedOptions(field, rowData = {}) {
    if (rowData[field.columnName] != null) {
       result = rowData[field.columnName];
 
-      if (result.length) {
-         try {
-            if (typeof result == "string") result = JSON.parse(result);
-         } catch (e) {
-            console.error(`Error JSON.pars()ing result [${result}]: `, e);
-            // just go with what is there
-            result = rowData[field.columnName];
-         }
+      try {
+         if (typeof result == "string" && result !== "") result = JSON.parse(result);
+         else if (typeof result == "string" && result === "") result = [];
+      } catch (e) {
+         console.error(`Error JSON.parsing result [${result}]: `, e);
+         // just go with what is there
+         result = rowData[field.columnName];
+      }
 
-         // Pull text with current language
-         if (field.settings) {
-            result = (field.settings.options || []).filter((opt) => {
-               return (
-                  (result || []).filter(
-                     (v) => opt && v && (opt.id || opt) == (v.id || v)
-                  ).length > 0
-               );
-            });
-         }
+      // Pull text with current language
+      if (field.settings) {
+         const resultArray = Array.isArray(result) ? result : [result];
+         result = (field.settings.options || []).filter((opt) => {
+            return (
+               resultArray.filter(
+                  (v) => opt && v && (opt.id || opt) == (v.id || v)
+               ).length > 0
+            );
+         });
+
       }
    }
 

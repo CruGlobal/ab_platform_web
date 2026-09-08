@@ -6,8 +6,9 @@
  *
  */
 
-const ABQLManagerCore = require("../../core/ql/ABQLManagerCore.js");
-const ABQLRootObject = require("./ABQLRootObject.js");
+import ABQLManagerCore from "../../core/ql/ABQLManagerCore.js";
+
+import ABQLRootObject from "./ABQLRootObject.js";
 
 const ABQLManager = {
    /**
@@ -162,4 +163,4 @@ const ABQLManager = {
    },
 };
 
-module.exports = ABQLManager;
+export default ABQLManager;

@@ -1,6 +1,6 @@
-const ABMobileViewListCore = require("../../core/mobile/ABMobileViewListCore");
+import ABMobileViewListCore from "../../core/mobile/ABMobileViewListCore";
 
-module.exports = class ABMobileViewList extends ABMobileViewListCore {
+export default class ABMobileViewList extends ABMobileViewListCore {
    // constructor(values, application, parent, defaultValues) {
    //    super(values, application, parent, defaultValues);
    // }

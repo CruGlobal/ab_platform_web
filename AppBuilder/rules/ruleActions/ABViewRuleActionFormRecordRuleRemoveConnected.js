@@ -5,11 +5,11 @@
 // the current object we just Added/Updated
 //
 //
-const ABViewRuleActionFormRecordRuleUpdateConnected = require("./ABViewRuleActionFormRecordRuleUpdateConnected");
+import ABViewRuleActionFormRecordRuleUpdateConnected from "./ABViewRuleActionFormRecordRuleUpdateConnected";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class ABViewRuleActionFormRecordRuleRemoveConnected extends (
+export default class ABViewRuleActionFormRecordRuleRemoveConnected extends (
    ABViewRuleActionFormRecordRuleUpdateConnected
 ) {
    constructor(App, idBase, currentForm) {

@@ -1,8 +1,8 @@
-const AccountingJEArchiveCore = require("../../../core/process/tasks/ABProcessTaskServiceAccountingJEArchiveCore.js");
+import AccountingJEArchiveCore from "../../../core/process/tasks/ABProcessTaskServiceAccountingJEArchiveCore.js";
 
 let L = (...params) => AB.Multilingual.label(...params);
 
-module.exports = class AccountingJEArchive extends AccountingJEArchiveCore {
+export default class AccountingJEArchive extends AccountingJEArchiveCore {
    ////
    //// Process Instance Methods
    ////

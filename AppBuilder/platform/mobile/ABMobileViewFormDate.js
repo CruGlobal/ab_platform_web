@@ -1,3 +1,2 @@
-const ABMobileViewFormDateCore = require("../../core/mobile/ABMobileViewFormDateCore");
-
-module.exports = class ABMobileViewFormDate extends ABMobileViewFormDateCore {};
+import ABMobileViewFormDateCore from "../../core/mobile/ABMobileViewFormDateCore";
+export default class ABMobileViewFormDate extends ABMobileViewFormDateCore {};

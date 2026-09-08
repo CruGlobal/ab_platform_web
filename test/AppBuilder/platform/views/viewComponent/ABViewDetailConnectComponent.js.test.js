@@ -1,11 +1,11 @@
 import assert from "assert";
 import sinon from "sinon";
 import ABFactory from "../../../../../AppBuilder/ABFactory";
-import ABViewDetailConnect from "../../../../../AppBuilder/platform/views/ABViewDetailConnect";
-import ABViewDetailConnectComponent from "../../../../../AppBuilder/platform/views/viewComponent/ABViewDetailConnectComponent";
+import { getDetailClasses } from "../viewHelper";
 
 function getTarget() {
    const AB = new ABFactory();
+   const { ABViewDetailConnect, ABViewDetailConnectComponent } = getDetailClasses(AB);
    const application = AB.applicationNew({});
    const detailConnectView = new ABViewDetailConnect({}, application);
    return new ABViewDetailConnectComponent(detailConnectView);

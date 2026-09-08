@@ -1,5 +1,5 @@
-const ABMobileViewFormEmailCore = require("../../core/mobile/ABMobileViewFormEmailCore");
+import ABMobileViewFormEmailCore from "../../core/mobile/ABMobileViewFormEmailCore";
 
-module.exports = class ABMobileViewFormEmail extends (
+export default class ABMobileViewFormEmail extends (
    ABMobileViewFormEmailCore
 ) {};

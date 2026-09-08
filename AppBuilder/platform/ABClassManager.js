@@ -1,21 +1,22 @@
-import ABUIPlugin from "./plugins/ABUIPlugin.js";
-import ABPropertiesObjectPlugin from "./plugins/ABPropertiesObjectPlugin";
-import ABObjectPlugin from "./plugins/ABObjectPlugin.js";
+import ABFieldImage from "./dataFields/ABFieldImage";
 import ABModelPlugin from "./plugins/ABModelPlugin.js";
-import ABViewPlugin from "./plugins/ABViewPlugin.js";
-import ABViewWidgetPlugin from "./plugins/ABViewWidgetPlugin.js";
+import ABObjectPlugin from "./plugins/ABObjectPlugin.js";
+import ABPropertiesObjectPlugin from "./plugins/ABPropertiesObjectPlugin";
+import ABUIPlugin from "./plugins/ABUIPlugin.js";
 import ABViewComponentPlugin from "./plugins/ABViewComponentPlugin.js";
-import ABViewPropertiesPlugin from "./plugins/ABViewPropertiesPlugin.js";
-import ABViewEditorPlugin from "./plugins/ABViewEditorPlugin.js";
-
-// some views need to reference ABViewContainer,
 import ABViewContainer from "./views/ABViewContainer.js";
+import ABViewContainerComponent from "./views/viewComponent/ABViewContainerComponent.js";
+import ABViewEditorPlugin from "./plugins/ABViewEditorPlugin.js";
+import ABViewManager from "./ABViewManager.js";
+import ABViewPlugin from "./plugins/ABViewPlugin.js";
+import ABViewPropertiesPlugin from "./plugins/ABViewPropertiesPlugin.js";
+import ABViewPropertyAddPage from "./views/viewProperties/ABViewPropertyAddPage";
+import ABViewPropertyEditPage from "./views/viewProperties/ABViewPropertyEditPage";
+import ABViewPopupSortFields from "./views/ABViewPopupSortFields.js";
 
 import ABViewRuleListFormRecordRules from "../rules/ABViewRuleListFormRecordRules";
 import ABViewRuleListFormSubmitRules from "../rules/ABViewRuleListFormSubmitRules";
-
-// MIGRATION: ABViewManager is depreciated.  Use ABClassManager instead.
-import ABViewManager from "./ABViewManager.js";
+import ABViewWidgetPlugin from "./plugins/ABViewWidgetPlugin.js";
 
 const classRegistry = {
    ObjectTypes: new Map(),
@@ -67,6 +68,10 @@ export function getPluginAPI() {
       ABViewContainer,
       ABViewRuleListFormRecordRules,
       ABViewRuleListFormSubmitRules,
+      ABViewPropertyAddPage,
+      ABViewPropertyEditPage,
+      ABFieldImage,
+      ABViewPopupSortFields,
       //  ABFieldPlugin,
       //  ABViewPlugin,
    };
@@ -175,12 +180,20 @@ export function registerLocalPlugins(API) {
    // registerObjectTypes(cObjectNSAPI.getPluginKey(), cObjectNSAPI);
 }
 
-// module.exports = {
-//    getPluginAPI,
-//    createPropertiesObject,
-//    // createField,
-//    // createObjectProperty,
-//    // createView,
-//    // classRegistry, // Expose the registry for testing or introspection
-//    registerLocalPlugins,
-// };
+/** Default namespace object for `import ABClassManager from "./ABClassManager.js"`. */
+const ABClassManager = {
+   getPluginAPI,
+   createObject,
+   createPropertiesObject,
+   allObjectProperties,
+   viewClass,
+   viewCreate,
+   viewAll,
+   viewPropertiesAll,
+   viewEditorCreate,
+   viewEditorAll,
+   pluginRegister,
+   registerLocalPlugins,
+};
+
+export default ABClassManager;

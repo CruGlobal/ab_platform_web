@@ -1,10 +1,10 @@
 import assert from "assert";
 import ABFactory from "../../../../AppBuilder/ABFactory";
-import ABViewDetailCustom from "../../../../AppBuilder/platform/views/ABViewDetailCustom";
-import ABViewDetailCustomComponent from "../../../../AppBuilder/platform/views/viewComponent/ABViewDetailCustomComponent";
+import { getDetailClasses } from "./viewHelper";
 
 function getTarget() {
    const AB = new ABFactory();
+   const { ABViewDetailCustom } = getDetailClasses(AB);
    const application = AB.applicationNew({});
    return new ABViewDetailCustom({}, application);
 }
@@ -15,6 +15,6 @@ describe("ABViewDetailCustom widget", function () {
 
       const result = target.component();
 
-      assert.equal(true, result instanceof ABViewDetailCustomComponent);
+      assert.equal(true, result instanceof target.constructor.Component);
    });
 });

@@ -5,7 +5,7 @@
  *
  */
 
-const ABField = require("./ABField");
+import ABField from "./ABField";
 
 const defaultSettings = {
    allowClear: true,
@@ -20,7 +20,7 @@ const ABFieldSelectivityDefaults = {
    key: "selectivity",
 };
 
-module.exports = class ABFieldSelectivity extends ABField {
+export default class ABFieldSelectivity extends ABField {
    constructor(values, object, fieldDefaults = ABFieldSelectivityDefaults) {
       super(values, object, fieldDefaults);
    }

@@ -1,5 +1,5 @@
-const ABMobileViewFormDatetimeCore = require("../../core/mobile/ABMobileViewFormDatetimeCore");
+import ABMobileViewFormDatetimeCore from "../../core/mobile/ABMobileViewFormDatetimeCore";
 
-module.exports = class ABMobileViewFormDatetime extends (
+export default class ABMobileViewFormDatetime extends (
    ABMobileViewFormDatetimeCore
 ) {};

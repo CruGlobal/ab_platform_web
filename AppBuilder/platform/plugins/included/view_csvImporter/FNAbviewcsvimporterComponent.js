@@ -1,4 +1,4 @@
-const CSVImporter = require("./CSVImporter");
+import CSVImporter from "./CSVImporter";
 
 export default function FNAbviewcsvimporterComponent({
    /*AB,*/

@@ -1,7 +1,7 @@
-const ABViewContainerCore = require("../../core/views/ABViewContainerCore");
-const ABViewContainerComponent = require("./viewComponent/ABViewContainerComponent");
+import ABViewContainerCore from "../../core/views/ABViewContainerCore";
+import ABViewContainerComponent from "./viewComponent/ABViewContainerComponent";
 
-module.exports = class ABViewContainer extends ABViewContainerCore {
+export default class ABViewContainer extends ABViewContainerCore {
    // constructor(values, application, parent, defaultValues) {
    //    super(values, application, parent, defaultValues);
    // }

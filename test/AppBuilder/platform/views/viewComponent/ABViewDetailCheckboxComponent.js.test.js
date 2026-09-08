@@ -1,11 +1,11 @@
 import assert from "assert";
 import sinon from "sinon";
 import ABFactory from "../../../../../AppBuilder/ABFactory";
-import ABViewDetailCheckbox from "../../../../../AppBuilder/platform/views/ABViewDetailCheckbox";
-import ABViewDetailCheckboxComponent from "../../../../../AppBuilder/platform/views/viewComponent/ABViewDetailCheckboxComponent";
+import { getDetailClasses } from "../viewHelper";
 
 function getTarget() {
    const AB = new ABFactory();
+   const { ABViewDetailCheckbox, ABViewDetailCheckboxComponent } = getDetailClasses(AB);
    const application = AB.applicationNew({});
    const detailCheckboxView = new ABViewDetailCheckbox({}, application);
    return new ABViewDetailCheckboxComponent(detailCheckboxView);
