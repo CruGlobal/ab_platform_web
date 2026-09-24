@@ -1,9 +1,7 @@
 import ABViewConditionalContainerCore from "../../core/views/ABViewConditionalContainerCore";
 import ABViewConditionalContainerComponent from "./viewComponent/ABViewConditionalContainerComponent";
 
-export default class ABViewConditionalContainer extends (
-   ABViewConditionalContainerCore
-) {
+export default class ABViewConditionalContainer extends ABViewConditionalContainerCore {
    /**
     * @function component()
     * return a UI component based upon this view.
@@ -33,7 +31,7 @@ export default class ABViewConditionalContainer extends (
       let DC = this.datacollection;
       if (!DC) {
          this.warningsMessage(
-            `can't resolve it's datacollection[${this.settings.dataviewID}]`
+            `can't resolve it's datacollection[${this.settings.dataviewID}]`,
          );
       }
 
@@ -44,4 +42,4 @@ export default class ABViewConditionalContainer extends (
          this.warningsMessage("has no filter conditions set");
       }
    }
-};
+}

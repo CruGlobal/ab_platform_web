@@ -66,6 +66,7 @@ export function getPluginAPI() {
       ABViewPropertiesPlugin,
       ABViewEditorPlugin,
       ABViewContainer,
+      ABViewContainerComponent,
       ABViewRuleListFormRecordRules,
       ABViewRuleListFormSubmitRules,
       ABViewPropertyAddPage,

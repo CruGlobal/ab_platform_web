@@ -1,8 +1,6 @@
 import ABViewContainerComponent from "./ABViewContainerComponent";
 
-export default class ABViewConditionalContainerComponent extends (
-   ABViewContainerComponent
-) {
+export default class ABViewConditionalContainerComponent extends ABViewContainerComponent {
    constructor(baseView, idBase, ids) {
       super(
          baseView,
@@ -11,8 +9,8 @@ export default class ABViewConditionalContainerComponent extends (
             {
                batch: "",
             },
-            ids
-         )
+            ids,
+         ),
       );
 
       this._ifComponent = null;
@@ -20,7 +18,7 @@ export default class ABViewConditionalContainerComponent extends (
 
       // Set filter value
       this.__filterComponent = baseView.AB.filterComplexNew(
-         `${baseView.id}_filterComponent`
+         `${baseView.id}_filterComponent`,
       );
       // this.__filterComponent.applicationLoad(application);
       this.populateFilterComponent();
@@ -47,7 +45,7 @@ export default class ABViewConditionalContainerComponent extends (
 
       _uiConditionalContainer.cells.push(
          Object.assign({ batch: "if" }, this.ifComponent.ui()),
-         Object.assign({ batch: "else" }, this.elseComponent.ui())
+         Object.assign({ batch: "else" }, this.elseComponent.ui()),
       );
 
       delete _ui.type;
@@ -161,7 +159,7 @@ export default class ABViewConditionalContainerComponent extends (
 
       __filterComponent.setValue(
          this.settings.filterConditions ??
-            this.view.constructor.defaultValues().filterConditions
+            this.view.constructor.defaultValues().filterConditions,
       );
    }
-};
+}
