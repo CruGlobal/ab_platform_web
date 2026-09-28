@@ -28,6 +28,7 @@ export default class ABView extends ABViewCore {
          "page",
          "formpanel",
          "viewcontainer",
+         "viewwidget",
          // not allowed Detail's widgets
          "detailcheckbox",
          "detailcustom",
