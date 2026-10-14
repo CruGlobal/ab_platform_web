@@ -8,6 +8,7 @@ export default function FNAbviewdetail(API) {
       ABViewPlugin,
       ABViewWidgetPlugin,
       ABViewContainer,
+
       ABViewContainerComponent,
       ABViewPropertyAddPage,
       AB,
@@ -23,6 +24,7 @@ export default function FNAbviewdetail(API) {
 
    // 1. Initialize Base Item
    const { FNAbviewdetailItem, ...otherDComponents } = dComponents;
+
 
    DetailAPI.ABViewDetailItem = FNAbviewdetailItem(DetailAPI);
 
@@ -59,7 +61,7 @@ export default function FNAbviewdetail(API) {
          const viewsToAllow = ["label", "text"];
          const allComponents = this.application.viewAll();
          return allComponents.filter((c) =>
-            viewsToAllow.includes(c.common().key)
+            viewsToAllow.includes(c.common().key),
          );
       }
 
@@ -102,7 +104,7 @@ export default function FNAbviewdetail(API) {
          const DC = this.datacollection;
          if (!DC) {
             this.warningsMessage(
-               `can't resolve it's datacollection[${this.settings.dataviewID}]`
+               `can't resolve it's datacollection[${this.settings.dataviewID}]`,
             );
          }
       }

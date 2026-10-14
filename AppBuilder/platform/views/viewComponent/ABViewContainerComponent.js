@@ -59,7 +59,7 @@ export default class ABViewContainerComponent extends ABViewComponent {
       for (const key in viewComponents) {
          // skip when the view is removed.
          if (
-            !viewComponents[key] ??
+            !(viewComponents[key] ?? false) ||
             !this.view.views((v) => v.id === key).length
          )
             continue;
@@ -82,7 +82,6 @@ export default class ABViewContainerComponent extends ABViewComponent {
       const componentMap = {};
 
       let curRowIndex;
-      let curColIndex;
 
       const settings = this.settings;
       const defaultSettings = this.view.constructor.defaultValues();
@@ -120,7 +119,6 @@ export default class ABViewContainerComponent extends ABViewComponent {
          // Create a new row
          if (v.position.y == null || v.position.y !== curRowIndex) {
             curRowIndex = v.position.y || rows.length;
-            curColIndex = 0;
 
             const rowNew = {
                cols: [],
@@ -149,7 +147,7 @@ export default class ABViewContainerComponent extends ABViewComponent {
 
          if (componentMap[mapKey])
             console.error(
-               `Component[${component?.ids?.component}] is overwriting component[${componentMap[mapKey].ids?.component}]. <-- Reorder them to fix.`
+               `Component[${component?.ids?.component}] is overwriting component[${componentMap[mapKey].ids?.component}]. <-- Reorder them to fix.`,
             );
 
          componentMap[mapKey] = component;
@@ -171,8 +169,6 @@ export default class ABViewContainerComponent extends ABViewComponent {
             eventName: "changePage",
             listener: this._handlerChangePage,
          });
-
-         curColIndex++;
       });
 
       return rows;
@@ -186,4 +182,4 @@ export default class ABViewContainerComponent extends ABViewComponent {
          val.onShow?.();
       });
    }
-};
+}

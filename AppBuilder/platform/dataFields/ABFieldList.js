@@ -480,6 +480,7 @@ function _getSelectedOptions(field, rowData = {}) {
                ).length > 0
             );
          });
+
       }
    }
 

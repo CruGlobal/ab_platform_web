@@ -19,8 +19,8 @@ export default function FNAbviewtabComponent({
                   popupTabManagerForm: "",
                   popupTabManagerSaveButton: "",
                },
-               ids
-            )
+               ids,
+            ),
          );
 
          this.viewComponents =
@@ -41,14 +41,14 @@ export default function FNAbviewtabComponent({
          const ab = this.AB;
          const abWebix = ab.Webix;
 
-         let _ui = null;
+         let _ui;
 
          // We are going to make a custom icon using the first letter of a menu item for menu items that don't have an icon
          // to do this we need to modify the default template with the method webix recommended form this snippet https://snippet.webix.com/b566d9f8
          abWebix.type(abWebix.ui.tree, {
             baseType: "sideBar", // inherit everything else from sidebar type
             name: "customIcons",
-            icon: (obj, common) => {
+            icon: (obj /*, common */) => {
                if (obj.icon.length)
                   return [
                      "<span class='webix_icon webix_sidebar_icon fa fa-fw fa-",
@@ -133,7 +133,7 @@ export default function FNAbviewtabComponent({
                                  // remembered next time they see this sidebar
                                  abStorage.set(
                                     `${ids.tab}-state`,
-                                    $sidebar.getState()
+                                    $sidebar.getState(),
                                  );
                               }, 0);
                            } else if (id === ids.expandMenu) {
@@ -153,7 +153,7 @@ export default function FNAbviewtabComponent({
                                  // remembered next time they see this sidebar
                                  abStorage.set(
                                     `${ids.tab}-state`,
-                                    $sidebar.getState()
+                                    $sidebar.getState(),
                                  );
                               }, 0);
                            } else {
@@ -212,28 +212,28 @@ export default function FNAbviewtabComponent({
 
                      // set ids of controller buttons
                      const collapseNode = $sidebar?.$view.querySelector(
-                        `[webix_tm_id="${ids.collapseMenu}"]`
+                        `[webix_tm_id="${ids.collapseMenu}"]`,
                      );
 
                      if (collapseNode)
                         collapseNode.setAttribute(
                            "data-cy",
-                           `tab-collapseMenu-${ids.collapseMenu}`
+                           `tab-collapseMenu-${ids.collapseMenu}`,
                         );
 
                      const expandNode = $sidebar?.$view.querySelector(
-                        `[webix_tm_id="${ids.expandMenu}"]`
+                        `[webix_tm_id="${ids.expandMenu}"]`,
                      );
 
                      if (expandNode)
                         expandNode.setAttribute(
                            "data-cy",
-                           `tab-expandMenu-${ids.expandMenu}`
+                           `tab-expandMenu-${ids.expandMenu}`,
                         );
 
                      baseView.views((view) => {
                         const node = $sidebar?.$view?.querySelector(
-                           `[webix_tm_id="${view.id}_menu"]`
+                           `[webix_tm_id="${view.id}_menu"]`,
                         );
 
                         if (!node) {
@@ -244,7 +244,7 @@ export default function FNAbviewtabComponent({
                            "data-cy",
                            `tab-${view.name.replace(" ", "")}-${view.id}-${
                               baseView.id
-                           }`
+                           }`,
                         );
                      });
                   };
@@ -279,7 +279,7 @@ export default function FNAbviewtabComponent({
                         rows: [],
                      };
 
-                     let tabTemplate = "";
+                     let tabTemplate;
 
                      // tab icon
                      if (view.tabicon) {
@@ -326,16 +326,16 @@ export default function FNAbviewtabComponent({
                                  onAfterRender: () => {
                                     baseView.views((view) => {
                                        const node = $$(
-                                          ids.tab
+                                          ids.tab,
                                        )?.$view?.querySelector(
-                                          `[button_id="${view.id}"]`
+                                          `[button_id="${view.id}"]`,
                                        );
 
                                        if (!node) return;
 
                                        node.setAttribute(
                                           "data-cy",
-                                          `tab ${view.name} ${view.id} ${baseView.id}`
+                                          `tab ${view.name} ${view.id} ${baseView.id}`,
                                        );
                                     });
                                  },
@@ -533,7 +533,7 @@ export default function FNAbviewtabComponent({
                         css: "ab-multiview-scrollview",
                         body: vc.component.ui(),
                      },
-                     $viewID
+                     $viewID,
                   );
                } else {
                   // update tab UI
@@ -545,7 +545,7 @@ export default function FNAbviewtabComponent({
                         css: "ab-tabview-scrollview",
                         body: vc.component.ui(),
                      },
-                     $viewID
+                     $viewID,
                   );
                }
 

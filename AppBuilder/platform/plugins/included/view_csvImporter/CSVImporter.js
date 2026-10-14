@@ -67,10 +67,10 @@ export default class CSVImporter {
    getDataRows(fileInfo, separatedBy) {
       if (!this.validateFile(fileInfo)) return Promise.reject();
 
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve /*, reject*/) => {
          // read CSV file
          let reader = new window.FileReader();
-         reader.onload = (e) => {
+         reader.onload = (/*e*/) => {
             let result = [];
 
             // split lines
@@ -80,7 +80,7 @@ export default class CSVImporter {
 
             // split columns
             (dataRows || []).forEach((row) => {
-               let dataCols = [];
+               let dataCols;
                if (separatedBy == ",") {
                   // NOTE: if the file contains ,, .match() can not reconize this empty string
                   row = row.replace(/,,/g, ", ,");

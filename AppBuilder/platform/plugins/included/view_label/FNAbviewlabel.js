@@ -1,17 +1,19 @@
+import FNABViewWidgetPlugin from "../view_viewwidget/FNAbviewwidget.js";
 import FNAbviewLabelComponent from "./FNAbviewLabelComponent.js";
-
 
 // FNViewLabel Web
 // A web side import for an ABView.
 //
 export default function FNViewLabel({
    /*AB,*/
-   ABViewWidgetPlugin,
    ABViewPlugin,
    ABViewComponentPlugin,
 }) {
-   const ABViewLabelComponent = FNAbviewLabelComponent({ ABViewComponentPlugin });
+   const ABViewWidgetPlugin = FNABViewWidgetPlugin({ ABViewPlugin });
 
+   const ABViewLabelComponent = FNAbviewLabelComponent({
+      ABViewComponentPlugin,
+   });
 
    // Define the default values for this components settings:
    // when a new instance of your widget is created, these values will be
@@ -83,10 +85,9 @@ export default function FNViewLabel({
          this.text = values.text || values.settings.text || "*text";
 
          this.settings.format =
-            this.settings.format || ABViewLabelPropertyComponentDefaults.format;
+            this.settings.format || ABViewLabelComponentDefaults.format;
          this.settings.alignment =
-            this.settings.alignment ||
-            ABViewLabelPropertyComponentDefaults.alignment;
+            this.settings.alignment || ABViewLabelComponentDefaults.alignment;
 
          // we are not allowed to have sub views:
          this._views = [];
@@ -164,4 +165,3 @@ export default function FNViewLabel({
       }
    };
 }
-

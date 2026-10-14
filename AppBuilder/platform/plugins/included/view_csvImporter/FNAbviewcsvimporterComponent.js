@@ -5,8 +5,6 @@ export default function FNAbviewcsvimporterComponent({
    ABViewComponentPlugin,
 }) {
    return class ABAbviewcsvimporterComponent extends ABViewComponentPlugin {
-
-
       constructor(baseView, idBase, ids) {
          super(
             baseView,
@@ -33,8 +31,8 @@ export default function FNAbviewcsvimporterComponent({
                   importButton: "",
                   rules: "",
                },
-               ids
-            )
+               ids,
+            ),
          );
 
          this.csvImporter = new CSVImporter((...args) => this.label(...args));
@@ -59,7 +57,7 @@ export default function FNAbviewcsvimporterComponent({
                      type: "icon",
                      icon: "fa fa-upload",
                      label: this.label(
-                        settings.buttonLabel || defaultSettings.buttonLabel
+                        settings.buttonLabel || defaultSettings.buttonLabel,
                      ),
                      width: settings.width || defaultSettings.width,
                      click: () => {
@@ -240,7 +238,7 @@ export default function FNAbviewcsvimporterComponent({
 
                         this.validationError = true;
                      },
-                     onValidationSuccess: (id, obj, details) => {
+                     onValidationSuccess: (id /*, obj, details*/) => {
                         // console.log(`item ${id} valid`);
                         const $dt = $$(ids.datatable);
 
@@ -260,7 +258,8 @@ export default function FNAbviewcsvimporterComponent({
 
                         $importButton.setValue(this.labelImport(selected));
 
-                        if (this.overLimitAlert(selected)) $importButton.disable();
+                        if (this.overLimitAlert(selected))
+                           $importButton.disable();
                         else $importButton.enable();
                      },
                   },
@@ -540,7 +539,7 @@ export default function FNAbviewcsvimporterComponent({
 
          this._dataRows = await csvImporter.getDataRows(
             _csvFileInfo,
-            $$(ids.separatedBy).getValue()
+            $$(ids.separatedBy).getValue(),
          );
 
          const _dataRows = this._dataRows;
@@ -607,7 +606,7 @@ export default function FNAbviewcsvimporterComponent({
                   if (!formConfig) return true;
 
                   return formConfig.key != "fieldreadonly";
-               })
+               }),
             );
 
          const csvImporter = this.csvImporter;
@@ -621,7 +620,7 @@ export default function FNAbviewcsvimporterComponent({
                      value: colName,
                      key: csvImporter.getGuessDataType(_dataRows, index),
                   };
-               })
+               }),
             );
          else
             firstLine.forEach((e, i) => {
@@ -645,7 +644,7 @@ export default function FNAbviewcsvimporterComponent({
          fieldList.forEach((f) => {
             // match up by data type
             const matchCol = csvColumnList.filter(
-               (c) => c.key == f.key && selectedCsvCols.indexOf(c.id) < 0
+               (c) => c.key == f.key && selectedCsvCols.indexOf(c.id) < 0,
             )[0];
 
             let selectVal = "none";
@@ -810,7 +809,9 @@ export default function FNAbviewcsvimporterComponent({
                         abName: "columnLinkData",
                         hidden: true,
                         options: linkFieldOptions,
-                        value: linkFieldOptions[0] ? linkFieldOptions[0].id : null,
+                        value: linkFieldOptions[0]
+                           ? linkFieldOptions[0].id
+                           : null,
                      },
                   ],
                };
@@ -842,7 +843,7 @@ export default function FNAbviewcsvimporterComponent({
          const $optionPanel = $columnOption.getParentView();
          const $linkFieldOption = $optionPanel.queryView(
             { abName: "columnLinkData" },
-            "all"
+            "all",
          )[0];
 
          if (!$linkFieldOption) return;
@@ -861,7 +862,7 @@ export default function FNAbviewcsvimporterComponent({
                ok: this.label("Ok"),
                text: this.label(
                   "Due to browser limitations we only allow imports of {0} records. Please upload a new CSV or deselect records to import.",
-                  [limit]
+                  [limit],
                ),
             });
 
@@ -920,7 +921,7 @@ export default function FNAbviewcsvimporterComponent({
                // there could be more than one so lets loop through and build the UI
                validationRules.forEach((rule) => {
                   const Filter = ab.filterComplexNew(
-                     `${f.field.id}_${ab.Webix.uid()}`
+                     `${f.field.id}_${ab.Webix.uid()}`,
                   );
                   // add the new ui to an array so we can add them all at the same time
                   validationUI.push(Filter.ui);
@@ -1118,7 +1119,7 @@ export default function FNAbviewcsvimporterComponent({
 
          const remainTime = averageRenderTime * (total - index);
 
-         let result = "";
+         let result;
 
          // Convert milliseconds to a readable string
          const days = (remainTime / 86400000).toFixed(0);
@@ -1135,12 +1136,15 @@ export default function FNAbviewcsvimporterComponent({
          //    seconds > 1 ? "s" : ""
          // }`;
          else if (minutes == 1)
-            result = this.label("Approximately 1 minute {0} seconds remaining", [
-               seconds - 60,
-            ]);
+            result = this.label(
+               "Approximately 1 minute {0} seconds remaining",
+               [seconds - 60],
+            );
          // result = `Approximately 1 minute ${seconds - 60} seconds`;
          else if (minutes < 60)
-            result = this.label("Approximately {0} minutes remaining", [minutes]);
+            result = this.label("Approximately {0} minutes remaining", [
+               minutes,
+            ]);
          else if (hours < 24)
             result = this.label("Approximately {0} hour(s) remaining", [hours]);
          else result = this.label("Approximately {0} day(s) remaining", [days]);
@@ -1194,7 +1198,7 @@ export default function FNAbviewcsvimporterComponent({
                const $optionPanel = $selector.getParentView();
                const $dateFormatSelectors = $optionPanel.queryView(
                   { abName: "columnDateFormat" },
-                  "all"
+                  "all",
                );
 
                // define the column to compare data to search .id
@@ -1248,13 +1252,13 @@ export default function FNAbviewcsvimporterComponent({
                const $optionPanel = $selector.getParentView();
                const $linkDataSelector = $optionPanel.queryView(
                   { abName: "columnLinkData" },
-                  "all"
+                  "all",
                )[0];
 
                // define the column to compare data to search .id
                if ($linkDataSelector) {
                   const searchField = field.datasourceLink.fieldByID(
-                     $linkDataSelector.getValue()
+                     $linkDataSelector.getValue(),
                   );
 
                   fieldData.searchField = searchField;
@@ -1433,7 +1437,7 @@ export default function FNAbviewcsvimporterComponent({
          // Pre Check Validations of whole CSV import
          // update row to green if valid
          // update row to red if !valid
-         (selectedRows || []).forEach((data, index) => {
+         (selectedRows || []).forEach((data /*, index*/) => {
             const newRowData = this.getParentValues();
 
             matchFields.forEach((f) => {
@@ -1463,8 +1467,8 @@ export default function FNAbviewcsvimporterComponent({
                }
             });
 
-            let isValid = false;
-            let errorMsg = "";
+            let isValid;
+            let errorMsg;
 
             // first check legacy and server side validation
             const validator = currentObject.isValidData(newRowData);
@@ -1509,7 +1513,7 @@ export default function FNAbviewcsvimporterComponent({
                title: this.label("Invalid Data"),
                ok: this.label("Ok"),
                text: this.label(
-                  "The highlighted row has invalid data. Please edit in the window or update the CSV and try again."
+                  "The highlighted row has invalid data. Please edit in the window or update the CSV and try again.",
                ),
             });
 
@@ -1525,7 +1529,7 @@ export default function FNAbviewcsvimporterComponent({
          // connected entries
 
          const connectedFields = matchFields.filter(
-            (f) => f && f.field?.isConnection && f.searchField
+            (f) => f && f.field?.isConnection && f.searchField,
          );
 
          const throttledSize = 10;
@@ -1601,7 +1605,7 @@ export default function FNAbviewcsvimporterComponent({
                      : connectField.object.PK();
                   const uuid =
                      hashLookups[connectField.id][
-                     newRowData[connectField.columnName]
+                        newRowData[connectField.columnName]
                      ];
 
                   if (!uuid) {
@@ -1619,7 +1623,7 @@ export default function FNAbviewcsvimporterComponent({
                   title: this.label("Invalid Data"),
                   ok: this.label("Ok"),
                   text: this.label(
-                     "The highlighted row has invalid data. Please edit in the window or update the CSV and try again."
+                     "The highlighted row has invalid data. Please edit in the window or update the CSV and try again.",
                   ),
                });
                uiCleanUp();
@@ -1647,7 +1651,7 @@ export default function FNAbviewcsvimporterComponent({
                            if (error) {
                               itemFailed(
                                  rowIndex,
-                                 error.message || error.sqlMessage || error
+                                 error.message || error.sqlMessage || error,
                               );
                            }
                         });
@@ -1662,7 +1666,7 @@ export default function FNAbviewcsvimporterComponent({
                                  const processRowData = async () => {
                                     try {
                                        await element.doRecordRules(
-                                          resultData[rowIndex]
+                                          resultData[rowIndex],
                                        );
 
                                        itemPass(rowIndex);
@@ -1674,7 +1678,7 @@ export default function FNAbviewcsvimporterComponent({
                                  };
 
                                  processRowData();
-                              })
+                              }),
                            );
                         });
 
@@ -1682,14 +1686,14 @@ export default function FNAbviewcsvimporterComponent({
                            try {
                               await Promise.all(penddingRecordRules);
 
-                              newRowsData.forEach((row) => {
+                              newRowsData.forEach((/*row*/) => {
                                  // itemPass(row.id);
                                  numDone++;
                                  if (numDone % throttledSize == 0) {
                                     this.refreshRemainingTimeText(
                                        startUpdateTime,
                                        validRows.length,
-                                       numDone
+                                       numDone,
                                     );
                                  }
                               });
@@ -1741,7 +1745,7 @@ export default function FNAbviewcsvimporterComponent({
                currentRecords,
                remainingRecords,
                importer,
-               total
+               total,
             ) =>
                new Promise((resolve, reject) => {
                   // execute the next 100
@@ -1760,7 +1764,7 @@ export default function FNAbviewcsvimporterComponent({
                            objModel,
                            currentRecords,
                            importer,
-                           total
+                           total,
                         );
 
                         // when done get the next 10
@@ -1772,7 +1776,7 @@ export default function FNAbviewcsvimporterComponent({
                               nextRecords,
                               remainingRecords,
                               importer,
-                              total
+                              total,
                            );
                         } else {
                            // uiCleanUp();
@@ -1889,8 +1893,9 @@ export default function FNAbviewcsvimporterComponent({
 
             linkConnectFields.push(
                ...currentObject.fields(
-                  (f) => f.isConnection && f.settings.linkObject === objectLink.id
-               )
+                  (f) =>
+                     f.isConnection && f.settings.linkObject === objectLink.id,
+               ),
             );
 
             linkValues = dcLink.getCursor();
@@ -1911,8 +1916,5 @@ export default function FNAbviewcsvimporterComponent({
 
          return result;
       }
-
-
    };
-
 }

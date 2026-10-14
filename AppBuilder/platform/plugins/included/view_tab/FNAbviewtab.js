@@ -1,3 +1,5 @@
+import FNABViewWidgetPlugin from "../view_viewwidget/FNAbviewwidget.js";
+import FNABViewContainer from "../view_viewcontainer/FNAbviewcontainer.js";
 import FNAbviewtabComponent from "./FNAbviewtabComponent.js";
 
 // FNAbviewtab Web
@@ -5,10 +7,15 @@ import FNAbviewtabComponent from "./FNAbviewtabComponent.js";
 //
 export default function FNAbviewtab({
    /*AB,*/
-   ABViewWidgetPlugin,
+   ABViewPlugin,
    ABViewComponentPlugin,
-   ABViewContainer,
 }) {
+   const ABViewWidgetPlugin = FNABViewWidgetPlugin({ ABViewPlugin });
+   const ABViewContainer = FNABViewContainer({
+      ABViewPlugin,
+      ABViewComponentPlugin,
+   });
+
    const ABAbviewtabComponent = FNAbviewtabComponent({ ABViewComponentPlugin });
 
    const ABViewTabPropertyComponentDefaults = {
@@ -78,7 +85,7 @@ export default function FNAbviewtab({
                   tabicon: tabIcon,
                },
                this.application,
-               this
+               this,
             )
             .save();
       }

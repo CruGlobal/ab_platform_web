@@ -4,9 +4,10 @@ export default class ABUIPlugin extends ClassUI {
    constructor(...params) {
       super(...params);
 
-      // this.AB = AB;
+      this.AB = this.AB ?? null;
       // {ABFactory}
       // Our common ABFactory for our application.
+      // Set via constructor (3rd ClassUI arg), init(AB), or by a subclass.
 
       this.CurrentApplicationID = null;
       // {string} uuid
@@ -31,6 +32,10 @@ export default class ABUIPlugin extends ClassUI {
       this.CurrentViewID = null;
       // {string}
       // the ABView.id of the view we are working with.
+
+      this.CurrentVersionID = null;
+      // {string}
+      // the ABVersion.id of the version we are working with.
    }
 
    static getPluginKey() {
@@ -46,11 +51,20 @@ export default class ABUIPlugin extends ClassUI {
    L() {
       let _self = this;
       return function (...params) {
-         return _self.AB.Multilingual.labelPlugin(
+         return _self.AB?.Multilingual?.labelPlugin(
             _self.constructor.getPluginKey(),
             ...params
          );
       };
+   }
+
+   /**
+    * @method init()
+    * Initialize the plugin with the ABFactory instance.
+    * @param {ABFactory} AB
+    */
+   async init(AB) {
+      this.AB = AB;
    }
 
    /**
@@ -96,16 +110,16 @@ export default class ABUIPlugin extends ClassUI {
     * @return {ABApplication} application
     */
    get CurrentApplication() {
-      return this.AB.applicationByID(this.CurrentApplicationID);
+      return this.AB?.applicationByID(this.CurrentApplicationID);
    }
 
    /**
     * @method CurrentDatacollection()
     * A helper to return the current ABDataCollection we are working with.
-    * @return {ABObject}
+    * @return {ABDataCollection}
     */
    get CurrentDatacollection() {
-      return this.AB.datacollectionByID(this.CurrentDatacollectionID);
+      return this.AB?.datacollectionByID(this.CurrentDatacollectionID);
    }
 
    /**
@@ -114,9 +128,9 @@ export default class ABUIPlugin extends ClassUI {
     * @return {ABObject}
     */
    get CurrentObject() {
-      let obj = this.AB.objectByID(this.CurrentObjectID);
+      let obj = this.AB?.objectByID(this.CurrentObjectID);
       if (!obj) {
-         obj = this.AB.queryByID(this.CurrentObjectID);
+         obj = this.AB?.queryByID(this.CurrentObjectID);
       }
       return obj;
    }
@@ -127,7 +141,7 @@ export default class ABUIPlugin extends ClassUI {
     * @return {ABProcess}
     */
    get CurrentProcess() {
-      return this.AB.processByID(this.CurrentProcessID);
+      return this.AB?.processByID(this.CurrentProcessID);
    }
 
    /**
@@ -136,7 +150,7 @@ export default class ABUIPlugin extends ClassUI {
     * @return {ABObjectQuery}
     */
    get CurrentQuery() {
-      return this.AB.queryByID(this.CurrentQueryID);
+      return this.AB?.queryByID(this.CurrentQueryID);
    }
 
    /**

@@ -1,3 +1,4 @@
+import FNABViewWidgetPlugin from "../view_viewwidget/FNAbviewwidget.js";
 import FNAbviewtextComponent from "./FNAbviewtextComponent.js";
 
 // FNAbviewtext Web
@@ -5,10 +6,11 @@ import FNAbviewtextComponent from "./FNAbviewtextComponent.js";
 //
 export default function FNAbviewtext({
    /*AB,*/
-   ABViewWidgetPlugin,
+   ABViewPlugin,
    ABViewComponentPlugin,
-   ABViewContainer,
 }) {
+   const ABViewWidgetPlugin = FNABViewWidgetPlugin({ ABViewPlugin });
+
    const ABAbviewtextComponent = FNAbviewtextComponent({
       ABViewComponentPlugin,
    });
@@ -96,7 +98,7 @@ export default function FNAbviewtext({
 
          // convert from "0" => 0
          this.settings.height = parseInt(
-            this.settings.height || ABViewTextPropertyComponentDefaults.height
+            this.settings.height || ABViewTextPropertyComponentDefaults.height,
          );
 
          // if this is being instantiated on a read from the Property UI,
@@ -139,7 +141,7 @@ export default function FNAbviewtext({
          return label;
       }
 
-      displayText(val, componentID) {
+      displayText(val /*, componentID */) {
          var result = this.text;
 
          let clearTemplateValue = (result) => {
@@ -210,7 +212,7 @@ export default function FNAbviewtext({
 
                   result = result.replace(
                      "img",
-                     "img onerror='this.parentNode.removeChild(this);' "
+                     "img onerror='this.parentNode.removeChild(this);' ",
                   );
                }
             }

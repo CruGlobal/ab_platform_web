@@ -8,10 +8,8 @@ export default function FNAbviewchartpie({
    /*AB,*/
    ABViewPlugin,
    ABViewComponentPlugin,
-   ABViewContainer,
-   ABViewWidgetPlugin,
 }) {
-   const ABViewChartCore = FNABViewChartCore({ ABViewWidgetPlugin });
+   const ABViewChartCore = FNABViewChartCore({ ABViewPlugin });
    const ABAbviewchartpieComponent = FNAbviewchartpieComponent({
       ABViewComponentPlugin,
    });

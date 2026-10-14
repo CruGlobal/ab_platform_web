@@ -23,8 +23,8 @@ export default function FNAbviewpdfimporterComponent({
                   unselectAll: "",
                   submit: "",
                },
-               ids
-            )
+               ids,
+            ),
          );
       }
 
@@ -113,10 +113,10 @@ export default function FNAbviewpdfimporterComponent({
                         height: "auto",
                      },
                      on: {
-                        onSelectChange: (pageIds) => {
+                        onSelectChange: (/* pageIds */) => {
                            this.renderPageImages();
                         },
-                        onItemClick: function (id, e, node) {
+                        onItemClick: function (id, e /* node */) {
                            // Unselect
                            if (
                               e?.target?.className?.includes?.("unselect-page")
@@ -135,7 +135,7 @@ export default function FNAbviewpdfimporterComponent({
                            ) {
                               self._fullImagePopup.show();
                               $$(self.ids.fullImageCarousel).setActiveIndex(
-                                 parseInt(id ?? 0) - 1
+                                 parseInt(id ?? 0) - 1,
                               );
                               self.refreshFullImage();
                            }
@@ -251,7 +251,7 @@ export default function FNAbviewpdfimporterComponent({
                            on: {
                               onChange: (isSelected) => {
                                  const activeIndex = $$(
-                                    this.ids.fullImageCarousel
+                                    this.ids.fullImageCarousel,
                                  ).getActiveIndex();
                                  const pageNumber = activeIndex + 1;
 
@@ -331,7 +331,7 @@ export default function FNAbviewpdfimporterComponent({
       async _toBlob(pageNumber, canvas) {
          if (!canvas) return;
 
-         return new Promise((resolve, reject) => {
+         return new Promise((resolve /*, reject */) => {
             canvas.toBlob((blob) => {
                const file = new File([blob], `${pageNumber}.png`, {
                   type: "image/png",
@@ -485,7 +485,7 @@ export default function FNAbviewpdfimporterComponent({
          const $dataview = $$(this.ids.dataview);
          $dataview?.find({}).forEach((item) => {
             const canvas_dom = document.querySelector(
-               `#${this.pageTemplateId(item.pageNumber)}`
+               `#${this.pageTemplateId(item.pageNumber)}`,
             );
             this.showPage(item.pageNumber, canvas_dom);
          });
@@ -524,7 +524,7 @@ export default function FNAbviewpdfimporterComponent({
                      label: this.label("No image"),
                   },
                ],
-               $carousel
+               $carousel,
             );
       }
 
@@ -562,7 +562,7 @@ export default function FNAbviewpdfimporterComponent({
          let selectedIds = $dataview.getSelectedId(true);
 
          selectedIds = selectedIds.filter(
-            (pageId) => pageId && pageId != pageNumber
+            (pageId) => pageId && pageId != pageNumber,
          );
 
          if (selectedIds.length) $dataview.select(selectedIds);
@@ -593,7 +593,7 @@ export default function FNAbviewpdfimporterComponent({
          const activeIndex = $$(ids.fullImageCarousel).getActiveIndex();
          const pageNumber = activeIndex + 1;
          const canvas_dom = document.querySelector(
-            `#${this.fullImageTemplateId(pageNumber)}`
+            `#${this.fullImageTemplateId(pageNumber)}`,
          );
          this.showPage(pageNumber, canvas_dom);
 
@@ -603,7 +603,7 @@ export default function FNAbviewpdfimporterComponent({
          $$(ids.fullImageSelectToggle).setValue(isSelected);
 
          $$(ids.fullImageLabel).setValue(
-            `${this.label("Page Number")}: ${pageNumber}`
+            `${this.label("Page Number")}: ${pageNumber}`,
          );
       }
 
@@ -613,7 +613,7 @@ export default function FNAbviewpdfimporterComponent({
 
       get field() {
          return this.object?.fields?.(
-            (f) => f.id == this.view.settings.fieldID
+            (f) => f.id == this.view.settings.fieldID,
          )[0];
       }
 

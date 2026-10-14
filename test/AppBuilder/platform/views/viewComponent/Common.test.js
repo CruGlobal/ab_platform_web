@@ -78,23 +78,6 @@ describe("ABViewCoponent* - Common tests", function () {
             const { default: Component } = await viewComponents[key];
             let baseview;
             switch (key) {
-               case "ABViewConditionalContainerComponent":
-                  baseview = new BaseView();
-                  baseview.views = () => [
-                     {
-                        name: "If",
-                        component: () => {
-                           return { ui: () => {} };
-                        },
-                     },
-                     {
-                        name: "Else",
-                        component: () => {
-                           return { ui: () => {} };
-                        },
-                     },
-                  ];
-                  break;
                case "ABViewGridComponent":
                   baseview = new BaseView({
                      gridFilter: {},

@@ -1,16 +1,20 @@
+import FNABViewWidgetPlugin from "../view_viewwidget/FNAbviewwidget.js";
 import FNAbviewcsvimporterComponent from "./FNAbviewcsvimporterComponent.js";
-
 
 // FNAbviewcsvimporter Web
 // A web side import for an ABView.
 //
 export default function FNAbviewcsvimporter({
    /*AB,*/
-   ABViewWidgetPlugin,
+   ABViewPlugin,
    ABViewComponentPlugin,
-   ABViewRuleListFormRecordRules
+   ABViewRuleListFormRecordRules,
 }) {
-   const ABAbviewcsvimporterComponent = FNAbviewcsvimporterComponent({ ABViewComponentPlugin });
+   const ABViewWidgetPlugin = FNABViewWidgetPlugin({ ABViewPlugin });
+
+   const ABAbviewcsvimporterComponent = FNAbviewcsvimporterComponent({
+      ABViewComponentPlugin,
+   });
 
    const ABRecordRule = ABViewRuleListFormRecordRules;
 
@@ -76,7 +80,7 @@ export default function FNAbviewcsvimporter({
             values,
             application,
             parent,
-            defaultValues || ABViewCSVImporterDefaults
+            defaultValues || ABViewCSVImporterDefaults,
          );
       }
 
@@ -114,7 +118,8 @@ export default function FNAbviewcsvimporter({
 
          // convert from "0" => 0
          this.settings.width = parseInt(
-            this.settings.width || ABViewCSVImporterPropertyComponentDefaults.width
+            this.settings.width ||
+               ABViewCSVImporterPropertyComponentDefaults.width,
          );
       }
 
@@ -154,36 +159,32 @@ export default function FNAbviewcsvimporter({
 
          rowDatas.forEach((row) => {
             tasks.push(
-               this.RecordRule.process({ data: row.data || row, form: this })
+               this.RecordRule.process({ data: row.data || row, form: this }),
             );
          });
 
          return Promise.all(tasks);
       }
-   };
+   }
 
    return class ABViewCSVImporter extends ABViewCSVImporterCore {
-
       /**
-             * @method getPluginKey
-             * return the plugin key for this view.
-             * @return {string} plugin key
-             */
+       * @method getPluginKey
+       * return the plugin key for this view.
+       * @return {string} plugin key
+       */
       static getPluginKey() {
          return this.common().key;
       }
 
       /**
-             * @method component()
-             * return a UI component based upon this view.
-             * @return {obj} UI component
-             */
+       * @method component()
+       * return a UI component based upon this view.
+       * @return {obj} UI component
+       */
       component(parentId) {
          return new ABAbviewcsvimporterComponent(this, parentId);
       }
-
-
-
 
       warningsEval() {
          super.warningsEval();
@@ -191,7 +192,7 @@ export default function FNAbviewcsvimporter({
          let DC = this.datacollection;
          if (!DC) {
             this.warningsMessage(
-               `can't resolve it's datacollection[${this.settings.dataviewID}]`
+               `can't resolve it's datacollection[${this.settings.dataviewID}]`,
             );
          }
 
@@ -200,6 +201,4 @@ export default function FNAbviewcsvimporter({
          }
       }
    };
-
 }
-
