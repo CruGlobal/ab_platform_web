@@ -677,4 +677,4 @@ export default class ABFieldImage extends ABFieldImageCore {
          url: `/image/rotate/${imgFile}?direction=right`,
       });
    }
-};
+}

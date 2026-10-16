@@ -1,6 +1,6 @@
-import assert from "assert";
-import ABFieldImage from "../../../../AppBuilder/platform/dataFields/ABFieldImage.js";
 import ABFieldFile from "../../../../AppBuilder/platform/dataFields/ABFieldFile.js";
+import ABFieldImage from "../../../../AppBuilder/platform/dataFields/ABFieldImage.js";
+import assert from "assert";
 
 describe("ABField customEdit", function () {
    let mockUploader;

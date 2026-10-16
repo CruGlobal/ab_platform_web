@@ -484,4 +484,4 @@ export default class ABFieldFile extends ABFieldFileCore {
    urlFile(id) {
       return `/file/${id}`;
    }
-};
+}
