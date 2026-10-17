@@ -281,7 +281,6 @@ export default class ABFieldFile extends ABFieldFileCore {
             (typeof App === "object" && typeof App.unique !== "function"))
       ) {
          node = App;
-         App = null;
       }
 
       if (this.deleteFile == true) {

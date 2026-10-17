@@ -379,9 +379,7 @@ export default class ABFieldImage extends ABFieldImageCore {
             (typeof App === "object" && typeof App.unique !== "function"))
       ) {
          evt = id;
-         id = node;
          node = App;
-         App = null;
       }
 
       if (
