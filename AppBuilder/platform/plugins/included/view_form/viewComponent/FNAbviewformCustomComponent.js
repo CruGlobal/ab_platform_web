@@ -137,7 +137,10 @@ export default function FNAbviewformCustomComponent({
                         if (dv) rowData = dv.getCursor() || {};
                      }
 
-                     let node = $$(trg).getParentView().$view;
+                     const node =
+                        $$(this.ids.formItem)?.$view ||
+                        $$(trg)?.getParentView?.()?.$view ||
+                        trg;
                      field?.customEdit(rowData, node, this.ids.formItem, evt);
                   },
                },

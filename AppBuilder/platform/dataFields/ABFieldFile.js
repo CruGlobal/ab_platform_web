@@ -273,6 +273,16 @@ export default class ABFieldFile extends ABFieldFileCore {
     * @param {HtmlDOM} node  the HTML Dom object for this field's display.
     */
    customEdit(row, App, node) {
+      // Normalise arguments: (row, node) when App is not an App instance
+      if (
+         App &&
+         (App.dataset ||
+            App.nodeType ||
+            (typeof App === "object" && typeof App.unique !== "function"))
+      ) {
+         node = App;
+      }
+
       if (this.deleteFile == true) {
          // remove the property because it is only needed to prevent the file dialog from showing
          delete this.deleteFile;
@@ -297,8 +307,8 @@ export default class ABFieldFile extends ABFieldFileCore {
                         if ($$(node) && $$(node).updateItem)
                            $$(node).updateItem(row.id, values);
                      } catch (err) {
-                        node.classList.add("webix_invalid");
-                        node.classList.add("webix_invalid_cell");
+                        node?.classList?.add("webix_invalid");
+                        node?.classList?.add("webix_invalid_cell");
 
                         this.AB.notify.developer(err, {
                            message:
@@ -318,8 +328,16 @@ export default class ABFieldFile extends ABFieldFileCore {
       } else {
          const rowData = this.dataValue(row);
          if (!rowData || !rowData.uuid) {
-            const uploaderId = node.dataset["uploaderId"],
-               uploader = $$(uploaderId);
+            const domNode =
+               node?.dataset != null
+                  ? node
+                  : $$(node)?.$view ||
+                    (typeof node === "string"
+                       ? document.getElementById(node)
+                       : null) ||
+                    node;
+            const uploaderId = domNode?.dataset?.["uploaderId"],
+               uploader = uploaderId ? $$(uploaderId) : null;
 
             if (uploader && uploader.fileDialog)
                uploader.fileDialog({ rowid: row.id });
@@ -465,4 +483,4 @@ export default class ABFieldFile extends ABFieldFileCore {
    urlFile(id) {
       return `/file/${id}`;
    }
-};
+}

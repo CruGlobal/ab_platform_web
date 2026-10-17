@@ -371,8 +371,22 @@ export default class ABFieldImage extends ABFieldImageCore {
     * @param {HtmlDOM} node  the HTML Dom object for this field's display.
     */
    customEdit(row, App, node, id, evt) {
+      // Normalise arguments: (row, node, id, evt) when App is a DOM node / not an App instance
       if (
-         (evt && evt.target.className.indexOf("delete-image") > -1) ||
+         App &&
+         (App.dataset ||
+            App.nodeType ||
+            (typeof App === "object" && typeof App.unique !== "function"))
+      ) {
+         evt = id;
+         node = App;
+      }
+
+      if (
+         (evt &&
+            evt.target &&
+            evt.target.className &&
+            evt.target.className.indexOf("delete-image") > -1) ||
          this.deleteImage
       ) {
          delete this.deleteImage;
@@ -401,8 +415,8 @@ export default class ABFieldImage extends ABFieldImageCore {
                      // update value in the form component
                      this.setValue($$(node), values);
                   } catch (err) {
-                     node.classList.add("webix_invalid");
-                     node.classList.add("webix_invalid_cell");
+                     node?.classList?.add("webix_invalid");
+                     node?.classList?.add("webix_invalid_cell");
 
                      this.AB.notify.developer(err, {
                         context:
@@ -416,8 +430,16 @@ export default class ABFieldImage extends ABFieldImageCore {
             },
          });
       } else {
-         const uploaderId = node.dataset["uploaderId"],
-            uploader = $$(uploaderId);
+         const domNode =
+            node?.dataset != null
+               ? node
+               : $$(node)?.$view ||
+                 (typeof node === "string"
+                    ? document.getElementById(node)
+                    : null) ||
+                 node;
+         const uploaderId = domNode?.dataset?.["uploaderId"],
+            uploader = uploaderId ? $$(uploaderId) : null;
 
          if (uploader && uploader.fileDialog)
             uploader.fileDialog({ rowid: row.id });
@@ -653,4 +675,4 @@ export default class ABFieldImage extends ABFieldImageCore {
          url: `/image/rotate/${imgFile}?direction=right`,
       });
    }
-};
+}
