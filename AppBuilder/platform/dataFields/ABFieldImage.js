@@ -379,6 +379,7 @@ export default class ABFieldImage extends ABFieldImageCore {
             (typeof App === "object" && typeof App.unique !== "function"))
       ) {
          evt = id;
+         id = node;
          node = App;
       }
 
@@ -409,11 +410,11 @@ export default class ABFieldImage extends ABFieldImageCore {
                      await this.object.model().update(row.id, values);
 
                      // update the client side data object as well so other data changes won't cause this save to be reverted
-                     if ($$(node) && $$(node).updateItem)
-                        $$(node).updateItem(row.id, values);
+                     const ui = $$(id) || $$(node);
+                     if (ui && ui.updateItem) ui.updateItem(row.id, values);
 
                      // update value in the form component
-                     this.setValue($$(node), values);
+                     this.setValue(ui, values);
                   } catch (err) {
                      node?.classList?.add("webix_invalid");
                      node?.classList?.add("webix_invalid_cell");
@@ -433,7 +434,8 @@ export default class ABFieldImage extends ABFieldImageCore {
          const domNode =
             node?.dataset != null
                ? node
-               : $$(node)?.$view ||
+               : $$(id)?.$view ||
+                 $$(node)?.$view ||
                  (typeof node === "string"
                     ? document.getElementById(node)
                     : null) ||
