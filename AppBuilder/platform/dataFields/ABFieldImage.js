@@ -371,8 +371,23 @@ export default class ABFieldImage extends ABFieldImageCore {
     * @param {HtmlDOM} node  the HTML Dom object for this field's display.
     */
    customEdit(row, App, node, id, evt) {
+      // Normalise arguments: (row, node, id, evt) when App is a DOM node / not an App instance
       if (
-         (evt && evt.target.className.indexOf("delete-image") > -1) ||
+         App &&
+         (App.dataset ||
+            App.nodeType ||
+            (typeof App === "object" && typeof App.unique !== "function"))
+      ) {
+         evt = id;
+         id = node;
+         node = App;
+      }
+
+      if (
+         (evt &&
+            evt.target &&
+            evt.target.className &&
+            evt.target.className.indexOf("delete-image") > -1) ||
          this.deleteImage
       ) {
          delete this.deleteImage;
@@ -395,14 +410,14 @@ export default class ABFieldImage extends ABFieldImageCore {
                      await this.object.model().update(row.id, values);
 
                      // update the client side data object as well so other data changes won't cause this save to be reverted
-                     if ($$(node) && $$(node).updateItem)
-                        $$(node).updateItem(row.id, values);
+                     const ui = $$(id) || $$(node);
+                     if (ui && ui.updateItem) ui.updateItem(row.id, values);
 
                      // update value in the form component
-                     this.setValue($$(node), values);
+                     this.setValue(ui, values);
                   } catch (err) {
-                     node.classList.add("webix_invalid");
-                     node.classList.add("webix_invalid_cell");
+                     node?.classList?.add("webix_invalid");
+                     node?.classList?.add("webix_invalid_cell");
 
                      this.AB.notify.developer(err, {
                         context:
@@ -416,8 +431,17 @@ export default class ABFieldImage extends ABFieldImageCore {
             },
          });
       } else {
-         const uploaderId = node.dataset["uploaderId"],
-            uploader = $$(uploaderId);
+         const domNode =
+            node?.dataset != null
+               ? node
+               : $$(id)?.$view ||
+                 $$(node)?.$view ||
+                 (typeof node === "string"
+                    ? document.getElementById(node)
+                    : null) ||
+                 node;
+         const uploaderId = domNode?.dataset?.["uploaderId"],
+            uploader = uploaderId ? $$(uploaderId) : null;
 
          if (uploader && uploader.fileDialog)
             uploader.fileDialog({ rowid: row.id });
@@ -653,4 +677,4 @@ export default class ABFieldImage extends ABFieldImageCore {
          url: `/image/rotate/${imgFile}?direction=right`,
       });
    }
-};
+}
